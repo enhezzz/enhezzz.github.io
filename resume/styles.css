@@ -1,0 +1,773 @@
+/*!
+ * fullPage 2.9.6
+ * https://github.com/alvarotrigo/fullPage.js
+ * MIT licensed
+ *
+ * Copyright (C) 2013 alvarotrigo.com - A project by Alvaro Trigo
+ */
+ html.fp-enabled,
+ .fp-enabled body {
+     margin: 0;
+     padding: 0;
+     overflow:hidden;
+ 
+     /*Avoid flicker on slides transitions for mobile phones #336 */
+     -webkit-tap-highlight-color: rgba(0,0,0,0);
+ }
+ .fp-section {
+     position: relative;
+     -webkit-box-sizing: border-box; /* Safari<=5 Android<=3 */
+     -moz-box-sizing: border-box; /* <=28 */
+     box-sizing: border-box;
+ }
+ .fp-slide {
+     float: left;
+ }
+ .fp-slide, .fp-slidesContainer {
+     height: 100%;
+     display: block;
+ }
+ .fp-slides {
+     z-index:1;
+     height: 100%;
+     overflow: hidden;
+     position: relative;
+     -webkit-transition: all 0.3s ease-out; /* Safari<=6 Android<=4.3 */
+     transition: all 0.3s ease-out;
+ }
+ .fp-section.fp-table, .fp-slide.fp-table {
+     display: table;
+     table-layout:fixed;
+     width: 100%;
+ }
+ .fp-tableCell {
+     display: table-cell;
+     vertical-align: middle;
+     width: 100%;
+     height: 100%;
+ }
+ .fp-slidesContainer {
+     float: left;
+     position: relative;
+ }
+ .fp-controlArrow {
+     -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+     -moz-user-select: none; /* mozilla browsers */
+     -khtml-user-select: none; /* webkit (konqueror) browsers */
+     -ms-user-select: none; /* IE10+ */
+     position: absolute;
+     z-index: 4;
+     top: 50%;
+     cursor: pointer;
+     width: 0;
+     height: 0;
+     border-style: solid;
+     margin-top: -38px;
+     -webkit-transform: translate3d(0,0,0);
+     -ms-transform: translate3d(0,0,0);
+     transform: translate3d(0,0,0);
+ }
+ .fp-controlArrow.fp-prev {
+     left: 15px;
+     width: 0;
+     border-width: 38.5px 34px 38.5px 0;
+     border-color: transparent #fff transparent transparent;
+ }
+ .fp-controlArrow.fp-next {
+     right: 15px;
+     border-width: 38.5px 0 38.5px 34px;
+     border-color: transparent transparent transparent #fff;
+ }
+ .fp-scrollable {
+     overflow: hidden;
+     position: relative;
+ }
+ .fp-scroller{
+     overflow: hidden;
+ }
+ .iScrollIndicator{
+     border: 0 !important;
+ }
+ .fp-notransition {
+     -webkit-transition: none !important;
+     transition: none !important;
+ }
+ #fp-nav {
+     position: fixed;
+     z-index: 100;
+     margin-top: -32px;
+     top: 50%;
+     opacity: 1;
+     -webkit-transform: translate3d(0,0,0);
+ }
+ #fp-nav.right {
+     right: 17px;
+ }
+ #fp-nav.left {
+     left: 17px;
+ }
+ .fp-slidesNav{
+     position: absolute;
+     z-index: 4;
+     opacity: 1;
+     -webkit-transform: translate3d(0,0,0);
+     -ms-transform: translate3d(0,0,0);
+     transform: translate3d(0,0,0);
+     left: 0 !important;
+     right: 0;
+     margin: 0 auto !important;
+ }
+ .fp-slidesNav.bottom {
+     bottom: 17px;
+ }
+ .fp-slidesNav.top {
+     top: 17px;
+ }
+ #fp-nav ul,
+ .fp-slidesNav ul {
+   margin: 0;
+   padding: 0;
+ }
+ #fp-nav ul li,
+ .fp-slidesNav ul li {
+     display: block;
+     width: 14px;
+     height: 13px;
+     margin: 7px;
+     position:relative;
+ }
+ .fp-slidesNav ul li {
+     display: inline-block;
+ }
+ #fp-nav ul li a,
+ .fp-slidesNav ul li a {
+     display: block;
+     position: relative;
+     z-index: 1;
+     width: 100%;
+     height: 100%;
+     cursor: pointer;
+     text-decoration: none;
+ }
+ #fp-nav ul li a.active span,
+ .fp-slidesNav ul li a.active span,
+ #fp-nav ul li:hover a.active span,
+ .fp-slidesNav ul li:hover a.active span{
+     height: 12px;
+     width: 12px;
+     margin: -6px 0 0 -6px;
+     border-radius: 100%;
+  }
+ #fp-nav ul li a span,
+ .fp-slidesNav ul li a span {
+     border-radius: 50%;
+     position: absolute;
+     z-index: 1;
+     height: 4px;
+     width: 4px;
+     border: 0;
+     background: #333;
+     left: 50%;
+     top: 50%;
+     margin: -2px 0 0 -2px;
+     -webkit-transition: all 0.1s ease-in-out;
+     -moz-transition: all 0.1s ease-in-out;
+     -o-transition: all 0.1s ease-in-out;
+     transition: all 0.1s ease-in-out;
+ }
+ #fp-nav ul li:hover a span,
+ .fp-slidesNav ul li:hover a span{
+     width: 10px;
+     height: 10px;
+     margin: -5px 0px 0px -5px;
+ }
+ #fp-nav ul li .fp-tooltip {
+     position: absolute;
+     top: -2px;
+     color: #fff;
+     font-size: 14px;
+     font-family: arial, helvetica, sans-serif;
+     white-space: nowrap;
+     max-width: 220px;
+     overflow: hidden;
+     display: block;
+     opacity: 0;
+     width: 0;
+     cursor: pointer;
+ }
+ #fp-nav ul li:hover .fp-tooltip,
+ #fp-nav.fp-show-active a.active + .fp-tooltip {
+     -webkit-transition: opacity 0.2s ease-in;
+     transition: opacity 0.2s ease-in;
+     width: auto;
+     opacity: 1;
+ }
+ #fp-nav ul li .fp-tooltip.right {
+     right: 20px;
+ }
+ #fp-nav ul li .fp-tooltip.left {
+     left: 20px;
+ }
+ .fp-auto-height.fp-section,
+ .fp-auto-height .fp-slide,
+ .fp-auto-height .fp-tableCell{
+     height: auto !important;
+ }
+ 
+ .fp-responsive .fp-auto-height-responsive.fp-section,
+ .fp-responsive .fp-auto-height-responsive .fp-slide,
+ .fp-responsive .fp-auto-height-responsive .fp-tableCell {
+     height: auto !important;
+ }*{
+    box-sizing: border-box
+}
+ul{
+    list-style: none
+}
+body{
+    line-height: 1.5
+}
+.clearfix:after{
+    content: ' ';
+    display: block;
+    clear: both;
+}
+.container{
+    padding: 7% 5% 0 5%;
+}
+#menu{
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    background: rgba(188, 25, 68, .4)
+}
+#menu ul{
+    float: right;
+    margin: 0;
+}
+#menu li{
+    width: 88px;
+    float: left;
+    line-height: 3.5;
+    border: none;
+}
+#menu a{
+    text-decoration: none;
+    display: block;
+    height: 100%;
+    text-align: center
+}
+#menu li:hover{
+    box-shadow: 0 8px 26px -8px rgba(131, 24, 24, 0.3);
+}
+#menu .github-link{
+    background: url(img/github.png) center/cover no-repeat;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    float: left;
+    margin: 7px 0 0 7px;
+    transition: all 1s
+}
+#menu .github-link a{
+    width: 100%;
+    height: 100%;
+   
+}
+#menu .github-link:hover{
+    transform: rotate(1turn);
+}
+.personal-intro{
+    padding:17% 0 0 0;
+    text-align: center
+}
+.personal-intro .motto{
+    border-bottom: 2px solid rgba(210, 210, 210, .7);
+    width: 40%;
+    line-height: 1.5;
+    padding: 1% 0;
+    margin: auto;
+    color: rgba(210, 210, 210, .9);
+    font-size: 21px;
+    text-shadow: 1px 1px 2px #aaa;
+    margin-bottom: 15px
+}
+.personal-intro .name{
+    line-height: 2.5;
+    font-weight: 700;
+    font-size: 20px
+}
+.avatar{
+    
+    margin: 0 auto;
+    width: 95px;
+    height: 95px;
+    overflow: hidden;
+    border-radius: 50%
+}
+.avatar>img{
+    width: 100%
+}
+.personal-intro .personal{
+    
+    line-height: 2.5;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 0 10%
+}
+.tenoStack .master{
+    margin-bottom: 8%;
+    line-height: 2
+}
+.tenoStack .master .content .item{
+    text-indent: 15px;
+    padding-left: 15px
+}
+.tenoStack .master .content .item,
+.expriences .example-panel .teno{
+    font-size: 15px;
+}
+.tenoStack .masterShow{
+    width: 266px;
+    height: 266px;
+    position: relative;
+    float: left;
+}
+.tenoStack .interest .content-list .item{
+    margin-bottom:  15px;
+    text-indent: 71px
+}
+.tenoStack .masterShow .base,
+.tenoStack .masterShow .base .item,
+.tenoStack .masterShow .advanced .item{
+    border-radius: 50%;
+    font-size: 12px
+}
+.tenoStack .masterShow .base,
+.tenoStack .masterShow .advanced{
+    position: absolute;
+    border-radius: 50%
+}
+.tenoStack .masterShow .base{
+    width: 150px;
+    height: 150px;
+    border: 6px dashed rgba(0,0,0,.4);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.tenoStack .masterShow .base .item{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    
+    margin: -21px 0 0 -21px;
+    width: 42px;
+    height: 42px;
+    /* border: 1px solid #111; */
+    transform-origin: 50% 96px;
+}
+.tenoStack .masterShow .base .item span,
+.tenoStack .masterShow .advanced .item span{
+    width: 100%;
+    height: 100%;
+    display: block;
+    animation: inherit;
+}
+.tenoStack .masterShow .advanced .item span{
+    animation-direction: normal
+}
+.tenoStack .masterShow .base .item span{
+    animation-direction: reverse
+}
+.tenoStack .masterShow .base .item span{
+    line-height: 3.5
+}
+.tenoStack .masterShow .advanced .item span{
+    line-height: 4
+}
+@keyframes spin{
+    to{
+        transform: rotate(1turn)
+    }
+}
+@keyframes spin60{
+    from{
+        transform: rotate(60deg)
+    }
+    to{
+        transform: rotate(420deg)
+    }
+}
+@keyframes spin-60{
+    from{
+        transform: rotate(-60deg)
+    }
+    to{
+        transform: rotate(-420deg)
+    }
+}
+
+@keyframes spin90{
+    from{
+        transform: rotate(90deg)
+    }
+    to{
+        transform: rotate(450deg)
+    }
+}
+@keyframes spin-90{
+    from{
+        transform: rotate(-90deg)
+    }
+    to{
+        transform: rotate(-450deg)
+    }
+}
+@keyframes spin120{
+    from{
+        transform: rotate(120deg)
+    }
+    to{
+        transform: rotate(480deg)
+    }
+}
+@keyframes spin-120{
+    from{
+        transform: rotate(-120deg)
+    }
+    to{
+        transform: rotate(-480deg)
+    }
+}
+@keyframes spin180{
+    from{
+        transform: rotate(180deg)
+    }
+    to{
+        transform: rotate(540deg)
+    }
+}
+@keyframes spin-180{
+    from{
+        transform: rotate(-180deg)
+    }
+    to{
+        transform: rotate(-540deg)
+    }
+}
+@keyframes spin240{
+    from{
+        transform: rotate(240deg)
+    }
+    to{
+        transform: rotate(600deg)
+    }
+}
+@keyframes spin-240{
+    from{
+        transform: rotate(-240deg)
+    }
+    to{
+        transform: rotate(-600deg)
+    }
+}
+@keyframes spin270{
+    from{
+        transform: rotate(270deg)
+    }
+    to{
+        transform: rotate(630deg)
+    }
+}
+@keyframes spin-270{
+    from{
+        transform: rotate(-270deg)
+    }
+    to{
+        transform: rotate(-630deg)
+    }
+}
+@keyframes spin300{
+    from{
+        transform: rotate(300deg)
+    }
+    to{
+        transform: rotate(660deg)
+    }
+}
+@keyframes spin-300{
+    from{
+        transform: rotate(-300deg)
+    }
+    to{
+        transform: rotate(-660deg)
+    }
+}
+
+.tenoStack .masterShow .advanced{
+    width: 100%;
+    height: 100%;
+    border: 6px dashed rgba(0,0,0,.4);
+}
+.tenoStack .masterShow .base .item,
+.tenoStack .masterShow .advanced .item{
+    text-align: center;
+    animation: spin 10s infinite linear;
+}
+.tenoStack .masterShow .advanced .item{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin: -25px 0 0 -25px;
+    width: 50px;
+    height: 50px;
+    /* border: 1px solid #111; */
+    transform-origin: 50% 158px;
+    animation-direction: reverse
+}
+
+.tenoStack .masterShow .base .item:nth-child(1){
+    background: rgba(226, 76, 37,.4);
+}
+.tenoStack .masterShow .base .item:nth-child(2){
+    background: rgba(60, 153, 220,.4);
+    animation-name: spin90
+}
+.tenoStack .masterShow .base .item:nth-child(2) span{
+    animation-name: spin-90;
+    animation-direction: normal
+}
+.tenoStack .masterShow .base .item:nth-child(3){
+    animation-name: spin180;
+    background: rgba(207, 6, 74,.4)
+}
+.tenoStack .masterShow .base .item:nth-child(3) span{
+    animation-name: spin-180;
+    animation-direction: normal
+}
+.tenoStack .masterShow .base .item:nth-child(4){
+    animation-name: spin270;
+    background: rgba(7, 105, 173,.4)
+}
+.tenoStack .masterShow .base .item:nth-child(4) span{
+    animation-name: spin-270;
+    animation-direction: normal
+}
+
+.tenoStack .masterShow .advanced .item:nth-child(1){
+    background: rgba(195, 0, 47,.4)
+}
+.tenoStack .masterShow .advanced .item:nth-child(2){
+    animation-name: spin120;
+    background: rgba(65, 184, 131,.4)
+}
+.tenoStack .masterShow .advanced .item:nth-child(2) span{
+    animation-name: spin-120;
+    animation-direction: reverse
+}
+.tenoStack .masterShow .advanced .item:nth-child(3){
+    animation-name: spin180;
+    background: rgba(142, 214, 251,.4)
+}
+.tenoStack .masterShow .advanced .item:nth-child(3) span{
+    animation-name: spin-180;
+    animation-direction: reverse
+}
+.tenoStack .masterShow .advanced .item:nth-child(4){
+    animation-name: spin240;
+    background: rgba(128, 189, 1,.4)
+}
+.tenoStack .masterShow .advanced .item:nth-child(4) span{
+    animation-name: spin-240;
+    animation-direction: reverse
+}
+.tenoStack .masterShow .advanced .item:nth-child(5){
+    animation-name: spin60;
+    background: rgba(24, 47, 81,.4)
+}
+.tenoStack .masterShow .advanced .item:nth-child(5) span{
+    animation-name: spin-60;
+    animation-direction: reverse
+}
+.tenoStack .masterShow .advanced .item:nth-child(6){
+    animation-name: spin300;
+    background: rgba(245, 77, 39,.4)
+}
+.tenoStack .masterShow .advanced .item:nth-child(6) span{
+    animation-name: spin-300;
+    animation-direction: reverse
+}
+
+.interest{
+    float: left;
+    margin-right: 36%
+}
+/* @media screen and (min-width: 900px){
+    .col-lg-2{
+        width: 50%;
+    }
+} */
+.expriences .title,
+.tenoStack .title,
+.contact .title{
+    margin-bottom: 8px;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 2
+}
+.expriences .example-panel{
+    width: 45%;
+    height: 40%;
+    border: 1px solid #eee;
+    float: left;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, .4);
+    transition: box-shadow .5s;
+    margin-bottom: 15px
+}
+.expriences .example-panel:hover{
+   
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .5)
+}
+.expriences .example-panel:not(:first-child){
+   margin-left: 15px
+}
+.expriences .example-panel .title{
+   text-align: center;
+   line-height: 2.5;
+   border-bottom: 1px solid #ccc
+}
+.expriences .example-panel .teno{
+    text-indent: 5%;
+    padding: 10px
+}
+.contact{
+    display: flex;
+    flex-flow: column;
+    min-height: 100vh;
+}
+.contact .title{
+    margin-bottom: 64px
+}
+.contact .content{
+    padding: 0 68px;
+    flex: 1
+}
+.contact .content .item{
+    float: left;
+}
+.contact .content .item:not(:first-child){
+    margin-left: 19%
+}
+.contact .content .item a{
+    font-size: 6vw;
+    text-decoration: none
+}
+.contact .content .item .github{
+    
+    color: black
+}
+.contact .content .item .wechat{
+    color: #025D00;
+}
+.contact .content .item .qq{
+    color: #388BFF;
+}
+.contact .content .item .weibo{
+    color: #E32428;
+}
+.contact .content .item .address,
+.contact .content .item .address+i{
+    font-size: 1vw;
+    display: block;
+}
+.contact .content .item .address{
+    text-align: center
+}
+.contact .footer{
+    text-align: center;
+    padding: 4% 0 2%;
+    border-top: 1px solid #ddd
+}
+.contact .content .wechat+.code{
+    display: none
+}
+.contact .content .wechat:hover+.code{
+    display: inline-block
+}@media screen and (max-width:440px){
+    #menu ul{
+        width: 100%;
+        padding: 0
+    }
+    #menu li{
+        width: 25%;
+
+    }
+    #menu .github-link{
+        display: none;
+    }
+    .container{
+        padding-top: 16%
+    }
+    .expriences .example-panel{
+        width: 90%;
+        height: 27%;
+    }
+    .expriences .example-panel .title{
+        line-height: 2
+    }
+    .tenoStack .master {
+        margin-bottom: 22%;
+    }
+    .expriences .title, .tenoStack .title, .contact .title {
+        margin-bottom: 5px;
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+    .expriences .example-panel .teno {
+        padding: 0 10px;
+    }
+    .tenoStack .master .content .item, .expriences .example-panel .teno {
+        font-size: 14px;
+    }
+    .tenoStack .master {
+    
+        line-height: 2;
+    }
+    .contact .content .item:not(:first-child) {
+        margin-left: 0;
+    }
+    .contact .content .item a {
+        font-size: 64px;
+    }
+    .contact .content .item {
+        float: none;
+    }
+    .contact .title {
+        margin-bottom: 18px;
+    }
+  
+    #fp-nav.right {
+        right: 3px;
+    }
+    .contact .content .item .address{
+        text-align: left
+    }
+    .contact .content .item{
+        position: relative;
+    }
+    .contact .content .wechat+.code{
+        display: none
+    }
+    .contact .content .wechat+.code{
+        position: absolute;
+    }
+    .contact .content .wechat:hover+.code{
+        top: 0;
+        right: -15px
+    }
+}
