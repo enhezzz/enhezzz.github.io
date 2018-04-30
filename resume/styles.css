@@ -1122,7 +1122,10 @@ body{
         -ms-transform-origin: 50% 158px;
          -o-transform-origin: 50% 158px;
             transform-origin: 50% 158px;
-    animation-direction: reverse
+    -webkit-animation: spin 10s infinite linear reverse;
+       -moz-animation: spin 10s infinite linear reverse;
+         -o-animation: spin 10s infinite linear reverse;
+            animation: spin 10s infinite linear reverse;
 }
 
 .tenoStack .masterShow .base .item:nth-child(1){
