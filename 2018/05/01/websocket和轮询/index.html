@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>enhezzz&#39;s blog</title>
+  <title>websocket和轮询 | enhezzz&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="it技术博客分享、前端、后端交流，日常生活分享">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
-<meta property="og:type" content="website">
-<meta property="og:title" content="enhezzz&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="1.  轮询分为短轮询和长轮询短轮询就是客户端不断给服务器端发送请求，希望能得到最新的数据，请求立即响应，这种方式的缺点就是请求中有大半是无用，浪费带宽和服务器资源。实例：适于小型应用。长轮询就是客户端发出请求到服务器之后，服务器端的相应数据更新之后才返回数据给客户端，在这期间请求一直处于pending状态，直到请求超时后客户端再一次发送请求，周而复始…，。通常的做法是，在服务器的程序中加入一个死">
+<meta name="keywords" content="http,websoctket,polling">
+<meta property="og:type" content="article">
+<meta property="og:title" content="websocket和轮询">
+<meta property="og:url" content="http://yoursite.com/2018/05/01/websocket和轮询/index.html">
 <meta property="og:site_name" content="enhezzz&#39;s blog">
-<meta property="og:description" content="it技术博客分享、前端、后端交流，日常生活分享">
+<meta property="og:description" content="1.  轮询分为短轮询和长轮询短轮询就是客户端不断给服务器端发送请求，希望能得到最新的数据，请求立即响应，这种方式的缺点就是请求中有大半是无用，浪费带宽和服务器资源。实例：适于小型应用。长轮询就是客户端发出请求到服务器之后，服务器端的相应数据更新之后才返回数据给客户端，在这期间请求一直处于pending状态，直到请求超时后客户端再一次发送请求，周而复始…，。通常的做法是，在服务器的程序中加入一个死">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-01T08:30:41.963Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="enhezzz&#39;s blog">
-<meta name="twitter:description" content="it技术博客分享、前端、后端交流，日常生活分享">
+<meta name="twitter:title" content="websocket和轮询">
+<meta name="twitter:description" content="1.  轮询分为短轮询和长轮询短轮询就是客户端不断给服务器端发送请求，希望能得到最新的数据，请求立即响应，这种方式的缺点就是请求中有大半是无用，浪费带宽和服务器资源。实例：适于小型应用。长轮询就是客户端发出请求到服务器之后，服务器端的相应数据更新之后才返回数据给客户端，在这期间请求一直处于pending状态，直到请求超时后客户端再一次发送请求，周而复始…，。通常的做法是，在服务器的程序中加入一个死">
   
     <link rel="alternative" href="/atom.xml" title="enhezzz&#39;s blog" type="application/atom+xml">
   
@@ -162,103 +163,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-http缓存机制及原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-websocket和轮询" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/http缓存机制及原理/">http缓存机制及原理</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/01/http缓存机制及原理/" class="archive-article-date">
-  	<time datetime="2018-05-01T03:20:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="彻底弄懂HTTP缓存机制及原理"><a href="#彻底弄懂HTTP缓存机制及原理" class="headerlink" title="彻底弄懂HTTP缓存机制及原理"></a>彻底弄懂HTTP缓存机制及原理</h3><blockquote>
-<p>  前言</p>
-</blockquote>
-<p>Http 缓存机制作为 web 性能优化的重要手段，对于从事 Web 开发的同学们来说，应该是知识体系库中的一个基础环节，同时对于有志成为前端架构师的同学来说是必备的知识技能。<br>但是对于很多前端同学来说，仅仅只是知道浏览器会对请求的静态文件进行缓存，但是为什么被缓存，缓存是怎样生效的，却并不是很清楚。<br>在此，我会尝试用简单明了的文字，像大家系统的介绍HTTP缓存机制，期望对各位正确的理解前端缓存有所帮助。</p>
-<blockquote>
-<p>  在介绍HTTP缓存之前，作为知识铺垫，先简单介绍一下HTTP报文</p>
-</blockquote>
-<p>HTTP报文就是浏览器和服务器间通信时发送及响应的数据块。<br>浏览器向服务器请求数据，发送请求(request)报文；服务器向浏览器返回数据，返回响应(response)报文。<br>报文信息主要分为两部分<br>1.包含属性的首部(header)————————–附加信息（cookie，缓存信息等）与缓存相关的规则信息，均包含在header中<br>2.包含数据的主体部分(body)———————–HTTP请求真正想要传输的部分<br>
-        
-          <a class="article-more-a" href="/2018/05/01/http缓存机制及原理/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/http缓存机制及原理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-websocket和轮询" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/websocket和轮询/">websocket和轮询</a>
+    <h1 class="article-title" itemprop="name">
+      websocket和轮询
     </h1>
   
 
@@ -274,12 +186,67 @@
         <h3 id="1-轮询分为短轮询和长轮询"><a href="#1-轮询分为短轮询和长轮询" class="headerlink" title="1.  轮询分为短轮询和长轮询"></a>1.  轮询分为短轮询和长轮询</h3><p>短轮询就是客户端不断给服务器端发送请求，希望能得到最新的数据，请求立即响应，这种方式的缺点就是请求中有大半是无用，浪费带宽和服务器资源。实例：适于小型应用。<br>长轮询就是客户端发出请求到服务器之后，服务器端的相应数据更新之后才返回数据给客户端，在这期间请求一直处于pending状态，直到请求超时后客户端再一次发送请求，周而复始…，。通常的做法是，在服务器的程序中加入一个死循环，在循环中监测数据的变动。缺点就是耗费资源，服务器的压力大，并发量大。</p>
 <p>它们之间的共同点就是他们都体现了Http的一个特性：被动性，即服务器端不能主动给客户端发送数据。</p>
 <p>下面的基于http的websocket协议给出了上述问题的解决方案</p>
-<h3 id="2-WebSocket"><a href="#2-WebSocket" class="headerlink" title="2.  WebSocket"></a>2.  WebSocket</h3><p>WebSocket协议是基于TCP的一种新的网络协议。它实现了浏览器与服务器<strong>全双工(full-duplex)</strong>通信——允许服务器主动发送信息给客户端。<br>
-        
-          <a class="article-more-a" href="/2018/05/01/websocket和轮询/#more">more >></a>
-        
+<h3 id="2-WebSocket"><a href="#2-WebSocket" class="headerlink" title="2.  WebSocket"></a>2.  WebSocket</h3><p>WebSocket协议是基于TCP的一种新的网络协议。它实现了浏览器与服务器<strong>全双工(full-duplex)</strong>通信——允许服务器主动发送信息给客户端。<br><a id="more"></a></p>
+<blockquote>
+<p>  产生背景</p>
+</blockquote>
+<p>WebSocket协议之前，双工通信是通过多个http链接来实现，这导致了效率低下。WebSocket解决了这个问题。</p>
+<blockquote>
+<p>  实现原理</p>
+</blockquote>
+<p>在实现websocket连线过程中，需要通过浏览器发出websocket连线请求，然后服务器发出回应，这个过程通常称为“握手” 。在 WebSocket API，浏览器和服务器只需要做一个握手的动作，然后，浏览器和服务器之间就形成了一条快速通道。两者之间就直接可以数据互相传送。在此WebSocket 协议中，为我们实现即时服务带来了两大好处：</p>
+<ol>
+<li>Header<br>互相沟通的Header是很小的-大概只有 2 Bytes</li>
+<li>Server Push<br>服务器的推送，服务器不再被动的接收到浏览器的请求之后才返回数据，而是在有新数据时就主动推送给浏览器。</li>
+</ol>
+<blockquote>
+<p>  握手协议例子</p>
+</blockquote>
+<p><strong>浏览器请求</strong><br>GET /webfin/websocket/ HTTP/1.1<br>Host: localhost<br>Upgrade: websocket<br>Connection: Upgrade<br>Sec-WebSocket-Key: xqBt3ImNzJbYqRINxEFlkg==<br>Origin: http://服务器地址<br>Sec-WebSocket-Version: 13</p>
+<p><strong>服务器回应</strong><br>HTTP/1.1 101 Switching Protocols<br>Upgrade: websocket<br>Connection: Upgrade<br>Sec-WebSocket-Accept: K7DJLdLooIwIG/MOpvWFB3y3FE8=<br>WebSocket借用http请求进行握手，相比正常的http请求，多了一些内容。其中，<br>Upgrade: websocket<br>Connection: Upgrade</p>
+<p>表示希望将http协议升级到Websocket协议。<br>Sec-WebSocket-Key是浏览器随机生成的base64 encode的值，用来询问服务器是否是支持WebSocket。<br>服务器返回<br>Upgrade: websocket<br>Connection: Upgrade<br>告诉浏览器即将升级的是Websocket协议<br>Sec-WebSocket-Accept是将请求包“Sec-WebSocket-Key”的值，与”258EAFA5-E914-47DA-95CA-C5AB0DC85B11″这个字符串进行拼接，然后对拼接后的字符串进行sha-1运算，再进行base64编码得到的。用来说明自己是WebSocket助理服务器。<br>Sec-WebSocket-Version是WebSocket协议版本号。RFC6455要求使用的版本是13，之前草案的版本均应当被弃用</p>
+<blockquote>
+<p>HTML5 Web Socket API</p>
+</blockquote>
+<p>在HTML5中内置有一些API，用于响应应用程序发起的请求。基本API语句如下：<br>创建对象<br>    var ws = new WebSocket(url,name);//url为WebSocket服务器的地址，name为发起握手的协议名称，为可选择项。<br>发送文本消息<br>    ws.send(msg);//msg为文本消息，对于其他类型的可以通过二进制形式发送。<br>接收消息<br>    ws.onmessage = function(){…});<br>错误处理<br>    ws.onerror = (function(){…})();<br>关闭连接<br>    ws.close();</p>
+<blockquote>
+<p>  浏览器以及语言支持</p>
+</blockquote>
+<p>浏览器端实现:   <a href="https://caniuse.com/#search=websocket" target="_blank">caniuse</a><br>websocket api在浏览器端的广泛实现似乎只是一个时间问题了, 值得注意的是服务器端没有标准的api, 各个实现都有自己的一套api, 并且tcp也没有类似的提案, 所以使用websocket开发服务器端有一定的风险.可能会被锁定在某个平台上或者将来被迫升级。</p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wechatPay.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -307,16 +274,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/websocket和轮询/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/05/01/websocket和轮询/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/05/01/http缓存机制及原理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          http缓存机制及原理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/01/各种排序算法的总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">各种排序算法的总结</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -336,175 +371,24 @@
 
 
 
-
   
-    <article id="post-各种排序算法的总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/各种排序算法的总结/">各种排序算法的总结</a>
-    </h1>
   
 
-        
-        <a href="/2018/05/01/各种排序算法的总结/" class="archive-article-date">
-  	<time datetime="2018-05-01T00:19:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>  <strong>前言</strong>：假定在待排序的记录序列中，存在多个具有相同的关键字的记录，若经过排序，这些记录的相对次序保持不变，即在原序列中，ri==rj，且ri在rj之前，而在排序后的序列中，ri仍在rj之前，则称这种排序算法是稳定的；否则称为不稳定的。</p>
-</blockquote>
-<h5 id="下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）："><a href="#下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）：" class="headerlink" title="下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）："></a>下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）：</h5><blockquote>
-<p>  1.直接插入排序</p>
-</blockquote>
-<p>总体思路：位于表中后面的元素依次与表中前面的元素比较，若比它大，则还需继续和更前面的元素比较，直至遇到一个比它小的元素或者比较到第一个元素(哨兵)了。         </p>
-<p>①先将第一个元素视为有序，第二个元素与第一个元素比较，若比第一个元素小，则插入到第一个元素之前。第三个元素依次与第二个元素、第一个元素比较（前三 个元素有序）；第四个元素依次与第三个、第二个、第一个元素比较，插入到合适位置以形成一个有序表（即此时前四个元素有序）因此，直接插入排序算法是逐步 地形成一个有序序列的。也即在表的前头形成一个局部有序序列。</p>
-<p>②不论初始序列如何，总需要 <strong>N－1</strong> 趟排序，第一趟是第二个元素与第一个元素比，第二趟是第三个元素与前二个元素比，第三趟是第四个元素与前三个元素比……<br>
-        
-          <a class="article-more-a" href="/2018/05/01/各种排序算法的总结/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">algorithm</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/各种排序算法的总结/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
-    <article id="post-gitPage" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/28/gitPage/">hexo搭建gitPage个人博客以及自定义域名解析</a>
-    </h1>
+  <div id="SOHUCS" sid="websocket和轮询" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "cytAmGYe6",
+        conf: "prod_dcb38299bd1608a1d7c3b74ecb0c9155"
+    });
+</script>
+</script>
   
 
-        
-        <a href="/2018/04/28/gitPage/" class="archive-article-date">
-  	<time datetime="2018-04-28T06:50:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p><strong>创建<yourname>.github.io仓库</yourname></strong></p>
-<p>打开你的github，创建一个yourName.github.io仓库，yourName是你的注册名，比如我的注册名是aa，那么这个新建的仓库名就是aa.github.io</p>
-<img src="/2018/04/28/gitPage/repo.png" title="This is an example image">
-        
-          <a class="article-more-a" href="/2018/04/28/gitPage/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">github</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/28/gitPage/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
+
   
 
 
@@ -527,8 +411,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

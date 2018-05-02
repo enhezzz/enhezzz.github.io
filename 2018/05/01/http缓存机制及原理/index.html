@@ -6,19 +6,34 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>enhezzz&#39;s blog</title>
+  <title>http缓存机制及原理 | enhezzz&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="it技术博客分享、前端、后端交流，日常生活分享">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
-<meta property="og:type" content="website">
-<meta property="og:title" content="enhezzz&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="彻底弄懂HTTP缓存机制及原理   前言  Http 缓存机制作为 web 性能优化的重要手段，对于从事 Web 开发的同学们来说，应该是知识体系库中的一个基础环节，同时对于有志成为前端架构师的同学来说是必备的知识技能。但是对于很多前端同学来说，仅仅只是知道浏览器会对请求的静态文件进行缓存，但是为什么被缓存，缓存是怎样生效的，却并不是很清楚。在此，我会尝试用简单明了的文字，像大家系统的介绍HTTP">
+<meta name="keywords" content="http,缓存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="http缓存机制及原理">
+<meta property="og:url" content="http://yoursite.com/2018/05/01/http缓存机制及原理/index.html">
 <meta property="og:site_name" content="enhezzz&#39;s blog">
-<meta property="og:description" content="it技术博客分享、前端、后端交流，日常生活分享">
+<meta property="og:description" content="彻底弄懂HTTP缓存机制及原理   前言  Http 缓存机制作为 web 性能优化的重要手段，对于从事 Web 开发的同学们来说，应该是知识体系库中的一个基础环节，同时对于有志成为前端架构师的同学来说是必备的知识技能。但是对于很多前端同学来说，仅仅只是知道浏览器会对请求的静态文件进行缓存，但是为什么被缓存，缓存是怎样生效的，却并不是很清楚。在此，我会尝试用简单明了的文字，像大家系统的介绍HTTP">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/1.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/2.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/3.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/4.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/5.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/6.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/7.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/8.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/9.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/10.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/11.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/12.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/13.png">
+<meta property="og:updated_time" content="2018-05-01T06:20:33.612Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="enhezzz&#39;s blog">
-<meta name="twitter:description" content="it技术博客分享、前端、后端交流，日常生活分享">
+<meta name="twitter:title" content="http缓存机制及原理">
+<meta name="twitter:description" content="彻底弄懂HTTP缓存机制及原理   前言  Http 缓存机制作为 web 性能优化的重要手段，对于从事 Web 开发的同学们来说，应该是知识体系库中的一个基础环节，同时对于有志成为前端架构师的同学来说是必备的知识技能。但是对于很多前端同学来说，仅仅只是知道浏览器会对请求的静态文件进行缓存，但是为什么被缓存，缓存是怎样生效的，却并不是很清楚。在此，我会尝试用简单明了的文字，像大家系统的介绍HTTP">
+<meta name="twitter:image" content="http://yoursite.com/2018/05/01/http缓存机制及原理/1.png">
   
     <link rel="alternative" href="/atom.xml" title="enhezzz&#39;s blog" type="application/atom+xml">
   
@@ -162,16 +177,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-http缓存机制及原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-http缓存机制及原理" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/http缓存机制及原理/">http缓存机制及原理</a>
+    <h1 class="article-title" itemprop="name">
+      http缓存机制及原理
     </h1>
   
 
@@ -191,12 +204,75 @@
 <blockquote>
 <p>  在介绍HTTP缓存之前，作为知识铺垫，先简单介绍一下HTTP报文</p>
 </blockquote>
-<p>HTTP报文就是浏览器和服务器间通信时发送及响应的数据块。<br>浏览器向服务器请求数据，发送请求(request)报文；服务器向浏览器返回数据，返回响应(response)报文。<br>报文信息主要分为两部分<br>1.包含属性的首部(header)————————–附加信息（cookie，缓存信息等）与缓存相关的规则信息，均包含在header中<br>2.包含数据的主体部分(body)———————–HTTP请求真正想要传输的部分<br>
-        
-          <a class="article-more-a" href="/2018/05/01/http缓存机制及原理/#more">more >></a>
-        
+<p>HTTP报文就是浏览器和服务器间通信时发送及响应的数据块。<br>浏览器向服务器请求数据，发送请求(request)报文；服务器向浏览器返回数据，返回响应(response)报文。<br>报文信息主要分为两部分<br>1.包含属性的首部(header)————————–附加信息（cookie，缓存信息等）与缓存相关的规则信息，均包含在header中<br>2.包含数据的主体部分(body)———————–HTTP请求真正想要传输的部分<br><a id="more"></a></p>
+<h5 id="1-缓存规则解析"><a href="#1-缓存规则解析" class="headerlink" title="1.缓存规则解析"></a>1.缓存规则解析</h5><p>为方便大家理解，我们认为浏览器存在一个缓存数据库,用于存储缓存信息。<br>在客户端第一次请求数据时，此时缓存数据库中没有对应的缓存数据，需要请求服务器，服务器返回后，将数据存储至缓存数据库中。</p>
+<img src="/2018/05/01/http缓存机制及原理/1.png" title="This is an example image">
+<p>HTTP缓存有多种规则，根据是否需要重新向服务器发起请求来分类，我将其分为两大类(<strong>强制缓存</strong>，<strong>对比缓存</strong>)<br>在详细介绍这两种规则之前，先通过时序图的方式，让大家对这两种规则有个简单了解。</p>
+<p><strong>已存在缓存数据时，仅基于强制缓存，请求数据的流程如下</strong></p>
+<img src="/2018/05/01/http缓存机制及原理/2.png" title="This is an example image">
+<p><strong>已存在缓存数据时，仅基于对比缓存，请求数据的流程如下</strong></p>
+<img src="/2018/05/01/http缓存机制及原理/3.png" title="This is an example image">
+<p>对缓存机制不太了解的同学可能会问，基于对比缓存的流程下，不管是否使用缓存，都需要向服务器发送请求，那么还用缓存干什么？<br>这个问题，我们暂且放下，后文在详细介绍每种缓存规则的时候，会带给大家答案。</p>
+<p>我们可以看到两类缓存规则的不同，强制缓存如果生效，不需要再和服务器发生交互，而对比缓存不管是否生效，都需要与服务端发生交互。<br>两类缓存规则可以同时存在，强制缓存优先级高于对比缓存，也就是说，当执行强制缓存的规则时，如果缓存生效，直接使用缓存，不再执行对比缓存规则。</p>
+<h5 id="2-强制缓存"><a href="#2-强制缓存" class="headerlink" title="2.强制缓存"></a>2.强制缓存</h5><p>从上文我们得知，强制缓存，在缓存数据未失效的情况下，可以直接使用缓存数据，那么浏览器是如何判断缓存数据是否失效呢？</p>
+<p>我们知道，在没有缓存数据的时候，浏览器向服务器请求数据时，服务器会将数据和缓存规则一并返回，缓存规则信息包含在响应header中。<br>对于强制缓存来说，响应header中会有两个字段来标明失效规则（Expires/Cache-Control）</p>
+<p>使用chrome的开发者工具，可以很明显的看到对于强制缓存生效时，网络请求的情况<br><img src="/2018/05/01/http缓存机制及原理/4.png" title="This is an example image"></p>
+<p><strong>Expires</strong> </p>
+<p>Expires的值为服务端返回的到期时间，即下一次请求时，请求时间小于服务端返回的到期时间，直接使用缓存数据。<br>不过Expires 是HTTP 1.0的东西，现在默认浏览器均默认使用HTTP 1.1，所以它的作用基本忽略。<br>另一个问题是，到期时间是由服务端生成的，但是客户端时间可能跟服务端时间有误差，这就会导致缓存命中的误差。<br>所以HTTP 1.1 的版本，使用Cache-Control替代。</p>
+<p><strong>Cache-Control</strong></p>
+<p>Cache-Control 是最重要的规则。常见的取值有private、public、no-cache、max-age，no-store，默认为private。<br>private:             客户端可以缓存<br>public:              客户端和代理服务器都可缓存（前端的同学，可以认为public和private是一样的）<br>max-age=xxx:   缓存的内容将在 xxx 秒后失效<br>no-cache:          需要使用对比缓存来验证缓存数据（后面介绍）<br>no-store:           所有内容都不会缓存，强制缓存，对比缓存都不会触发（对于前端开发来说，缓存越多越好，so…基本上和它说886）</p>
+ <img src="/2018/05/01/http缓存机制及原理/5.png" title="This is an example image">
+<p> 图中Cache-Control仅指定了max-age，所以默认为private，缓存时间为31536000秒（365天）<br>也就是说，在365天内再次请求这条数据，都会直接获取缓存数据库中的数据，直接使用。</p>
+<h5 id="对比缓存"><a href="#对比缓存" class="headerlink" title="对比缓存"></a>对比缓存</h5><p>对比缓存，顾名思义，需要进行比较判断是否可以使用缓存。<br>浏览器第一次请求数据时，服务器会将缓存标识与数据一起返回给客户端，客户端将二者备份至缓存数据库中。<br>再次请求数据时，客户端将备份的缓存标识发送给服务器，服务器根据缓存标识进行判断，判断成功后，返回304状态码，通知客户端比较成功，可以使用缓存数据。</p>
+<p><strong>第一次访问:</strong><br> <img src="/2018/05/01/http缓存机制及原理/6.png" title="This is an example image"><br><strong>再次访问：</strong><br> <img src="/2018/05/01/http缓存机制及原理/7.png" title="This is an example image"></p>
+<p> 通过两图的对比，我们可以很清楚的发现，在对比缓存生效时，状态码为304，并且报文大小和请求时间大大减少。<br>原因是，服务端在进行标识比较后，只返回header部分，通过状态码通知客户端使用缓存，不再需要将报文主体部分返回给客户端。</p>
+<p>对于对比缓存来说，缓存标识的传递是我们着重需要理解的，它在请求header和响应header间进行传递，<br>一共分为两种标识传递，接下来，我们分开介绍。</p>
+<p><strong>Last-Modified  /  If-Modified-Since</strong><br>Last-Modified：</p>
+<p>服务器在响应请求时，告诉浏览器资源的最后修改时间。<br> <img src="/2018/05/01/http缓存机制及原理/8.png" title="This is an example image"></p>
+<p>If-Modified-Since：</p>
+<p>再次请求服务器时，通过此字段通知服务器上次请求时，服务器返回的资源最后修改时间。<br>服务器收到请求后发现有头If-Modified-Since 则与被请求资源的最后修改时间进行比对。<br>若资源的最后修改时间大于If-Modified-Since，说明资源又被改动过，则响应整片资源内容，返回状态码200；<br>若资源的最后修改时间小于或等于If-Modified-Since，说明资源无新修改，则响应HTTP 304，告知浏览器继续使用所保存的cache。<br> <img src="/2018/05/01/http缓存机制及原理/9.png" title="This is an example image"></p>
+<p> <strong>Etag  /  If-None-Match</strong>（优先级高于Last-Modified  /  If-Modified-Since）<br> Etag：</p>
+<p>服务器响应请求时，告诉浏览器当前资源在服务器的唯一标识（生成规则由服务器决定）。<br><img src="/2018/05/01/http缓存机制及原理/10.png" title="This is an example image"></p>
+<p>If-None-Match：</p>
+<p>再次请求服务器时，通过此字段通知服务器客户段缓存数据的唯一标识。<br>服务器收到请求后发现有头If-None-Match 则与被请求资源的唯一标识进行比对，<br>不同，说明资源又被改动过，则响应整片资源内容，返回状态码200；<br>相同，说明资源无新修改，则响应HTTP 304，告知浏览器继续使用所保存的cache。<br><img src="/2018/05/01/http缓存机制及原理/11.png" title="This is an example image"></p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p><strong>对于强制缓存，服务器通知浏览器一个缓存时间，在缓存时间内，下次请求，直接用缓存，不在时间内，执行比较缓存策略。</strong><br><strong>对于比较缓存，将缓存信息中的Etag和Last-Modified通过请求发送给服务器，由服务器校验，返回304状态码时，浏览器直接使用缓存。</strong></p>
+<p>浏览器第一次请求：<br><img src="/2018/05/01/http缓存机制及原理/12.png" title="This is an example image"></p>
+<p>浏览器再次请求时：<br><img src="/2018/05/01/http缓存机制及原理/13.png" title="This is an example image"></p>
+<p>原文出处：<a href="https://www.cnblogs.com/chenqf/p/6386163.html" target="_blank">这里</a>,感谢~</p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wechatPay.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -220,16 +296,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/http缓存机制及原理/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/05/01/http缓存机制及原理/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2018/05/01/websocket和轮询/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">websocket和轮询</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -249,262 +384,24 @@
 
 
 
-
   
-    <article id="post-websocket和轮询" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/websocket和轮询/">websocket和轮询</a>
-    </h1>
   
 
-        
-        <a href="/2018/05/01/websocket和轮询/" class="archive-article-date">
-  	<time datetime="2018-05-01T02:07:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="1-轮询分为短轮询和长轮询"><a href="#1-轮询分为短轮询和长轮询" class="headerlink" title="1.  轮询分为短轮询和长轮询"></a>1.  轮询分为短轮询和长轮询</h3><p>短轮询就是客户端不断给服务器端发送请求，希望能得到最新的数据，请求立即响应，这种方式的缺点就是请求中有大半是无用，浪费带宽和服务器资源。实例：适于小型应用。<br>长轮询就是客户端发出请求到服务器之后，服务器端的相应数据更新之后才返回数据给客户端，在这期间请求一直处于pending状态，直到请求超时后客户端再一次发送请求，周而复始…，。通常的做法是，在服务器的程序中加入一个死循环，在循环中监测数据的变动。缺点就是耗费资源，服务器的压力大，并发量大。</p>
-<p>它们之间的共同点就是他们都体现了Http的一个特性：被动性，即服务器端不能主动给客户端发送数据。</p>
-<p>下面的基于http的websocket协议给出了上述问题的解决方案</p>
-<h3 id="2-WebSocket"><a href="#2-WebSocket" class="headerlink" title="2.  WebSocket"></a>2.  WebSocket</h3><p>WebSocket协议是基于TCP的一种新的网络协议。它实现了浏览器与服务器<strong>全双工(full-duplex)</strong>通信——允许服务器主动发送信息给客户端。<br>
-        
-          <a class="article-more-a" href="/2018/05/01/websocket和轮询/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">websoctket</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">polling</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/websocket和轮询/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
-    <article id="post-各种排序算法的总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/各种排序算法的总结/">各种排序算法的总结</a>
-    </h1>
+  <div id="SOHUCS" sid="http缓存机制及原理" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "cytAmGYe6",
+        conf: "prod_dcb38299bd1608a1d7c3b74ecb0c9155"
+    });
+</script>
+</script>
   
 
-        
-        <a href="/2018/05/01/各种排序算法的总结/" class="archive-article-date">
-  	<time datetime="2018-05-01T00:19:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>  <strong>前言</strong>：假定在待排序的记录序列中，存在多个具有相同的关键字的记录，若经过排序，这些记录的相对次序保持不变，即在原序列中，ri==rj，且ri在rj之前，而在排序后的序列中，ri仍在rj之前，则称这种排序算法是稳定的；否则称为不稳定的。</p>
-</blockquote>
-<h5 id="下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）："><a href="#下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）：" class="headerlink" title="下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）："></a>下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）：</h5><blockquote>
-<p>  1.直接插入排序</p>
-</blockquote>
-<p>总体思路：位于表中后面的元素依次与表中前面的元素比较，若比它大，则还需继续和更前面的元素比较，直至遇到一个比它小的元素或者比较到第一个元素(哨兵)了。         </p>
-<p>①先将第一个元素视为有序，第二个元素与第一个元素比较，若比第一个元素小，则插入到第一个元素之前。第三个元素依次与第二个元素、第一个元素比较（前三 个元素有序）；第四个元素依次与第三个、第二个、第一个元素比较，插入到合适位置以形成一个有序表（即此时前四个元素有序）因此，直接插入排序算法是逐步 地形成一个有序序列的。也即在表的前头形成一个局部有序序列。</p>
-<p>②不论初始序列如何，总需要 <strong>N－1</strong> 趟排序，第一趟是第二个元素与第一个元素比，第二趟是第三个元素与前二个元素比，第三趟是第四个元素与前三个元素比……<br>
-        
-          <a class="article-more-a" href="/2018/05/01/各种排序算法的总结/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">algorithm</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/各种排序算法的总结/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-gitPage" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/28/gitPage/">hexo搭建gitPage个人博客以及自定义域名解析</a>
-    </h1>
   
 
-        
-        <a href="/2018/04/28/gitPage/" class="archive-article-date">
-  	<time datetime="2018-04-28T06:50:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p><strong>创建<yourname>.github.io仓库</yourname></strong></p>
-<p>打开你的github，创建一个yourName.github.io仓库，yourName是你的注册名，比如我的注册名是aa，那么这个新建的仓库名就是aa.github.io</p>
-<img src="/2018/04/28/gitPage/repo.png" title="This is an example image">
-        
-          <a class="article-more-a" href="/2018/04/28/gitPage/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">github</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/28/gitPage/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -527,8 +424,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

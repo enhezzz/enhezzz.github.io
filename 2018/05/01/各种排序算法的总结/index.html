@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>enhezzz&#39;s blog</title>
+  <title>各种排序算法的总结 | enhezzz&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="it技术博客分享、前端、后端交流，日常生活分享">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
-<meta property="og:type" content="website">
-<meta property="og:title" content="enhezzz&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="前言：假定在待排序的记录序列中，存在多个具有相同的关键字的记录，若经过排序，这些记录的相对次序保持不变，即在原序列中，ri==rj，且ri在rj之前，而在排序后的序列中，ri仍在rj之前，则称这种排序算法是稳定的；否则称为不稳定的。  下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）：   1.直接插入排序  总体思路：位于表中后面的元素依次与表中前面的元素比较，若比它大">
+<meta name="keywords" content="algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="各种排序算法的总结">
+<meta property="og:url" content="http://yoursite.com/2018/05/01/各种排序算法的总结/index.html">
 <meta property="og:site_name" content="enhezzz&#39;s blog">
-<meta property="og:description" content="it技术博客分享、前端、后端交流，日常生活分享">
+<meta property="og:description" content="前言：假定在待排序的记录序列中，存在多个具有相同的关键字的记录，若经过排序，这些记录的相对次序保持不变，即在原序列中，ri==rj，且ri在rj之前，而在排序后的序列中，ri仍在rj之前，则称这种排序算法是稳定的；否则称为不稳定的。  下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）：   1.直接插入排序  总体思路：位于表中后面的元素依次与表中前面的元素比较，若比它大">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-01T02:04:00.806Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="enhezzz&#39;s blog">
-<meta name="twitter:description" content="it技术博客分享、前端、后端交流，日常生活分享">
+<meta name="twitter:title" content="各种排序算法的总结">
+<meta name="twitter:description" content="前言：假定在待排序的记录序列中，存在多个具有相同的关键字的记录，若经过排序，这些记录的相对次序保持不变，即在原序列中，ri==rj，且ri在rj之前，而在排序后的序列中，ri仍在rj之前，则称这种排序算法是稳定的；否则称为不稳定的。  下面介绍的是对于我用到的各种排序算法的总结，并赋予相应的示例（js）：   1.直接插入排序  总体思路：位于表中后面的元素依次与表中前面的元素比较，若比它大">
   
     <link rel="alternative" href="/atom.xml" title="enhezzz&#39;s blog" type="application/atom+xml">
   
@@ -162,190 +163,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-http缓存机制及原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-各种排序算法的总结" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/http缓存机制及原理/">http缓存机制及原理</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/01/http缓存机制及原理/" class="archive-article-date">
-  	<time datetime="2018-05-01T03:20:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="彻底弄懂HTTP缓存机制及原理"><a href="#彻底弄懂HTTP缓存机制及原理" class="headerlink" title="彻底弄懂HTTP缓存机制及原理"></a>彻底弄懂HTTP缓存机制及原理</h3><blockquote>
-<p>  前言</p>
-</blockquote>
-<p>Http 缓存机制作为 web 性能优化的重要手段，对于从事 Web 开发的同学们来说，应该是知识体系库中的一个基础环节，同时对于有志成为前端架构师的同学来说是必备的知识技能。<br>但是对于很多前端同学来说，仅仅只是知道浏览器会对请求的静态文件进行缓存，但是为什么被缓存，缓存是怎样生效的，却并不是很清楚。<br>在此，我会尝试用简单明了的文字，像大家系统的介绍HTTP缓存机制，期望对各位正确的理解前端缓存有所帮助。</p>
-<blockquote>
-<p>  在介绍HTTP缓存之前，作为知识铺垫，先简单介绍一下HTTP报文</p>
-</blockquote>
-<p>HTTP报文就是浏览器和服务器间通信时发送及响应的数据块。<br>浏览器向服务器请求数据，发送请求(request)报文；服务器向浏览器返回数据，返回响应(response)报文。<br>报文信息主要分为两部分<br>1.包含属性的首部(header)————————–附加信息（cookie，缓存信息等）与缓存相关的规则信息，均包含在header中<br>2.包含数据的主体部分(body)———————–HTTP请求真正想要传输的部分<br>
-        
-          <a class="article-more-a" href="/2018/05/01/http缓存机制及原理/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/http缓存机制及原理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-websocket和轮询" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/websocket和轮询/">websocket和轮询</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/01/websocket和轮询/" class="archive-article-date">
-  	<time datetime="2018-05-01T02:07:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="1-轮询分为短轮询和长轮询"><a href="#1-轮询分为短轮询和长轮询" class="headerlink" title="1.  轮询分为短轮询和长轮询"></a>1.  轮询分为短轮询和长轮询</h3><p>短轮询就是客户端不断给服务器端发送请求，希望能得到最新的数据，请求立即响应，这种方式的缺点就是请求中有大半是无用，浪费带宽和服务器资源。实例：适于小型应用。<br>长轮询就是客户端发出请求到服务器之后，服务器端的相应数据更新之后才返回数据给客户端，在这期间请求一直处于pending状态，直到请求超时后客户端再一次发送请求，周而复始…，。通常的做法是，在服务器的程序中加入一个死循环，在循环中监测数据的变动。缺点就是耗费资源，服务器的压力大，并发量大。</p>
-<p>它们之间的共同点就是他们都体现了Http的一个特性：被动性，即服务器端不能主动给客户端发送数据。</p>
-<p>下面的基于http的websocket协议给出了上述问题的解决方案</p>
-<h3 id="2-WebSocket"><a href="#2-WebSocket" class="headerlink" title="2.  WebSocket"></a>2.  WebSocket</h3><p>WebSocket协议是基于TCP的一种新的网络协议。它实现了浏览器与服务器<strong>全双工(full-duplex)</strong>通信——允许服务器主动发送信息给客户端。<br>
-        
-          <a class="article-more-a" href="/2018/05/01/websocket和轮询/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">websoctket</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">polling</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/websocket和轮询/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-各种排序算法的总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/各种排序算法的总结/">各种排序算法的总结</a>
+    <h1 class="article-title" itemprop="name">
+      各种排序算法的总结
     </h1>
   
 
@@ -366,12 +191,192 @@
 </blockquote>
 <p>总体思路：位于表中后面的元素依次与表中前面的元素比较，若比它大，则还需继续和更前面的元素比较，直至遇到一个比它小的元素或者比较到第一个元素(哨兵)了。         </p>
 <p>①先将第一个元素视为有序，第二个元素与第一个元素比较，若比第一个元素小，则插入到第一个元素之前。第三个元素依次与第二个元素、第一个元素比较（前三 个元素有序）；第四个元素依次与第三个、第二个、第一个元素比较，插入到合适位置以形成一个有序表（即此时前四个元素有序）因此，直接插入排序算法是逐步 地形成一个有序序列的。也即在表的前头形成一个局部有序序列。</p>
-<p>②不论初始序列如何，总需要 <strong>N－1</strong> 趟排序，第一趟是第二个元素与第一个元素比，第二趟是第三个元素与前二个元素比，第三趟是第四个元素与前三个元素比……<br>
-        
-          <a class="article-more-a" href="/2018/05/01/各种排序算法的总结/#more">more >></a>
-        
+<p>②不论初始序列如何，总需要 <strong>N－1</strong> 趟排序，第一趟是第二个元素与第一个元素比，第二趟是第三个元素与前二个元素比，第三趟是第四个元素与前三个元素比……<br><a id="more"></a><br>③当初始序列有序时，第一趟只需比较一次，第二趟只需比较一次，第三趟也只需比较一次……总共只需比较 N－1 次即可完成排序，此时的时间复杂度为<strong>O(n)</strong>。当初始序列逆序时，第一趟比较一次，第二趟比较二次，……第 N－1 趟比较 N－1 次。总共比较 n(n-1)/2 次,时间复杂度为<strong>O(n^2)</strong>。</p>
+<p>④直接插入排列是基于明确的相邻位置的两个元素的比较，因此该算法是<strong>稳定</strong>的。排序过程的比较次数与待排序列的初始状态有关。每进行一趟排列并不能唯一地确定下一个元素的最终位置。</p>
+<p>示例：</p>
+<pre><code>function insertSort(arr) {
+let arrLength = arr.length;
+if (arrLength &lt;= 1)
+    return arr;
+for (let i = 1; i &lt; arrLength; i++) {
+    let j = i - 1;
+    let temp = arr[i];
+    while (arr[j]&gt;temp&amp;&amp;j&gt;=0){
+        arr[j+1] = arr[j];
+        j--;
+    }
+    arr[j+1] = temp;
+}
+return arr
+}
+</code></pre><blockquote>
+<p>  2.冒泡排序</p>
+</blockquote>
+<p>冒泡排序的思想是：相邻两个元素的比较，将小的调到前头。因此，进行完第一趟排序，就会唯一确定出最大元素，进行完第二趟排序，就会唯一确定出次最大元素……</p>
+<p>①由于它是基于相邻两个元素之间的比较，因此算法是<strong>稳定</strong>的。</p>
+<p>②当元素初始序列有序时，在一趟冒泡过程中只需进行 N－1 次比较，没有进行交换操作即可完成排序。</p>
+<p>③当初始序列逆序时，第一趟比较 N－1 次选出最大元素，第二趟比较 N－2 次选出 次最大元素……冒泡法的平均时间复杂度为 <strong>O（n^2）</strong>。</p>
+<p>示例：</p>
+<pre><code>function bubbleSort(arr){
+let arrLength = arr.length;
+if(arr.arrLength &lt;= 1)
+return arr;
+for(let i = 0;i &lt; arrLength-1;i++)
+    for(let j = 0;j &lt; arrLength-1-i;j++){
+       if(arr[j]&gt;arr[j+1])
+       swap(arr,j,j+1);
+    }
+return arr;
+}
+function swap(arr,a,b){
+let temp = arr[a];
+arr[a] = arr[b];
+arr[b] = temp;
+}
+</code></pre><blockquote>
+<p>  3.简单选择排序</p>
+</blockquote>
+<p>基本思路：第一趟从待排序列中选取最小的元素与放在第一个位置的元素交换，第二趟选择次最小的元素与第二个位置的元素交换……这样，每趟中元素的比较次数与待排序列的初始状态无关。同时，每进行一趟排序只进行一次交换。</p>
+<p>①比较次数及排序趟数与序列的初始状态无关。</p>
+<p>②简单选择排序是<strong>不稳定</strong>的，因为它进行交换时会造成元素的位置跳跃式地变化。</p>
+<pre><code>function selectionSort(arr) {
+let arrLength = arr.length;
+if (arrLength &lt;= 1)
+    return arr;
+
+for (let i = 0; i &lt; arrLength; i++) {
+    let min = arr[i], index = i;
+    for (let j = i + 1; j &lt; arrLength; j++) {
+        if (arr[j] &lt; min) {
+            min = arr[j];
+            index = j;
+        }
+    }
+    if (index != i) {
+
+        let temp = arr[i];
+        arr[i] = min;
+        arr[index] = temp;
+    }
+}
+return arr;
+}
+</code></pre><blockquote>
+<p>  4.归并排序</p>
+</blockquote>
+<p>排序过程如下（二路归并）：</p>
+<p>①第一趟，将待排序列中的第一个元素与第二个元素归结为一组，将第三个元素与第四个元素归结为一组……将第 n－1 个元素与第 n 个元素归结为一组，然后将每一组里面的元素有序排列。</p>
+<p>②第二趟，将待排序列中的第一、二、三、四个元素归结为一组，第五、六、七、八个元素归结为一组……同样，将每一组里面的元素有序排序。<br>……  ……  直至所有的元素有序排列。</p>
+<p>③归并排序的时间复杂度为 <strong>O（logn）</strong>，空间复杂度为 <strong>O（n）</strong>。但是它是<strong>稳定</strong>的排序算法，因为两两的归并，它们之间是基于相邻元素之间的比较</p>
+<p>示例：</p>
+<pre><code>function mergeSort(arr){
+let arrLength = arr.length;
+if(arrLength === 1)
+return arr;
+let midIndex = Math.floor(arrLength/2);
+console.log(midIndex)
+let leftArr = arr.slice(0,midIndex),rightArr = arr.slice(midIndex);
+let result = [];
+let a = mergeSort(leftArr),b = mergeSort(rightArr);
+while(a.length&gt;0&amp;&amp;b.length&gt;0){
+    if(a[0]&gt;b[0]){
+        result.push(b.shift());
+
+
+    }else{
+        result.push(a.shift());
+        ;
+    }
+}
+
+
+return result.concat(a).concat(b);
+</code></pre><p>}</p>
+<blockquote>
+<p>  5.快速排序算法</p>
+</blockquote>
+<p>基本思路：快排中设置了三个指针，low、high、pivot。low 指向第一个元素，high 指向最后一个元素，pivot 指向枢轴元素。首先，从high 指针所指的元素开始，若它比枢轴元素要小，则与枢轴元素交换，否则 high－－ 继续与枢轴元素比较；若 high 所指元素与枢轴元素交换后，则接着将 low 所指元素与枢轴元素比较，若它比枢轴元素小则 low＋＋，否则将 low 所指元素与枢轴元素交换。</p>
+<p>①快排的一个关键因素是选好枢轴，它进行一趟排序后，枢轴元素在表中的位置被唯一确定下来，且枢轴元素将待排序列分成两个子序列，左边的序列中的元素都比 枢轴元素小，右边的序列都比枢轴元素大。然后，分别在左右序列中选择枢轴元素再开始排序，因而，快排中包含了递归。</p>
+<p>②当待排的元素初始有序时，快排的性能大大地下降。因为此时枢轴划分的子序列严重地不对称（一般选择第一个元素作为枢轴记录），快排退化为冒泡排序。</p>
+<p>③快排是不稳定的，因为在排序过程中，设置了两个指针 low 和 high 。首先从high 开始自减，寻找第一个比枢轴小的元素，并将之与枢轴记录进行交换，这种跳跃式的交换可能会造成元素的相对位置的改变。</p>
+<p>④对于快排而言，元素的初始序列与排序的趟数和比较次数是有关的。但是，平均情况下，对于内部排序而言，快排的性能是最好。平均时间复杂度为 <strong>O（n^2)</strong>，空间复杂度为<strong>O（logn）</strong>。快速排序是一个<strong>不稳定</strong>的排序算法，不稳定发生在中枢元素和low或high指向的元素交换的时刻。</p>
+<p>示例：</p>
+<pre><code>function quickSort(arr, start, end) {
+var length = end - start + 1;
+if (length &lt;= 1)
+    return arr;
+var pivot = arr[start];
+let pivotIindex;
+var low = start;
+var high = end;
+while (low &lt; high) {
+    while (low &lt; high) {
+        if (arr[low] &lt;= pivot)
+            low++;
+        else
+            break;
+
+    }
+    while (low &lt; high) {
+        if (arr[high] &gt;= pivot)
+            high--;
+        else
+            break;
+    }
+    swap(arr, low, high);
+}
+if (arr[low] &lt; pivot) {
+    swap(arr, low, start);
+    pivotIindex = low;
+}
+else {
+    swap(arr, low - 1, start);
+    pivotIindex = low - 1;
+}
+quickSort(arr, start, pivotIindex - 1);
+quickSort(arr, pivotIindex + 1, end)
+return arr;
+
+}
+function swap(arr, a, b) {
+var temp = arr[a];
+arr[a] = arr[b];
+arr[b] = temp;
+}
+</code></pre>
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wechatPay.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -391,16 +396,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/01/各种排序算法的总结/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/05/01/各种排序算法的总结/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/05/01/websocket和轮询/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          websocket和轮询
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/28/gitPage/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">hexo搭建gitPage个人博客以及自定义域名解析</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -420,91 +493,24 @@
 
 
 
-
   
-    <article id="post-gitPage" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/28/gitPage/">hexo搭建gitPage个人博客以及自定义域名解析</a>
-    </h1>
   
 
-        
-        <a href="/2018/04/28/gitPage/" class="archive-article-date">
-  	<time datetime="2018-04-28T06:50:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p><strong>创建<yourname>.github.io仓库</yourname></strong></p>
-<p>打开你的github，创建一个yourName.github.io仓库，yourName是你的注册名，比如我的注册名是aa，那么这个新建的仓库名就是aa.github.io</p>
-<img src="/2018/04/28/gitPage/repo.png" title="This is an example image">
-        
-          <a class="article-more-a" href="/2018/04/28/gitPage/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">github</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/28/gitPage/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+  
+  <div id="SOHUCS" sid="各种排序算法的总结" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "cytAmGYe6",
+        conf: "prod_dcb38299bd1608a1d7c3b74ecb0c9155"
+    });
+</script>
+</script>
+  
 
   
+
   
 
 
@@ -527,8 +533,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
