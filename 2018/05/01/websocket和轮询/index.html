@@ -9,7 +9,7 @@
   <title>websocket和轮询 | enhezzz&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="1.  轮询分为短轮询和长轮询短轮询就是客户端不断给服务器端发送请求，希望能得到最新的数据，请求立即响应，这种方式的缺点就是请求中有大半是无用，浪费带宽和服务器资源。实例：适于小型应用。长轮询就是客户端发出请求到服务器之后，服务器端的相应数据更新之后才返回数据给客户端，在这期间请求一直处于pending状态，直到请求超时后客户端再一次发送请求，周而复始…，。通常的做法是，在服务器的程序中加入一个死">
-<meta name="keywords" content="http,websoctket,polling">
+<meta name="keywords" content="websoctket,polling,http">
 <meta property="og:type" content="article">
 <meta property="og:title" content="websocket和轮询">
 <meta property="og:url" content="http://yoursite.com/2018/05/01/websocket和轮询/index.html">
@@ -257,15 +257,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">websoctket</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">polling</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
         		</li>
       		
 		</ul>
@@ -482,6 +482,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">websoctket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">polling</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
@@ -490,19 +502,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">websoctket</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">polling</a>
               </li>
              
               <li class="article-tag-list-item">
