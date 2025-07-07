@@ -12,6 +12,56 @@
 8. 组合总数![alt text](compositionCount.png)
 9. 字符串数字相乘的积，不能转成数字相乘
 
+```javascript
+function multiply(num1, num2) {
+  // 处理乘数为0的情况
+  if (num1 === "0" || num2 === "0") {
+    return "0";
+  }
+
+  const m = num1.length;
+  const n = num2.length;
+  // 创建数组存储中间结果，长度最多为 m+n
+  const res = new Array(m + n).fill(0);
+
+  // 从低位到高位逐位相乘
+  for (let i = m - 1; i >= 0; i--) {
+    for (let j = n - 1; j >= 0; j--) {
+      // 计算当前位的乘积
+      const mul = (num1.charCodeAt(i) - 48) * (num2.charCodeAt(j) - 48);
+      // 将乘积加到对应位置
+      res[i + j + 1] += mul;
+    }
+  }
+
+  // 处理进位（从低位到高位）
+  let carry = 0;
+  for (let k = res.length - 1; k >= 0; k--) {
+    const total = res[k] + carry;
+    carry = Math.floor(total / 10);
+    res[k] = total % 10;
+  }
+
+  // 如果最高位有进位，添加到结果数组前部
+  if (carry) {
+    res.unshift(carry);
+  }
+
+  // 去除前导零
+  let start = 0;
+  while (start < res.length && res[start] === 0) {
+    start++;
+  }
+  // 将结果数组转换为字符串
+  return start === res.length ? "0" : res.slice(start).join("");
+}
+
+// 测试示例
+console.log(multiply("2", "3")); // 输出: "6"
+console.log(multiply("123", "456")); // 输出: "56088"
+console.log(multiply("0", "123")); // 输出: "0"
+```
+
 ### 网络
 
 #### keepalive 模式下为什么需要传 contentLength 字段?
@@ -533,8 +583,70 @@ module.exports = {
 
 #### 是怎么体现构建时和运行时效率提升的？升级为 webpack@5、node@18？
 
+一、启用持久化缓存（核心优化）
+
+- 原理：Webpack 5 内置文件系统缓存，避免重复编译未修改的模块。
+
+```javascript
+module.exports = {
+  cache: {
+    type: "filesystem", // 开启持久化缓存
+    buildDependencies: {
+      config: [__filename], // 配置文件变更时缓存失效
+    },
+  },
+};
+```
+
+- 效果：二次构建时间减少 90%（如从 60s 降至 10s）
+
+二、多进程/多线程处理
+
+- thread-loader：将耗时的 Loader（如 Babel、Sass）分配到 Worker 线程。
+
+```javascript
+module: {
+  rules: [
+    {
+      test: /\.js$/,
+      use: ['thread-loader', 'babel-loader?cacheDirectory'], // 启用Babel缓存
+    },
+  ],
+}
+```
+
+- 效果：CPU 密集型任务速度提升 30%~50%。
+
+三、代码分割与依赖优化
+
+1. DLLPlugin 预构建第三方库：将 react、vue 等不常变动的库预打包为 DLL 文件，减少重复构建
+2. externals 排除大型库
+
+四、Loader 与 Plugin 优化
+
+- 用 esbuild-loader 替代 babel-loader（JS/TS 编译速度提升 10 倍
+
+```javascript
+rules: [
+  {
+    test: /\.js$/,
+    loader: "esbuild-loader",
+    options: { loader: "jsx", target: "es2015" },
+  },
+];
+```
+
+- 升级/替换低效 Plugin：如 terser-webpack-plugin 升级后构建速度提升 50%
+
+五、分析与量化工具
+
+1. speed-measure-webpack-plugin：测量各 Loader/Plugin 耗时，定位瓶颈。
+2. webpack-bundle-analyzer：分析产物体积，优化依赖拆分
+
 #### 比较自研微前端和市面上的优劣势
 
 #### shadow 实现的 css 沙箱在设置子应用的 body 是什么效果？
 
 #### 大数据量处理主要是处理哪些，momo 只是常规用法
+
+- 逻辑状态与渲染状态分离：不影响 UI 的数据（如滚动位置、临时状态）移出 state，改用 useRef 存储
