@@ -533,6 +533,8 @@ x.value++; // 响应式修改
 
 ## 编程猫
 
+### 一面
+
 1. webpack 的原理
 2. 移动端如何适配的
 3. 活动页每次都要单独开发吗？
@@ -550,6 +552,11 @@ x.value++; // 响应式修改
 10. 动态虚拟滚动怎么实现
 11. ai 工具有用过吗？cursor?
 12. 原型链
+
+### 二面
+
+1. 弹幕量过大怎么处理
+2. 自己的弹幕在大量弹幕的时候怎么在比较前面显示的
 
 ## shopee
 
@@ -593,8 +600,87 @@ console.log(child instanceof Child); // true
 4. 微前端的实现，css 隔离实现方案
 5. 状态方案了解过哪些
 
+### 二面
+
+1. 给你一个整数数组 nums 你需要找出一个 连续子数组，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。
+   请你找出符合题意的 最短 子数组，并输出它的长度。
+
+```
+输入:nums = [2,6,4,8, 10,9,15]输出:5解释:你只需要对[6，4，8，10，9]进行升序排序，那么整个表都会变为升序排序。
+```
+
+```javascript
+function findSubArr(nums) {
+  let startIndex = 0;
+  let endIndex = nums.length - 1;
+  const middleArrLength = validateArr(
+    nums,
+    startIndex,
+    endIndex,
+
+    nums[startIndex],
+    nums[endIndex],
+    nums.length
+  );
+  return middleArrLength;
+}
+
+function validateArr(nums, startIndex, endIndex, startEle, endEle, minLength) {
+  const middleArr = nums.slice(startIndex + 1, endIndex);
+  const middleArrCopy = [...middleArr];
+  const sortedMiddle = middleArrCopy.sort((a, b) => a - b);
+  const left = sortedMiddle[0];
+  const right = sortedMiddle[sortedMiddle.length - 1];
+  if (left >= startEle) {
+    startIndex++;
+  }
+  if (endEle >= right) {
+    endIndex--;
+  }
+  if (left < startEle && right > endEle) {
+    console.log(middleArr);
+    return minLength;
+  }
+  return validateArr(
+    nums,
+    startIndex,
+    endIndex,
+    nums[startIndex],
+    nums[endIndex],
+    endIndex - startIndex + 1
+  );
+}
+console.log(findSubArr([2, 6, 4, 8, 10, 9, 15]));
+```
+
 ## 文远知行
 
 1. 多层嵌套表单渲染如何优化
 2. immerjs 听说过嘛
 3. 音频 rtc
+4. 离屏渲染
+
+## 百田
+
+1. with 和 iife 有啥区别
+2. 不是在所有应用中都需用模块联邦共享要如何处理
+3. 怎么就能判断升级 ui 后导致的访问量提升，排除其他因素的干扰
+4. 抓包软件用过哪些
+5. 怎么做真机调试，除了 vconsole, chrome://inspect?
+6. monorepo、pnpm
+7. 单 feature 测试怎么实现，test.a.com-sds8d34.a.com, 环境多治理泳道?
+8. 以下 effect 会在依赖改变的时候调用吗？
+
+```javascript
+watchEffect(async () => {
+  await api();
+  console.log(num.value);
+});
+
+num.value++;
+```
+
+9. vue 里面为什么要用 WeakMap
+10. requestAnimationFrame、idle 的执行顺序
+11. SDK.report 的 script 异常的时候如何处理，如何在 sdk 层面做处理,而不是 try catch，因为这样每次都要 trycatch
+12. 为什么没用 cors 而用 node 转发
