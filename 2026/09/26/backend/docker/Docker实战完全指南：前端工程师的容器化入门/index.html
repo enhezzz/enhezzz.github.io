@@ -1,0 +1,1091 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Docker 实战完全指南：前端工程师的容器化入门"><meta name="keywords" content="Docker,容器化,运维部署,CI/CD,Nginx"><meta name="author" content="2light"><meta name="copyright" content="2light"><title>Docker 实战完全指南：前端工程师的容器化入门 | 2light Blog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"V1UE0WUPR6","apiKey":"5e389abe6aee51e81779d869389a8cda","indexName":"dev_blog","hits":{"per_page":10},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '8.1.1'
+} </script><meta name="generator" content="Hexo 8.1.1"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Docker"><span class="toc-number">1.</span> <span class="toc-text">一、为什么需要 Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%B8%89%E4%B8%AA%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 三个典型场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%B9%E5%99%A8%E5%92%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 容器和虚拟机的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Docker-%E5%9C%A8%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E9%87%8C%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 Docker 在前端工作流里的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 核心概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E9%95%9C%E5%83%8F%E5%88%86%E5%B1%82%EF%BC%9A%E7%90%86%E8%A7%A3%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 镜像分层：理解构建缓存的基础</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-number">2.</span> <span class="toc-text">二、安装与快速上手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%9B%BD%E5%86%85%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 国内环境配置镜像加速</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%B8%89%E5%8D%81%E7%A7%92%E8%B7%91%E8%B5%B7%E6%9D%A5"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 三十秒跑起来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E8%A6%81%E4%B8%8D%E8%A6%81%E7%94%A8-Docker"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 本地开发要不要用 Docker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">三、常用命令详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%95%9C%E5%83%8F%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 镜像操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AE%B9%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 容器生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%BF%9B%E5%AE%B9%E5%99%A8%E8%B0%83%E8%AF%95"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 进容器调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 清理磁盘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%94%A8-Dockerfile-%E6%89%93%E5%8C%85%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE"><span class="toc-number">4.</span> <span class="toc-text">四、用 Dockerfile 打包前端项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%85%88%E7%9C%8B%E4%B8%80%E4%B8%AA%E8%83%BD%E8%B7%91%E4%BD%86%E5%BE%88%E7%B3%9F%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 先看一个能跑但很糟的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 常用指令速查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%A4%9A%E9%98%B6%E6%AE%B5%E6%9E%84%E5%BB%BA%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84%E6%A0%87%E5%87%86%E5%86%99%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 多阶段构建：前端容器化的标准写法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%85%88-COPY-package-json"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 构建缓存：为什么要先 COPY package.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-dockerignore%EF%BC%9A%E5%88%AB%E6%8A%8A-node-modules-%E6%89%93%E8%BF%9B%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 .dockerignore：别把 node_modules 打进上下文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-Nginx-%E9%85%8D%E7%BD%AE%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%B9%E5%99%A8%E7%BB%95%E4%B8%8D%E5%BC%80%E7%9A%84%E4%B8%89%E4%BB%B6%E4%BA%8B"><span class="toc-number">4.6.</span> <span class="toc-text">4.6 Nginx 配置：前端容器绕不开的三件事</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%9A%E4%B8%80%E6%AC%A1%E6%9E%84%E5%BB%BA%EF%BC%8C%E5%A4%9A%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="toc-number">4.7.</span> <span class="toc-text">4.7 环境变量：一次构建，多环境部署</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%94%A8-Compose-%E7%BC%96%E6%8E%92%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-number">5.</span> <span class="toc-text">五、用 Compose 编排本地开发环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Compose"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 为什么需要 Compose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 一份完整的开发环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%B8%B8%E7%94%A8-Compose-%E5%91%BD%E4%BB%A4"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 常用 Compose 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-depends-on-%E7%9A%84%E9%99%B7%E9%98%B1%EF%BC%9A%E5%90%AF%E5%8A%A8%E4%BA%86%E4%B8%8D%E7%AD%89%E4%BA%8E%E8%83%BD%E7%94%A8%E4%BA%86"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 depends_on 的陷阱：启动了不等于能用了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%8C%82%E8%BD%BD%E6%BA%90%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 开发模式：挂载源码实现热更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-number">6.</span> <span class="toc-text">六、网络与数据卷</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 网络模式与服务发现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E6%95%B0%E6%8D%AE%E5%8D%B7%EF%BC%9A%E5%AE%B9%E5%99%A8%E5%88%A0%E4%BA%86%E6%95%B0%E6%8D%AE%E8%BF%98%E5%9C%A8"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 数据卷：容器删了数据还在</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E4%BC%81%E4%B8%9A%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%AE%9E%E8%B7%B5"><span class="toc-number">7.</span> <span class="toc-text">七、企业开发中的实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E4%B8%8E%E6%A0%87%E7%AD%BE%E8%A7%84%E8%8C%83"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 镜像仓库与标签规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-CI-CD-%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="toc-number">7.2.</span> <span class="toc-text">7.2 CI&#x2F;CD 流水线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E5%A4%9A%E6%9E%B6%E6%9E%84%E9%95%9C%E5%83%8F%EF%BC%9AM-%E7%B3%BB%E5%88%97-Mac-%E7%9A%84%E7%BB%8F%E5%85%B8%E5%9D%91"><span class="toc-number">7.3.</span> <span class="toc-text">7.3 多架构镜像：M 系列 Mac 的经典坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA"><span class="toc-number">7.4.</span> <span class="toc-text">7.4 安全加固</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E6%97%A5%E5%BF%97"><span class="toc-number">7.5.</span> <span class="toc-text">7.5 资源限制与日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-6-%E4%BB%8E-Docker-%E5%88%B0-Kubernetes"><span class="toc-number">7.6.</span> <span class="toc-text">7.6 从 Docker 到 Kubernetes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="toc-number">8.</span> <span class="toc-text">八、常见问题排查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E5%B0%B1%E9%80%80%E5%87%BA"><span class="toc-number">8.1.</span> <span class="toc-text">8.1 容器启动就退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E6%80%BB%E6%98%AF%E5%A4%B1%E6%95%88"><span class="toc-number">8.2.</span> <span class="toc-text">8.2 构建缓存总是失效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E7%AB%AF%E5%8F%A3%E5%86%B2%E7%AA%81"><span class="toc-number">8.3.</span> <span class="toc-text">8.3 端口冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-%E5%AE%B9%E5%99%A8%E9%87%8C%E8%BF%9E%E4%B8%8D%E4%B8%8A%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">8.4.</span> <span class="toc-text">8.4 容器里连不上数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2-404"><span class="toc-number">8.5.</span> <span class="toc-text">8.5 刷新页面 404</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-6-%E7%A3%81%E7%9B%98%E8%A2%AB%E5%90%83%E5%85%89"><span class="toc-number">8.6.</span> <span class="toc-text">8.6 磁盘被吃光</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-7-%E5%AE%B9%E5%99%A8%E5%86%85%E6%97%B6%E9%97%B4%E4%B8%8D%E5%AF%B9"><span class="toc-number">8.7.</span> <span class="toc-text">8.7 容器内时间不对</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-8-%E5%85%B6%E4%BB%96%E9%AB%98%E9%A2%91%E9%97%AE%E9%A2%98%E9%80%9F%E6%9F%A5"><span class="toc-number">8.8.</span> <span class="toc-text">8.8 其他高频问题速查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E4%B8%8A%E7%94%9F%E4%BA%A7%E5%89%8D%E7%9A%84%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">9.</span> <span class="toc-text">九、上生产前的检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-number">10.</span> <span class="toc-text">十、小结</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars.githubusercontent.com/u/29703980?v=4"></div><div class="author-info__name text-center">2light</div><div class="author-info__description text-center"></div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/enhezzz">关注我</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">20</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">58</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">9</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">2light Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Posts</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title">Docker 实战完全指南：前端工程师的容器化入门</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2026-09-26<span class="post-meta__separator">|</span><i class="fa fa-calendar-check-o" aria-hidden="true"></i> 更新于 2026-09-17</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Backend/">Backend</a><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">12.7k</span><span class="post-meta__separator">|</span><span>阅读时长: 50 分钟</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>前端工程师第一次被要求「把项目容器化」的时候，多半会有一种错位感：我写的是浏览器里跑的代码，为什么要关心 Linux 镜像和端口映射？直到遇上这几件事——本地 <code>npm run build</code> 好好的，CI 上构建失败，因为同事的 Node 是 22 而流水线是 18；联调要装 MySQL 和 Redis，换台电脑重来一遍；测试环境刷新页面 404 而生产正常，因为两台机器的 Nginx 配置不一样。</p>
+<p>Docker 解决的正是这一类问题。它不是「更轻的虚拟机」，而是把<strong>应用连同它的整个运行环境打包成一个可分发的产物</strong>：代码、依赖、Node 版本、Nginx 配置、系统库全在镜像里，谁拉下来跑都一样。</p>
+<p>本文按前端工程师真实会遇到的顺序推进：使用背景与核心概念、安装与快速上手、常用命令详解、用 Dockerfile 打包前端项目、用 Compose 编排本地全套环境、网络与数据卷、企业开发中的镜像仓库与 CI&#x2F;CD 实践、常见问题排查。所有内容基于 <strong>Docker Engine 29</strong> 与 <strong>Docker Compose v2</strong>。</p>
+<span id="more"></span>
+
+<h2 id="一、为什么需要-Docker"><a href="#一、为什么需要-Docker" class="headerlink" title="一、为什么需要 Docker"></a>一、为什么需要 Docker</h2><h3 id="1-1-三个典型场景"><a href="#1-1-三个典型场景" class="headerlink" title="1.1 三个典型场景"></a>1.1 三个典型场景</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>没有 Docker</th>
+<th>有了 Docker</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>「我这能跑」</strong></td>
+<td>各人 Node &#x2F; pnpm 版本不同，原生模块编译结果不一致，问题无法复现</td>
+<td>镜像锁死基础环境，本地、CI、生产跑的是同一份文件系统</td>
+</tr>
+<tr>
+<td><strong>联调要一堆中间件</strong></td>
+<td>手装 MySQL、Redis、MinIO，配置散落各处，卸载还不干净</td>
+<td>一份 <code>compose.yaml</code> 全部拉起，<code>down -v</code> 全部清干净</td>
+</tr>
+<tr>
+<td><strong>部署全是手工活</strong></td>
+<td>服务器上装 Node、装 Nginx、传 dist、改 conf，每次发布重复一遍</td>
+<td>构建成镜像推到仓库，服务器只要 <code>pull</code> 再重启，配置跟着镜像走</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-容器和虚拟机的区别"><a href="#1-2-容器和虚拟机的区别" class="headerlink" title="1.2 容器和虚拟机的区别"></a>1.2 容器和虚拟机的区别</h3><p>这是理解 Docker 的起点。虚拟机虚拟的是<strong>硬件</strong>，每台虚拟机要跑一个完整的操作系统内核；容器虚拟的是<strong>进程运行环境</strong>，所有容器共享宿主机内核：</p>
+<pre class="mermaid">
+flowchart TB
+  subgraph VM["虚拟机方案"]
+    VH["宿主机操作系统"] --> HV["Hypervisor"]
+    HV --> G1["Guest OS<br/>完整内核 · GB 级"]
+    HV --> G2["Guest OS<br/>完整内核 · GB 级"]
+    G1 --> A1["应用 A"]
+    G2 --> A2["应用 B"]
+  end
+  subgraph DK["容器方案"]
+    DH["宿主机操作系统<br/>共享内核"] --> DE["Docker Engine"]
+    DE --> C1["容器<br/>只含应用与依赖 · MB 级"]
+    DE --> C2["容器<br/>只含应用与依赖 · MB 级"]
+    C1 --> B1["应用 A"]
+    C2 --> B2["应用 B"]
+  end
+</pre>
+
+<p>差别直接体现在使用体验上：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>虚拟机</th>
+<th>容器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>启动速度</td>
+<td>分钟级（要引导内核）</td>
+<td>秒级甚至毫秒级（就是起个进程）</td>
+</tr>
+<tr>
+<td>体积</td>
+<td>几 GB 起</td>
+<td>几十 MB 到几百 MB</td>
+</tr>
+<tr>
+<td>隔离强度</td>
+<td>强，内核级隔离</td>
+<td>较弱，共享内核（靠 namespace + cgroup）</td>
+</tr>
+<tr>
+<td>单机能跑多少</td>
+<td>十几个</td>
+<td>上百个</td>
+</tr>
+</tbody></table>
+<p>代价是容器<strong>不能跨内核</strong>：Linux 容器不能直接运行 Windows 程序，这也是 Docker Desktop 在 Windows &#x2F; macOS 上其实藏了一层轻量虚拟机的原因。</p>
+<h3 id="1-3-Docker-在前端工作流里的位置"><a href="#1-3-Docker-在前端工作流里的位置" class="headerlink" title="1.3 Docker 在前端工作流里的位置"></a>1.3 Docker 在前端工作流里的位置</h3><p>Docker 不替代 npm，也不替代 Nginx。它做的是把「构建产物 + 运行环境」一起固化成镜像，让部署产物从「一个 dist 压缩包」变成「一个能自己跑起来的镜像」：</p>
+<pre class="mermaid">
+flowchart LR
+  Src["源码仓库<br/>Vue / React 工程"] -->|git push| CI["CI 流水线"]
+  CI -->|docker build| Img["镜像<br/>dist + Nginx 配置"]
+  Img -->|docker push| Reg[("镜像仓库<br/>Harbor / Docker Hub")]
+  Reg -->|docker pull| Srv["服务器 / K8s"]
+  Srv -->|docker run| Run["运行中的容器<br/>对外提供 80 端口"]
+</pre>
+
+<p>关键变化是<strong>交付边界前移</strong>了：以前前端交付 dist，运行环境由运维负责；容器化之后，Nginx 配置、缓存策略、路由回退规则都写在你自己的仓库里，跟着镜像一起交付。这是企业里推容器化的主要动机之一——环境问题不再是跨团队扯皮。</p>
+<h3 id="1-4-核心概念"><a href="#1-4-核心概念" class="headerlink" title="1.4 核心概念"></a>1.4 核心概念</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>含义</th>
+<th>前端类比</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>镜像 Image</strong></td>
+<td>只读的文件系统模板，分层存储</td>
+<td>类似 npm 包，是不可变的分发单位</td>
+</tr>
+<tr>
+<td><strong>容器 Container</strong></td>
+<td>镜像的运行实例，带一层可写层</td>
+<td>类似 <code>new</code> 出来的实例</td>
+</tr>
+<tr>
+<td><strong>Dockerfile</strong></td>
+<td>描述如何构建镜像的脚本</td>
+<td>类似 <code>vite.config.ts</code>，构建配置</td>
+</tr>
+<tr>
+<td><strong>镜像仓库 Registry</strong></td>
+<td>存放镜像的服务，公有如 Docker Hub，私有如 Harbor</td>
+<td>类似 npm registry &#x2F; 私有 nexus</td>
+</tr>
+<tr>
+<td><strong>数据卷 Volume</strong></td>
+<td>独立于容器生命周期的存储</td>
+<td>容器删了它还在，用来存数据库文件</td>
+</tr>
+<tr>
+<td><strong>网络 Network</strong></td>
+<td>容器间通信的虚拟网络，自带 DNS</td>
+<td>同一网络里可用服务名互访</td>
+</tr>
+</tbody></table>
+<p>镜像与容器的关系是<strong>一对多</strong>：</p>
+<pre class="mermaid">
+flowchart TB
+  DF["Dockerfile"] -->|docker build| IMG["镜像 my-app:1.0<br/>只读、可分发"]
+  IMG -->|docker run| C1["容器 1<br/>独立可写层"]
+  IMG -->|docker run| C2["容器 2<br/>独立可写层"]
+  IMG -->|docker run| C3["容器 3<br/>独立可写层"]
+</pre>
+
+<p>三个容器共享同一份只读镜像层，各自只额外占用自己写入的那部分数据。这是容器比虚拟机省资源的根本原因，也解释了为什么<strong>容器内写的文件在删除容器后会消失</strong>——它写在临时的可写层里，而不是镜像里。</p>
+<h3 id="1-5-镜像分层：理解构建缓存的基础"><a href="#1-5-镜像分层：理解构建缓存的基础" class="headerlink" title="1.5 镜像分层：理解构建缓存的基础"></a>1.5 镜像分层：理解构建缓存的基础</h3><p>镜像由多个只读层叠加而成，Dockerfile 里每条 <code>RUN</code>、<code>COPY</code>、<code>ADD</code> 都会生成新的一层：</p>
+<pre class="mermaid">
+flowchart BT
+  L1["层 1：node:20-alpine 基础镜像"] --> L2["层 2：WORKDIR /app"]
+  L2 --> L3["层 3：COPY package.json"]
+  L3 --> L4["层 4：RUN npm ci（最耗时）"]
+  L4 --> L5["层 5：COPY 源码"]
+  L5 --> L6["层 6：RUN npm run build"]
+  L6 --> RW["容器可写层（临时）"]
+</pre>
+
+<p>Docker 构建时会逐层比对：某一层的指令和输入都没变，就直接复用缓存；一旦某层失效，<strong>它之后的所有层都要重建</strong>。这条规则直接决定了 Dockerfile 的写法（第四节会展开）——为什么要先 <code>COPY package.json</code> 再 <code>COPY .</code>，答案就在这里。</p>
+<hr>
+<h2 id="二、安装与快速上手"><a href="#二、安装与快速上手" class="headerlink" title="二、安装与快速上手"></a>二、安装与快速上手</h2><h3 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h3><p><strong>Windows &#x2F; macOS</strong> 装 Docker Desktop 最省事，它把 Engine、CLI、Compose、图形界面打包在一起：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 官网下载安装包：https://www.docker.com/products/docker-desktop/</span></span><br><span class="line"><span class="comment"># Windows 需先启用 WSL 2：</span></span><br><span class="line">wsl --install</span><br><span class="line">wsl --set-default-version 2</span><br></pre></td></tr></table></figure>
+
+<p><strong>Linux 服务器</strong>装 Docker Engine：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ubuntu / Debian，官方脚本</span></span><br><span class="line">curl -fsSL https://get.docker.com | sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把当前用户加入 docker 组，之后不用每条命令加 sudo</span></span><br><span class="line"><span class="built_in">sudo</span> usermod -aG docker <span class="variable">$USER</span></span><br><span class="line">newgrp docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置开机自启</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> --now docker</span><br></pre></td></tr></table></figure>
+
+<p>验证安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker --version           <span class="comment"># Docker version 29.x.x</span></span><br><span class="line">docker compose version     <span class="comment"># Docker Compose version v2.x.x</span></span><br><span class="line">docker info                <span class="comment"># 查看 Engine 详细状态</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 跑一个测试容器，能输出 Hello from Docker! 就没问题</span></span><br><span class="line">docker run --<span class="built_in">rm</span> hello-world</span><br></pre></td></tr></table></figure>
+
+<p>注意命令形态：<strong>新版是 <code>docker compose</code>（子命令），老版是 <code>docker-compose</code>（独立二进制）</strong>。v1 已停止维护，本文统一用 <code>docker compose</code>。</p>
+<h3 id="2-2-国内环境配置镜像加速"><a href="#2-2-国内环境配置镜像加速" class="headerlink" title="2.2 国内环境配置镜像加速"></a>2.2 国内环境配置镜像加速</h3><p>拉取镜像慢是国内绕不开的问题，配置镜像加速器：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Linux: /etc/docker/daemon.json</span></span><br><span class="line"><span class="comment">// Docker Desktop: Settings → Docker Engine</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://docker.m.daocloud.io&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;https://dockerproxy.com&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;log-driver&quot;</span><span class="punctuation">:</span> <span class="string">&quot;json-file&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;log-opts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;max-size&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10m&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;max-file&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl restart docker</span><br><span class="line">docker info | grep -A 3 <span class="string">&quot;Registry Mirrors&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>顺手把 <code>log-opts</code> 也配上：Docker 默认日志文件<strong>不会自动切割</strong>，长期运行的容器能把磁盘写满，这是最常见的生产事故之一。</p>
+<h3 id="2-3-三十秒跑起来"><a href="#2-3-三十秒跑起来" class="headerlink" title="2.3 三十秒跑起来"></a>2.3 三十秒跑起来</h3><p>先不写 Dockerfile，直接跑一个 Nginx 感受一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8080:80 --name web nginx:alpine</span><br></pre></td></tr></table></figure>
+
+<p>拆解这条命令：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-d</code></td>
+<td>后台运行（detached），不占住终端</td>
+</tr>
+<tr>
+<td><code>-p 8080:80</code></td>
+<td>端口映射，宿主机 8080 → 容器 80。<strong>顺序是宿主机:容器</strong></td>
+</tr>
+<tr>
+<td><code>--name web</code></td>
+<td>指定容器名，不给会随机生成一个像 <code>nervous_tesla</code> 的名字</td>
+</tr>
+<tr>
+<td><code>nginx:alpine</code></td>
+<td>镜像名:标签，<code>alpine</code> 表示基于 Alpine Linux 的精简版</td>
+</tr>
+</tbody></table>
+<p>访问 <code>http://localhost:8080</code> 就能看到 Nginx 欢迎页。把自己的静态页面挂进去试试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 停掉刚才的容器</span></span><br><span class="line">docker <span class="built_in">rm</span> -f web</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把当前目录挂载到 Nginx 的静态目录（:ro 表示只读）</span></span><br><span class="line">docker run -d -p 8080:80 \</span><br><span class="line">  -v <span class="string">&quot;<span class="variable">$PWD</span>/dist:/usr/share/nginx/html:ro&quot;</span> \</span><br><span class="line">  --name web nginx:alpine</span><br></pre></td></tr></table></figure>
+
+<p>这已经是一个可用的静态站点服务了，宿主机上没装 Nginx，改完 dist 刷新页面就能看到——但这种「挂载源码」的方式只适合本地开发，生产要把文件构建进镜像（第四节）。</p>
+<h3 id="2-4-本地开发要不要用-Docker"><a href="#2-4-本地开发要不要用-Docker" class="headerlink" title="2.4 本地开发要不要用 Docker"></a>2.4 本地开发要不要用 Docker</h3><p>不必一上来就全套容器化，按项目复杂度决定：</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>纯前端项目，只需要 Node</td>
+<td><strong>不用</strong>。<code>npm run dev</code> 更快，HMR 也不会受挂载性能影响</td>
+</tr>
+<tr>
+<td>需要 MySQL &#x2F; Redis &#x2F; MinIO 等中间件</td>
+<td><strong>用</strong>。只把中间件放进 Compose，前端仍在宿主机跑</td>
+</tr>
+<tr>
+<td>后端同事的服务要在本地起</td>
+<td><strong>用</strong>。让他们提供镜像，你不必配 Java &#x2F; Python 环境</td>
+</tr>
+<tr>
+<td>CI 构建与生产部署</td>
+<td><strong>必须用</strong>。这是容器化收益最大的地方</td>
+</tr>
+</tbody></table>
+<p>最实用的组合是「<strong>中间件在容器里，前端 dev server 在宿主机上</strong>」：既拿到环境一致性，又不损失 Vite 的热更新速度。</p>
+<hr>
+<h2 id="三、常用命令详解"><a href="#三、常用命令详解" class="headerlink" title="三、常用命令详解"></a>三、常用命令详解</h2><p>命令看着多，实际高频使用的就十几条。按镜像、容器、调试、清理四类记。</p>
+<h3 id="3-1-镜像操作"><a href="#3-1-镜像操作" class="headerlink" title="3.1 镜像操作"></a>3.1 镜像操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取 / 查看 / 删除</span></span><br><span class="line">docker pull node:20-alpine</span><br><span class="line">docker images                          <span class="comment"># 列出本地镜像</span></span><br><span class="line">docker rmi node:20-alpine              <span class="comment"># 删除镜像</span></span><br><span class="line">docker image prune                     <span class="comment"># 清理无标签的悬空镜像</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建：-t 打标签，最后的 . 是构建上下文</span></span><br><span class="line">docker build -t my-app:1.0 .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定 Dockerfile 路径</span></span><br><span class="line">docker build -f docker/Dockerfile.prod -t my-app:1.0 .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看镜像分层，排查体积问题时很有用</span></span><br><span class="line">docker <span class="built_in">history</span> my-app:1.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打标签并推送到仓库</span></span><br><span class="line">docker tag my-app:1.0 registry.example.com/team/my-app:1.0</span><br><span class="line">docker push registry.example.com/team/my-app:1.0</span><br></pre></td></tr></table></figure>
+
+<p><strong>构建上下文</strong>是新手容易忽略的概念：<code>docker build .</code> 里的 <code>.</code> 会把整个目录打包发给 Docker daemon。如果目录里有 <code>node_modules</code> 和 <code>.git</code>，光传输就要几十秒——这是 <code>.dockerignore</code> 存在的意义（4.3 节）。</p>
+<h3 id="3-2-容器生命周期"><a href="#3-2-容器生命周期" class="headerlink" title="3.2 容器生命周期"></a>3.2 容器生命周期</h3><pre class="mermaid">
+stateDiagram-v2
+  [*] --> Created: docker create
+  Created --> Running: docker start
+  [*] --> Running: docker run
+  Running --> Paused: docker pause
+  Paused --> Running: docker unpause
+  Running --> Stopped: docker stop（SIGTERM→SIGKILL）
+  Stopped --> Running: docker start
+  Stopped --> [*]: docker rm
+  Running --> [*]: docker rm -f
+</pre>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 运行相关</span></span><br><span class="line">docker run -d -p 3000:3000 --name api my-app:1.0</span><br><span class="line">docker run --<span class="built_in">rm</span> -it node:20-alpine sh    <span class="comment"># 临时容器，退出即删除</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看</span></span><br><span class="line">docker ps                <span class="comment"># 运行中的容器</span></span><br><span class="line">docker ps -a             <span class="comment"># 包括已停止的</span></span><br><span class="line">docker ps -a --filter <span class="string">&quot;name=api&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制</span></span><br><span class="line">docker stop api          <span class="comment"># 优雅停止：先 SIGTERM，10 秒后 SIGKILL</span></span><br><span class="line">docker stop -t 30 api    <span class="comment"># 给 30 秒退出时间</span></span><br><span class="line">docker <span class="built_in">kill</span> api          <span class="comment"># 直接 SIGKILL</span></span><br><span class="line">docker restart api</span><br><span class="line">docker <span class="built_in">rm</span> -f api         <span class="comment"># 强制删除运行中的容器</span></span><br></pre></td></tr></table></figure>
+
+<p><code>docker stop</code> 的信号机制值得留意：容器主进程收到 <code>SIGTERM</code> 后应当停止接收新请求、处理完手头请求再退出。Node 应用要自己监听：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server.js</span></span><br><span class="line"><span class="keyword">const</span> server = app.<span class="title function_">listen</span>(<span class="number">3000</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">shutdown</span> = (<span class="params">signal</span>) =&gt; <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;signal&#125;</span> received, closing server`</span>);</span><br><span class="line">  server.<span class="title function_">close</span>(<span class="function">() =&gt;</span> process.<span class="title function_">exit</span>(<span class="number">0</span>));</span><br><span class="line">  <span class="comment">// 兜底：10 秒还没关完就强退</span></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> process.<span class="title function_">exit</span>(<span class="number">1</span>), <span class="number">10_000</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">process.<span class="title function_">on</span>(<span class="string">&#x27;SIGTERM&#x27;</span>, <span class="title function_">shutdown</span>(<span class="string">&#x27;SIGTERM&#x27;</span>));</span><br><span class="line">process.<span class="title function_">on</span>(<span class="string">&#x27;SIGINT&#x27;</span>, <span class="title function_">shutdown</span>(<span class="string">&#x27;SIGINT&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>没有这段代码，<code>docker stop</code> 会在 10 秒后强杀进程，正在处理的请求全部中断。</p>
+<h3 id="3-3-进容器调试"><a href="#3-3-进容器调试" class="headerlink" title="3.3 进容器调试"></a>3.3 进容器调试</h3><p>容器出问题时，八成的排查都靠这几条：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入容器交互式 shell（alpine 镜像没有 bash，用 sh）</span></span><br><span class="line">docker <span class="built_in">exec</span> -it api sh</span><br><span class="line">docker <span class="built_in">exec</span> -it api bash        <span class="comment"># debian/ubuntu 基础镜像</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不进容器，直接执行单条命令</span></span><br><span class="line">docker <span class="built_in">exec</span> api <span class="built_in">ls</span> -la /app</span><br><span class="line">docker <span class="built_in">exec</span> api <span class="built_in">cat</span> /etc/nginx/conf.d/default.conf</span><br><span class="line">docker <span class="built_in">exec</span> api <span class="built_in">env</span>             <span class="comment"># 查看容器内环境变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看日志</span></span><br><span class="line">docker logs -f api              <span class="comment"># 跟随输出</span></span><br><span class="line">docker logs --<span class="built_in">tail</span> 100 api      <span class="comment"># 最后 100 行</span></span><br><span class="line">docker logs -t --since 10m api  <span class="comment"># 最近 10 分钟，带时间戳</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看容器详细配置（端口、挂载、网络、环境变量）</span></span><br><span class="line">docker inspect api</span><br><span class="line">docker inspect api --format <span class="string">&#x27;&#123;&#123;json .NetworkSettings.Ports&#125;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 实时资源占用</span></span><br><span class="line">docker stats</span><br><span class="line">docker stats --no-stream api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 容器内主进程列表</span></span><br><span class="line">docker top api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对比镜像，查看容器内被改动的文件</span></span><br><span class="line">docker diff api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在宿主机和容器之间拷文件</span></span><br><span class="line">docker <span class="built_in">cp</span> api:/app/logs/error.log ./error.log</span><br><span class="line">docker <span class="built_in">cp</span> ./nginx.conf api:/etc/nginx/conf.d/default.conf</span><br></pre></td></tr></table></figure>
+
+<p>一个常见困惑：<code>docker exec -it</code> 进不去，提示容器不在运行。这说明容器启动就退出了，此时要看日志而不是 exec：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker logs api           <span class="comment"># 看退出原因</span></span><br><span class="line">docker ps -a              <span class="comment"># 看 STATUS 里的退出码</span></span><br></pre></td></tr></table></figure>
+
+<p>退出码 <code>0</code> 是正常结束（多半是主进程不是常驻的），<code>1</code> 是应用报错，<code>137</code> 是被 SIGKILL（常见于内存超限被 OOM Killer 干掉），<code>139</code> 是段错误。</p>
+<h3 id="3-4-清理磁盘"><a href="#3-4-清理磁盘" class="headerlink" title="3.4 清理磁盘"></a>3.4 清理磁盘</h3><p>Docker 用久了会吃掉几十 GB 磁盘，主要是停止的容器、悬空镜像和构建缓存：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先看看谁占的</span></span><br><span class="line">docker system <span class="built_in">df</span></span><br><span class="line">docker system <span class="built_in">df</span> -v          <span class="comment"># 明细</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分类清理</span></span><br><span class="line">docker container prune       <span class="comment"># 删所有已停止的容器</span></span><br><span class="line">docker image prune           <span class="comment"># 删悬空镜像（无标签的）</span></span><br><span class="line">docker image prune -a        <span class="comment"># 删所有未被容器使用的镜像（慎用）</span></span><br><span class="line">docker volume prune          <span class="comment"># 删未被引用的数据卷（会丢数据，务必确认）</span></span><br><span class="line">docker builder prune         <span class="comment"># 删构建缓存，通常这个占最多</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一把梭（不含数据卷）</span></span><br><span class="line">docker system prune</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包含数据卷 —— 会删掉数据库文件，生产环境不要执行</span></span><br><span class="line">docker system prune -a --volumes</span><br></pre></td></tr></table></figure>
+
+<p><code>docker volume prune</code> 和 <code>system prune --volumes</code> 会<strong>真的删掉数据库数据</strong>，执行前先 <code>docker volume ls</code> 确认没有还需要的卷。</p>
+<hr>
+<h2 id="四、用-Dockerfile-打包前端项目"><a href="#四、用-Dockerfile-打包前端项目" class="headerlink" title="四、用 Dockerfile 打包前端项目"></a>四、用 Dockerfile 打包前端项目</h2><h3 id="4-1-先看一个能跑但很糟的版本"><a href="#4-1-先看一个能跑但很糟的版本" class="headerlink" title="4.1 先看一个能跑但很糟的版本"></a>4.1 先看一个能跑但很糟的版本</h3><p>多数人第一版 Dockerfile 会写成这样，它能跑，但几乎每一行都有问题：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">20</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm run build</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">3000</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;npx&quot;</span>, <span class="string">&quot;serve&quot;</span>, <span class="string">&quot;dist&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>四个问题：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用完整版 <code>node:20</code></td>
+<td>镜像 1.1 GB，其中 90% 是编译工具链，运行时根本用不到</td>
+</tr>
+<tr>
+<td><code>COPY . .</code> 在 <code>npm install</code> 之前</td>
+<td>改任何一行业务代码都会导致依赖层缓存失效，每次重装依赖</td>
+</tr>
+<tr>
+<td>用 <code>npm install</code></td>
+<td>不锁版本，<code>lock</code> 文件形同虚设，可能装到不同的依赖树</td>
+</tr>
+<tr>
+<td>用 <code>npx serve</code> 提供静态文件</td>
+<td>Node 进程做静态服务，性能和缓存控制远不如 Nginx</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-常用指令速查"><a href="#4-2-常用指令速查" class="headerlink" title="4.2 常用指令速查"></a>4.2 常用指令速查</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>FROM</code></td>
+<td>指定基础镜像</td>
+<td>多阶段构建里可出现多次，配合 <code>AS</code> 命名</td>
+</tr>
+<tr>
+<td><code>WORKDIR</code></td>
+<td>设置工作目录</td>
+<td>不存在会自动创建，比 <code>RUN cd</code> 可靠</td>
+</tr>
+<tr>
+<td><code>COPY</code></td>
+<td>复制文件进镜像</td>
+<td>优先用它，不用 <code>ADD</code>（<code>ADD</code> 会自动解压、支持 URL，行为不直观）</td>
+</tr>
+<tr>
+<td><code>RUN</code></td>
+<td>构建时执行命令</td>
+<td>每条产生一层，用 <code>&amp;&amp;</code> 合并可减少层数</td>
+</tr>
+<tr>
+<td><code>ENV</code></td>
+<td>设置环境变量</td>
+<td>构建和运行时都生效，<strong>会留在镜像里，不要放密钥</strong></td>
+</tr>
+<tr>
+<td><code>ARG</code></td>
+<td>构建期变量</td>
+<td>只在构建时可用，通过 <code>--build-arg</code> 传入</td>
+</tr>
+<tr>
+<td><code>EXPOSE</code></td>
+<td>声明监听端口</td>
+<td>纯文档作用，不会真的开端口，仍需 <code>-p</code> 映射</td>
+</tr>
+<tr>
+<td><code>USER</code></td>
+<td>切换运行用户</td>
+<td>生产环境应切到非 root</td>
+</tr>
+<tr>
+<td><code>CMD</code></td>
+<td>容器默认启动命令</td>
+<td>可被 <code>docker run</code> 后面的参数覆盖</td>
+</tr>
+<tr>
+<td><code>ENTRYPOINT</code></td>
+<td>固定入口命令</td>
+<td>与 <code>CMD</code> 组合时，<code>CMD</code> 变成它的默认参数</td>
+</tr>
+<tr>
+<td><code>HEALTHCHECK</code></td>
+<td>健康检查</td>
+<td>让 Docker 知道容器是否真的可用</td>
+</tr>
+</tbody></table>
+<p><code>CMD</code> 与 <code>ENTRYPOINT</code> 的关系容易混：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>]</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br><span class="line"><span class="comment"># docker run web            → nginx -g &quot;daemon off;&quot;</span></span><br><span class="line"><span class="comment"># docker run web -t         → nginx -t （CMD 被覆盖，ENTRYPOINT 保留）</span></span><br></pre></td></tr></table></figure>
+
+<p>另外注意 <code>CMD</code> 的两种写法。用数组形式（exec form）时进程是 PID 1，能正常收到 <code>SIGTERM</code>；用字符串形式（shell form）会被 <code>/bin/sh -c</code> 包一层，信号传不到应用进程，<code>docker stop</code> 就只能靠强杀：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;server.js&quot;</span>]     <span class="comment"># ✅ 推荐</span></span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> node server.js            <span class="comment"># ❌ 信号收不到</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-多阶段构建：前端容器化的标准写法"><a href="#4-3-多阶段构建：前端容器化的标准写法" class="headerlink" title="4.3 多阶段构建：前端容器化的标准写法"></a>4.3 多阶段构建：前端容器化的标准写法</h3><p>前端项目有个特点：<strong>构建需要 Node 和全套依赖，运行只需要几个静态文件</strong>。多阶段构建正好解决这件事——用一个阶段编译，另一个阶段只拿产物：</p>
+<pre class="mermaid">
+flowchart LR
+  subgraph S1["阶段 1：builder（node:20-alpine）"]
+    A["package.json"] --> B["npm ci<br/>装全量依赖"]
+    B --> C["COPY 源码"]
+    C --> D["npm run build<br/>产出 dist/"]
+  end
+  subgraph S2["阶段 2：runner（nginx:alpine）"]
+    E["只 COPY dist/"] --> F["Nginx 配置"]
+    F --> G["最终镜像<br/>约 25 MB"]
+  end
+  D -.->|"--from=builder"| E
+  style S1 fill:#1e2636
+  style S2 fill:#0f131c
+</pre>
+
+<p><code>node_modules</code>、源码、构建工具链全部留在第一阶段，<strong>不会进入最终镜像</strong>。完整写法：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ===== 阶段 1：构建 =====</span></span><br><span class="line"><span class="keyword">FROM</span> node:<span class="number">20</span>-alpine AS builder</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只复制依赖清单，让依赖层能被缓存</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json pnpm-lock.yaml ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> corepack <span class="built_in">enable</span> &amp;&amp; pnpm install --frozen-lockfile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 再复制源码</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pnpm build</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===== 阶段 2：运行 =====</span></span><br><span class="line"><span class="keyword">FROM</span> nginx:alpine AS runner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只取构建产物</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /app/dist /usr/share/nginx/html</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> nginx.conf /etc/nginx/conf.d/default.conf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Nginx 必须前台运行，容器才不会立刻退出</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>体积对比很直观：</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>镜像大小</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>node:20</code> 单阶段</td>
+<td>~1.1 GB</td>
+<td>含完整工具链和 node_modules</td>
+</tr>
+<tr>
+<td><code>node:20-alpine</code> 单阶段</td>
+<td>~450 MB</td>
+<td>换了基础镜像，但仍带依赖</td>
+</tr>
+<tr>
+<td><strong>多阶段 + nginx:alpine</strong></td>
+<td><strong>~25 MB</strong></td>
+<td>只有 dist 和 Nginx</td>
+</tr>
+</tbody></table>
+<p>不同包管理器的锁文件命令对应关系：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># npm</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json package-lock.json ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm ci                                  <span class="comment"># ci 严格按 lock 装，比 install 快且可复现</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pnpm</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json pnpm-lock.yaml ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> corepack <span class="built_in">enable</span> &amp;&amp; pnpm install --frozen-lockfile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># yarn (berry)</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json yarn.lock ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> corepack <span class="built_in">enable</span> &amp;&amp; yarn install --immutable</span></span><br></pre></td></tr></table></figure>
+
+<p>生产构建一律用 <code>npm ci</code> &#x2F; <code>--frozen-lockfile</code> 这类严格模式：lock 文件和 <code>package.json</code> 不一致时直接失败，而不是悄悄装一个新版本。</p>
+<h3 id="4-4-构建缓存：为什么要先-COPY-package-json"><a href="#4-4-构建缓存：为什么要先-COPY-package-json" class="headerlink" title="4.4 构建缓存：为什么要先 COPY package.json"></a>4.4 构建缓存：为什么要先 COPY package.json</h3><p>回到 1.5 节的分层规则：某层失效，后续所有层都要重建。对比两种写法的缓存命中情况：</p>
+<pre class="mermaid">
+flowchart TB
+  subgraph Bad["❌ COPY . . 在前"]
+    B1["COPY . .<br/>源码一改就失效"] --> B2["npm ci<br/>被迫重跑 60s"]
+    B2 --> B3["npm run build<br/>重跑"]
+  end
+  subgraph Good["✅ 先 COPY package.json"]
+    G1["COPY package.json<br/>依赖没变则命中缓存"] --> G2["npm ci<br/>✅ 复用缓存 0s"]
+    G2 --> G3["COPY . .<br/>失效"]
+    G3 --> G4["npm run build<br/>重跑"]
+  end
+</pre>
+
+<p>改一行业务代码后重新构建，前者要 90 秒，后者只要 20 秒。在 CI 上这个差距会被每天几十次构建放大。</p>
+<p>规律是：<strong>把变动频率低的操作放在前面，变动频率高的放在后面</strong>。依赖清单几周才改一次，源码一天改几十次，所以依赖安装必须在源码复制之前。</p>
+<h3 id="4-5-dockerignore：别把-node-modules-打进上下文"><a href="#4-5-dockerignore：别把-node-modules-打进上下文" class="headerlink" title="4.5 .dockerignore：别把 node_modules 打进上下文"></a>4.5 .dockerignore：别把 node_modules 打进上下文</h3><p><code>docker build .</code> 会把整个目录发给 Docker daemon，包括 <code>node_modules</code> 和 <code>.git</code>。前端项目的 <code>node_modules</code> 动辄几百 MB，不排除的话每次构建光传输就要几十秒。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .dockerignore</span></span><br><span class="line">node_modules</span><br><span class="line">dist</span><br><span class="line">.git</span><br><span class="line">.gitignore</span><br><span class="line">.<span class="built_in">env</span></span><br><span class="line">.<span class="built_in">env</span>.*</span><br><span class="line">*.<span class="built_in">log</span></span><br><span class="line">coverage</span><br><span class="line">.vscode</span><br><span class="line">.idea</span><br><span class="line">Dockerfile</span><br><span class="line">docker-compose*.yml</span><br><span class="line">README.md</span><br></pre></td></tr></table></figure>
+
+<p>除了性能，这里还有正确性和安全性考虑：</p>
+<ul>
+<li>排除 <code>node_modules</code> 能避免宿主机（可能是 macOS &#x2F; Windows）编译的原生模块被复制进 Linux 镜像，导致 <code>Error: Cannot find module ... invalid ELF header</code></li>
+<li>排除 <code>.env</code> 能防止本地密钥被打进镜像层——<strong>镜像层是可以被任何拿到镜像的人翻出来的</strong>，即使后续用 <code>RUN rm</code> 删掉，历史层里依然存在</li>
+</ul>
+<h3 id="4-6-Nginx-配置：前端容器绕不开的三件事"><a href="#4-6-Nginx-配置：前端容器绕不开的三件事" class="headerlink" title="4.6 Nginx 配置：前端容器绕不开的三件事"></a>4.6 Nginx 配置：前端容器绕不开的三件事</h3><p>静态资源用 Nginx 提供服务时，有三处配置几乎每个项目都要写：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nginx.conf</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  _;</span><br><span class="line">    <span class="attribute">root</span>         /usr/share/nginx/html;</span><br><span class="line">    <span class="attribute">index</span>        index.html;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 前端路由回退：history 模式刷新页面不能 404</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 带 hash 的静态资源长期缓存，index.html 绝不缓存</span></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~* \.(?:js|css|woff2?|png|jpe?g|gif|svg|ico)$</span> &#123;</span><br><span class="line">        <span class="attribute">expires</span> <span class="number">1y</span>;</span><br><span class="line">        <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;public, immutable&quot;</span>;</span><br><span class="line">        <span class="attribute">access_log</span> <span class="literal">off</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> = /index.html &#123;</span><br><span class="line">        <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;no-cache, must-revalidate&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. Gzip 压缩</span></span><br><span class="line">    <span class="attribute">gzip</span>              <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_vary</span>         <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_min_length</span>   <span class="number">1024</span>;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span>   <span class="number">6</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span>        text/plain text/css application/json</span><br><span class="line">                      application/javascript application/xml image/svg+xml;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 容器编排里给探针用的健康检查端点</span></span><br><span class="line">    <span class="section">location</span> = /healthz &#123;</span><br><span class="line">        <span class="attribute">access_log</span> <span class="literal">off</span>;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">200</span> <span class="string">&quot;ok\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>三处配置分别对应三类线上事故：</p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>漏掉的后果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>try_files ... /index.html</code></td>
+<td>Vue Router &#x2F; React Router 的 history 模式下，刷新非首页路由 404</td>
+</tr>
+<tr>
+<td><code>index.html</code> 不缓存</td>
+<td>用户浏览器缓存了旧的 index.html，引用的是已被删除的旧 hash 资源，白屏</td>
+</tr>
+<tr>
+<td><code>gzip on</code></td>
+<td>主包传输体积大 3～4 倍，首屏明显变慢</td>
+</tr>
+</tbody></table>
+<p>如果容器前面还有一层网关或 CDN，注意别重复压缩，也要确认 <code>X-Forwarded-For</code> 的透传链路完整。</p>
+<h3 id="4-7-环境变量：一次构建，多环境部署"><a href="#4-7-环境变量：一次构建，多环境部署" class="headerlink" title="4.7 环境变量：一次构建，多环境部署"></a>4.7 环境变量：一次构建，多环境部署</h3><p>这是前端容器化最典型的坑。Vite &#x2F; Webpack 的环境变量是<strong>构建期</strong>注入的，<code>import.meta.env.VITE_API_URL</code> 在 <code>npm run build</code> 那一刻就被替换成字符串写进了 bundle。所以下面这样写是无效的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 镜像里的 API 地址不会变，因为构建时就固化了</span></span><br><span class="line">docker run -e VITE_API_URL=https://api.prod.com my-app:1.0</span><br></pre></td></tr></table></figure>
+
+<p>企业里的标准要求是「<strong>一次构建，多环境部署</strong>」——同一个镜像走完测试、预发、生产，不能每个环境重新构建（重新构建就等于换了个产物，测过的不是上线的）。两种解法：</p>
+<p><strong>方案 A：Nginx 反向代理（推荐，最简单）</strong></p>
+<p>前端代码里 API 一律用相对路径 <code>/api</code>，由 Nginx 转发到后端，不同环境只是 Nginx 配置不同：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 前端代码：不写死域名</span></span><br><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;/api/users&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 后端地址通过环境变量传入</span></span><br><span class="line"><span class="section">location</span> /api/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span>         http://<span class="variable">$&#123;BACKEND_HOST&#125;</span>/;</span><br><span class="line">    <span class="attribute">proxy_set_header</span>   Host <span class="variable">$host</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span>   X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span>   X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span>   X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>nginx:alpine</code> 镜像内置了模板机制：放在 <code>/etc/nginx/templates/*.conf.template</code> 的文件，容器启动时会用环境变量替换 <code>${VAR}</code> 后输出到 <code>/etc/nginx/conf.d/</code>：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /app/dist /usr/share/nginx/html</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> nginx.conf.template /etc/nginx/templates/default.conf.template</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同一个镜像，靠环境变量切换后端</span></span><br><span class="line">docker run -d -p 80:80 -e BACKEND_HOST=api-test.internal:3000 my-app:1.0</span><br><span class="line">docker run -d -p 80:80 -e BACKEND_HOST=api-prod.internal:3000 my-app:1.0</span><br></pre></td></tr></table></figure>
+
+<p>用模板机制时有两点要注意。</p>
+<p><strong>模板是替代品，不要和静态配置同时 COPY。</strong> 容器启动时模板会被渲染成 <code>/etc/nginx/conf.d/default.conf</code>，如果镜像里已经 COPY 过一份同名的静态配置，最终生效的是哪份取决于执行顺序，排查起来很费劲。选一种即可：需要按环境切换就只用模板，不需要就只用静态配置。</p>
+<p><strong>Nginx 自己的变量不会被误替换。</strong> 官方镜像的 <code>envsubst</code> 只替换<strong>当前环境里真实存在的变量名</strong>，<code>$host</code>、<code>$remote_addr</code>、<code>$scheme</code> 这些没有作为环境变量定义，因此会原样保留。想更保险可以用 <code>NGINX_ENVSUBST_FILTER</code> 显式声明白名单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 80:80 \</span><br><span class="line">  -e BACKEND_HOST=api-prod.internal:3000 \</span><br><span class="line">  -e NGINX_ENVSUBST_FILTER=<span class="string">&quot;BACKEND_HOST&quot;</span> \</span><br><span class="line">  my-app:1.0</span><br></pre></td></tr></table></figure>
+
+<p><strong>方案 B：运行时生成配置文件</strong></p>
+<p>需要在前端拿到更多动态配置（埋点 key、功能开关、多个服务地址）时，用启动脚本生成一个 <code>config.js</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html，注意放在业务 bundle 之前 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/config.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># docker-entrypoint.d/40-generate-config.sh</span></span><br><span class="line"><span class="built_in">cat</span> &gt; /usr/share/nginx/html/config.js &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">window.__APP_CONFIG__ = &#123;</span></span><br><span class="line"><span class="string">  apiBaseUrl: &quot;$&#123;API_BASE_URL:-/api&#125;&quot;,</span></span><br><span class="line"><span class="string">  sentryDsn: &quot;$&#123;SENTRY_DSN:-&#125;&quot;,</span></span><br><span class="line"><span class="string">  featureFlags: &#123; newEditor: $&#123;FEATURE_NEW_EDITOR:-false&#125; &#125;</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="language-bash"> docker-entrypoint.d/40-generate-config.sh /docker-entrypoint.d/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chmod</span> +x /docker-entrypoint.d/40-generate-config.sh</span></span><br></pre></td></tr></table></figure>
+
+<p><code>nginx:alpine</code> 会在启动前自动执行 <code>/docker-entrypoint.d/</code> 下的脚本，不需要自己覆盖 <code>ENTRYPOINT</code>。前端读取：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/config.ts</span></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">global</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">Window</span> &#123;</span><br><span class="line">    <span class="attr">__APP_CONFIG__</span>?: &#123; <span class="attr">apiBaseUrl</span>: <span class="built_in">string</span>; <span class="attr">sentryDsn</span>: <span class="built_in">string</span>; <span class="attr">featureFlags</span>: <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">boolean</span>&gt; &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> config = <span class="variable language_">window</span>.<span class="property">__APP_CONFIG__</span> ?? &#123;</span><br><span class="line">  <span class="attr">apiBaseUrl</span>: <span class="string">&#x27;/api&#x27;</span>,           <span class="comment">// 本地 dev server 的回退值</span></span><br><span class="line">  <span class="attr">sentryDsn</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  <span class="attr">featureFlags</span>: &#123;&#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>注意 <code>config.js</code> 必须配成不缓存，否则改了环境变量重启容器，用户拿到的还是旧配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> = /config.js &#123;</span><br><span class="line">    <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;no-store&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、用-Compose-编排本地开发环境"><a href="#五、用-Compose-编排本地开发环境" class="headerlink" title="五、用 Compose 编排本地开发环境"></a>五、用 Compose 编排本地开发环境</h2><h3 id="5-1-为什么需要-Compose"><a href="#5-1-为什么需要-Compose" class="headerlink" title="5.1 为什么需要 Compose"></a>5.1 为什么需要 Compose</h3><p>单个容器用 <code>docker run</code> 还行，一旦服务多起来，命令会长到没法维护：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker network create app-net</span><br><span class="line">docker run -d --name mysql --network app-net -e MYSQL_ROOT_PASSWORD=... -v mysql-data:/var/lib/mysql mysql:8.4</span><br><span class="line">docker run -d --name redis --network app-net -v redis-data:/data redis:7-alpine</span><br><span class="line">docker run -d --name api --network app-net -e DB_HOST=mysql -e REDIS_HOST=redis -p 3000:3000 my-api:1.0</span><br><span class="line">docker run -d --name web --network app-net -p 8080:80 my-web:1.0</span><br></pre></td></tr></table></figure>
+
+<p>Compose 把这些声明成一个 YAML 文件，<code>docker compose up -d</code> 一条命令搞定，还自动创建网络、按依赖顺序启动。</p>
+<h3 id="5-2-一份完整的开发环境配置"><a href="#5-2-一份完整的开发环境配置" class="headerlink" title="5.2 一份完整的开发环境配置"></a>5.2 一份完整的开发环境配置</h3><p>文件名用 <code>compose.yaml</code>（Compose v2 推荐的名字，<code>docker-compose.yml</code> 同样兼容）。注意<strong>不要再写 <code>version:</code> 字段</strong>，v2 已忽略它，写了反而会告警：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">myapp</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="comment"># ---------- 前端 ----------</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./frontend</span></span><br><span class="line">      <span class="attr">target:</span> <span class="string">runner</span>              <span class="comment"># 用多阶段构建里的 runner 阶段</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8080:80&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">BACKEND_HOST:</span> <span class="string">api:3000</span>      <span class="comment"># 直接用服务名，不是 localhost</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="attr">api:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ---------- 后端 ----------</span></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./backend</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;3000:3000&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">NODE_ENV:</span> <span class="string">development</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">mysql</span></span><br><span class="line">      <span class="attr">DB_USER:</span> <span class="string">root</span></span><br><span class="line">      <span class="attr">DB_PASSWORD:</span> <span class="string">$&#123;MYSQL_ROOT_PASSWORD&#125;</span></span><br><span class="line">      <span class="attr">REDIS_URL:</span> <span class="string">redis://redis:6379</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="attr">mysql:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span></span><br><span class="line">      <span class="attr">redis:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_started</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;wget&quot;</span>, <span class="string">&quot;-qO-&quot;</span>, <span class="string">&quot;http://localhost:3000/healthz&quot;</span>]</span><br><span class="line">      <span class="attr">interval:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">3s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">20s</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ---------- 数据库 ----------</span></span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:8.4</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">$&#123;MYSQL_ROOT_PASSWORD&#125;</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">myapp</span></span><br><span class="line">      <span class="attr">TZ:</span> <span class="string">Asia/Shanghai</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;127.0.0.1:3306:3306&quot;</span>     <span class="comment"># 只绑本机，不暴露到公网</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql-data:/var/lib/mysql</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./docker/mysql/init:/docker-entrypoint-initdb.d:ro</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;mysqladmin&quot;</span>, <span class="string">&quot;ping&quot;</span>, <span class="string">&quot;-h&quot;</span>, <span class="string">&quot;127.0.0.1&quot;</span>, <span class="string">&quot;-uroot&quot;</span>, <span class="string">&quot;-p$&#123;MYSQL_ROOT_PASSWORD&#125;&quot;</span>]</span><br><span class="line">      <span class="attr">interval:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">5s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">10</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">30s</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ---------- 缓存 ----------</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">redis:7-alpine</span></span><br><span class="line">    <span class="attr">command:</span> [<span class="string">&quot;redis-server&quot;</span>, <span class="string">&quot;--appendonly&quot;</span>, <span class="string">&quot;yes&quot;</span>]</span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;127.0.0.1:6379:6379&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">redis-data:/data</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">mysql-data:</span></span><br><span class="line">  <span class="attr">redis-data:</span></span><br></pre></td></tr></table></figure>
+
+<p>配套的 <code>.env</code> 文件（Compose 会自动读取同目录下的 <code>.env</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .env —— 记得加入 .gitignore</span></span><br><span class="line">MYSQL_ROOT_PASSWORD=dev_only_password</span><br></pre></td></tr></table></figure>
+
+<p>服务间的网络关系是这样的，Compose 会自动建一个默认网络，服务名即主机名：</p>
+<pre class="mermaid">
+flowchart TB
+  Browser["浏览器<br/>localhost:8080"] --> WEB
+  subgraph NET["Compose 默认网络 myapp_default（自带 DNS）"]
+    WEB["web<br/>Nginx :80"] -->|"proxy_pass http://api:3000"| API["api<br/>Node :3000"]
+    API -->|"host: mysql"| DB[("mysql :3306")]
+    API -->|"redis://redis:6379"| RD[("redis :6379")]
+  end
+  DB --- V1["volume: mysql-data"]
+  RD --- V2["volume: redis-data"]
+</pre>
+
+<h3 id="5-3-常用-Compose-命令"><a href="#5-3-常用-Compose-命令" class="headerlink" title="5.3 常用 Compose 命令"></a>5.3 常用 Compose 命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动 / 停止</span></span><br><span class="line">docker compose up -d                 <span class="comment"># 后台启动全部服务</span></span><br><span class="line">docker compose up -d --build         <span class="comment"># 顺带重新构建镜像</span></span><br><span class="line">docker compose up -d api             <span class="comment"># 只启动某个服务（含其依赖）</span></span><br><span class="line">docker compose stop                  <span class="comment"># 停止但保留容器</span></span><br><span class="line">docker compose down                  <span class="comment"># 停止并删除容器、网络（保留数据卷）</span></span><br><span class="line">docker compose down -v               <span class="comment"># 连数据卷一起删（数据会丢）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看</span></span><br><span class="line">docker compose ps</span><br><span class="line">docker compose logs -f api           <span class="comment"># 跟随某个服务日志</span></span><br><span class="line">docker compose logs -f --<span class="built_in">tail</span> 100    <span class="comment"># 所有服务最近 100 行</span></span><br><span class="line">docker compose config                <span class="comment"># 展开变量后的最终配置，排查 YAML 问题必用</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 操作</span></span><br><span class="line">docker compose <span class="built_in">exec</span> api sh           <span class="comment"># 进入运行中的服务</span></span><br><span class="line">docker compose run --<span class="built_in">rm</span> api npm <span class="built_in">test</span> <span class="comment"># 起一个临时容器跑命令，跑完删除</span></span><br><span class="line">docker compose restart api</span><br><span class="line">docker compose build --no-cache api  <span class="comment"># 强制不用缓存重建</span></span><br><span class="line">docker compose pull                  <span class="comment"># 拉取最新的第三方镜像</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 扩容（要先去掉该服务的固定端口映射，否则端口冲突）</span></span><br><span class="line">docker compose up -d --scale api=3</span><br></pre></td></tr></table></figure>
+
+<p><code>docker compose config</code> 值得单独提一下：它会把 <code>.env</code> 变量、多文件合并、默认值全部展开成最终生效的配置，排查「环境变量为什么没生效」时一眼就能看出问题。</p>
+<h3 id="5-4-depends-on-的陷阱：启动了不等于能用了"><a href="#5-4-depends-on-的陷阱：启动了不等于能用了" class="headerlink" title="5.4 depends_on 的陷阱：启动了不等于能用了"></a>5.4 depends_on 的陷阱：启动了不等于能用了</h3><p><code>depends_on</code> 默认只保证<strong>启动顺序</strong>，不保证服务就绪。MySQL 容器起来了，但初始化数据库要十几秒，这段时间后端连过去会直接报 <code>ECONNREFUSED</code> 然后退出。</p>
+<p>正确做法是配 <code>healthcheck</code> + <code>condition: service_healthy</code>（上面的配置已经这么写了）。健康检查的状态流转：</p>
+<pre class="mermaid">
+sequenceDiagram
+  participant C as Compose
+  participant M as mysql 容器
+  participant A as api 容器
+
+  C->>M: 启动
+  Note over M: status: starting
+  C->>M: mysqladmin ping
+  M--xC: 失败（还在初始化）
+  Note over M: start_period 内失败不计入 retries
+  C->>M: mysqladmin ping
+  M-->>C: 成功
+  Note over M: status: healthy
+  C->>A: 此时才启动 api
+  A->>M: 连接数据库 ✅
+</pre>
+
+<p><code>start_period</code> 是关键参数：这段时间内的失败不计入 <code>retries</code>，专门给需要慢启动的服务（数据库、JVM 应用）留出初始化窗口。</p>
+<p>即便配了健康检查，应用层最好也带上重试——生产环境数据库可能在运行中短暂不可用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectWithRetry</span>(<span class="params">maxRetries = <span class="number">10</span>, delayMs = <span class="number">3000</span></span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= maxRetries; i++) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">await</span> pool.<span class="title function_">query</span>(<span class="string">&#x27;SELECT 1&#x27;</span>);</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;database ready&#x27;</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">warn</span>(<span class="string">`db not ready (<span class="subst">$&#123;i&#125;</span>/<span class="subst">$&#123;maxRetries&#125;</span>): <span class="subst">$&#123;err.code&#125;</span>`</span>);</span><br><span class="line">      <span class="keyword">if</span> (i === maxRetries) <span class="keyword">throw</span> err;</span><br><span class="line">      <span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> <span class="built_in">setTimeout</span>(r, delayMs));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-5-开发模式：挂载源码实现热更新"><a href="#5-5-开发模式：挂载源码实现热更新" class="headerlink" title="5.5 开发模式：挂载源码实现热更新"></a>5.5 开发模式：挂载源码实现热更新</h3><p>生产镜像把代码构建进镜像，开发时则需要改代码立刻生效。用 override 文件区分，Compose 会自动合并 <code>compose.yaml</code> 和 <code>compose.override.yaml</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># compose.override.yaml —— 本地开发专用，自动生效</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">target:</span> <span class="string">dev</span>                 <span class="comment"># 换成开发阶段，跑 vite dev server</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">dev</span> <span class="string">--</span> <span class="string">--host</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5173:5173&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./frontend:/app</span>           <span class="comment"># 挂载源码</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/node_modules</span>         <span class="comment"># 匿名卷「保护」容器内的 node_modules</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">CHOKIDAR_USEPOLLING:</span> <span class="string">&quot;true&quot;</span> <span class="comment"># Windows/macOS 挂载时文件监听可能失效</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">dev</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./backend:/app</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/node_modules</span></span><br></pre></td></tr></table></figure>
+
+<p>对应的 Dockerfile 加一个 dev 阶段：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">20</span>-alpine AS deps</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json pnpm-lock.yaml ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> corepack <span class="built_in">enable</span> &amp;&amp; pnpm install --frozen-lockfile</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> deps AS dev</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">5173</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;npm&quot;</span>, <span class="string">&quot;run&quot;</span>, <span class="string">&quot;dev&quot;</span>, <span class="string">&quot;--&quot;</span>, <span class="string">&quot;--host&quot;</span>, <span class="string">&quot;0.0.0.0&quot;</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> deps AS builder</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pnpm build</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> nginx:alpine AS runner</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /app/dist /usr/share/nginx/html</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> nginx.conf /etc/nginx/conf.d/default.conf</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>两个容易踩的点：</p>
+<p><strong><code>- /app/node_modules</code> 这行是必须的。</strong> 挂载 <code>./frontend:/app</code> 会用宿主机目录整体覆盖容器内的 <code>/app</code>，包括镜像里已经装好的 <code>node_modules</code>。加一个匿名卷占住这个路径，容器内的依赖才不会被覆盖掉。</p>
+<p><strong>dev server 必须监听 <code>0.0.0.0</code>。</strong> Vite 默认只监听 <code>127.0.0.1</code>，在容器里这意味着只有容器自己能访问，宿主机浏览器会连不上。</p>
+<p>生产部署时用 <code>-f</code> 显式指定文件，跳过 override：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d                              <span class="comment"># 本地：自动合并 override</span></span><br><span class="line">docker compose -f compose.yaml up -d              <span class="comment"># 生产：只用主配置</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、网络与数据卷"><a href="#六、网络与数据卷" class="headerlink" title="六、网络与数据卷"></a>六、网络与数据卷</h2><p>这两块是容器化里最容易出错的地方，也是「本地能跑、容器里连不上」类问题的根源。</p>
+<h3 id="6-1-网络模式与服务发现"><a href="#6-1-网络模式与服务发现" class="headerlink" title="6.1 网络模式与服务发现"></a>6.1 网络模式与服务发现</h3><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>何时用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>bridge</code></td>
+<td>默认模式，容器在虚拟网桥上，靠端口映射对外</td>
+<td>绝大多数场景</td>
+</tr>
+<tr>
+<td>自定义 bridge</td>
+<td>用户创建的网桥，<strong>自带 DNS，可用容器名互访</strong></td>
+<td>Compose 默认就是这种</td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td>直接用宿主机网络栈，不做隔离，性能最好</td>
+<td>对网络性能敏感、且只在 Linux 上</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>无网络</td>
+<td>纯计算任务</td>
+</tr>
+</tbody></table>
+<p>关键区别：<strong>默认 bridge 网络没有 DNS，自定义 bridge 有</strong>。这就是为什么 Compose 里能用服务名互访，而手写 <code>docker run</code> 时得先 <code>docker network create</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker network create app-net</span><br><span class="line">docker run -d --name mysql --network app-net mysql:8.4</span><br><span class="line">docker run -d --name api --network app-net my-api:1.0</span><br><span class="line"><span class="comment"># 此时 api 容器内 ping mysql 能通</span></span><br></pre></td></tr></table></figure>
+
+<p>前端工程师最常踩的是 <code>localhost</code> 的含义变了。<strong>在容器里，<code>localhost</code> 指容器自己，不是宿主机，也不是别的容器</strong>：</p>
+<pre class="mermaid">
+flowchart TB
+  subgraph HOST["宿主机"]
+    HM[("宿主机上的 MySQL<br/>127.0.0.1:3306")]
+    subgraph NET["Docker 网络 app-net"]
+      API["api 容器"]
+      DB["mysql 容器"]
+    end
+  end
+  API -->|"❌ localhost:3306<br/>找的是容器自己"| API
+  API -->|"✅ mysql:3306<br/>服务名 DNS"| DB
+  API -->|"✅ host.docker.internal:3306<br/>访问宿主机"| HM
+</pre>
+
+<p>对照表：</p>
+<table>
+<thead>
+<tr>
+<th>要访问的目标</th>
+<th>正确写法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>同一网络里的另一个容器</td>
+<td>服务名 &#x2F; 容器名，如 <code>mysql:3306</code></td>
+</tr>
+<tr>
+<td>宿主机上的服务（Docker Desktop）</td>
+<td><code>host.docker.internal</code></td>
+</tr>
+<tr>
+<td>宿主机上的服务（Linux）</td>
+<td>启动时加 <code>--add-host=host.docker.internal:host-gateway</code>，然后同上</td>
+</tr>
+<tr>
+<td>容器自己</td>
+<td><code>localhost</code> &#x2F; <code>127.0.0.1</code></td>
+</tr>
+</tbody></table>
+<p>端口映射也有两个细节值得注意：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-p 8080:80                 <span class="comment"># 绑到 0.0.0.0，公网可访问（云服务器要小心）</span></span><br><span class="line">-p 127.0.0.1:8080:80       <span class="comment"># 只绑本机，配合 Nginx 反代更安全</span></span><br><span class="line">-p 8080:80/udp             <span class="comment"># 指定协议</span></span><br></pre></td></tr></table></figure>
+
+<p>数据库、Redis 这类中间件的端口在生产环境<strong>一律绑 <code>127.0.0.1</code> 或干脆不映射</strong>——同一 Compose 网络内的服务本来就能互访，映射到公网只是白送一个攻击面。</p>
+<h3 id="6-2-数据卷：容器删了数据还在"><a href="#6-2-数据卷：容器删了数据还在" class="headerlink" title="6.2 数据卷：容器删了数据还在"></a>6.2 数据卷：容器删了数据还在</h3><p>容器的可写层随容器一起销毁，所以数据必须放在卷里。三种挂载方式：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>写法</th>
+<th>特点</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>命名卷</strong></td>
+<td><code>mysql-data:/var/lib/mysql</code></td>
+<td>Docker 管理，性能好，跨平台一致</td>
+<td>数据库文件、上传文件</td>
+</tr>
+<tr>
+<td><strong>绑定挂载</strong></td>
+<td><code>./src:/app/src</code></td>
+<td>直连宿主机目录，改动实时可见</td>
+<td>本地开发挂源码、挂配置文件</td>
+</tr>
+<tr>
+<td><strong>tmpfs</strong></td>
+<td><code>type: tmpfs</code></td>
+<td>只在内存里，容器停止即消失</td>
+<td>临时文件、敏感数据</td>
+</tr>
+</tbody></table>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">upload-data:/app/uploads</span>              <span class="comment"># 命名卷</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./config/app.yaml:/app/config.yaml:ro</span> <span class="comment"># 绑定挂载，只读</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/node_modules</span>                     <span class="comment"># 匿名卷</span></span><br><span class="line">    <span class="attr">tmpfs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/tmp</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">upload-data:</span></span><br></pre></td></tr></table></figure>
+
+<p>常用管理命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">docker volume <span class="built_in">ls</span></span><br><span class="line">docker volume inspect myapp_mysql-data      <span class="comment"># 查看真实存储路径</span></span><br><span class="line">docker volume <span class="built_in">rm</span> myapp_mysql-data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 备份：起个临时容器把卷打包到当前目录</span></span><br><span class="line">docker run --<span class="built_in">rm</span> \</span><br><span class="line">  -v myapp_mysql-data:/data:ro \</span><br><span class="line">  -v <span class="string">&quot;<span class="variable">$PWD</span>:/backup&quot;</span> \</span><br><span class="line">  alpine tar czf /backup/mysql-$(<span class="built_in">date</span> +%F).tar.gz -C /data .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复</span></span><br><span class="line">docker run --<span class="built_in">rm</span> \</span><br><span class="line">  -v myapp_mysql-data:/data \</span><br><span class="line">  -v <span class="string">&quot;<span class="variable">$PWD</span>:/backup&quot;</span> \</span><br><span class="line">  alpine sh -c <span class="string">&quot;cd /data &amp;&amp; tar xzf /backup/mysql-2026-09-26.tar.gz&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>有状态服务<strong>必须</strong>挂卷。少一行 <code>volumes</code>，一次 <code>docker compose down</code> 就能把整个数据库清空——这个错误在开发环境里每个人都会犯一次，在生产环境里只能犯零次。</p>
+<p>绑定挂载在 macOS 和 Windows 上有性能问题（跨虚拟机文件系统），挂载大量小文件时 Vite 冷启动可能慢好几倍。这也是前端 dev server 更适合直接跑在宿主机上的原因之一。</p>
+<hr>
+<h2 id="七、企业开发中的实践"><a href="#七、企业开发中的实践" class="headerlink" title="七、企业开发中的实践"></a>七、企业开发中的实践</h2><p>前面是「能跑起来」，这一节是企业环境里的「能上生产」。</p>
+<h3 id="7-1-镜像仓库与标签规范"><a href="#7-1-镜像仓库与标签规范" class="headerlink" title="7.1 镜像仓库与标签规范"></a>7.1 镜像仓库与标签规范</h3><p>企业内部一般自建 Harbor 或用云厂商的容器镜像服务，不会直接依赖 Docker Hub（有速率限制，且不适合放私有代码）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 登录私有仓库</span></span><br><span class="line">docker login registry.example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命名规范：仓库地址/项目/应用:标签</span></span><br><span class="line">docker build -t registry.example.com/frontend/admin-web:1.4.2 .</span><br><span class="line">docker push registry.example.com/frontend/admin-web:1.4.2</span><br></pre></td></tr></table></figure>
+
+<p>标签策略是团队规范里必须先定下来的一件事：</p>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>用途</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>1.4.2</code></td>
+<td>语义化版本</td>
+<td>对应 Git tag，<strong>不可变</strong>，回滚时精确指定</td>
+</tr>
+<tr>
+<td><code>a1b2c3d</code></td>
+<td>Git commit SHA</td>
+<td>每次构建唯一，能精确追溯到代码</td>
+</tr>
+<tr>
+<td><code>latest</code></td>
+<td>最新构建</td>
+<td>方便，但<strong>生产禁用</strong></td>
+</tr>
+<tr>
+<td><code>test</code> &#x2F; <code>staging</code></td>
+<td>环境标签</td>
+<td>指向该环境当前版本</td>
+</tr>
+</tbody></table>
+<p>生产环境不用 <code>latest</code> 的原因很实际：它是浮动引用，<code>docker pull</code> 拿到什么全看仓库当前状态。出故障时你没法回答「线上跑的到底是哪个 commit」，也没法可靠回滚。规范做法是同时打不可变标签和浮动标签，部署时只用前者：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker build \</span><br><span class="line">  -t registry.example.com/frontend/admin-web:1.4.2 \</span><br><span class="line">  -t registry.example.com/frontend/admin-web:$(git rev-parse --short HEAD) \</span><br><span class="line">  -t registry.example.com/frontend/admin-web:latest .</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-CI-CD-流水线"><a href="#7-2-CI-CD-流水线" class="headerlink" title="7.2 CI&#x2F;CD 流水线"></a>7.2 CI&#x2F;CD 流水线</h3><p>完整的容器化发布链路：</p>
+<pre class="mermaid">
+flowchart TB
+  PR["提交 / 合并 PR"] --> Lint["lint + type-check + 单测"]
+  Lint -->|失败| Fail["阻断，通知提交者"]
+  Lint -->|通过| Build["docker build<br/>带 layer cache"]
+  Build --> Scan["镜像安全扫描<br/>trivy / Harbor 内置"]
+  Scan -->|高危漏洞| Fail
+  Scan -->|通过| Push["docker push<br/>版本号 + commit SHA"]
+  Push --> DeployT["部署测试环境"]
+  DeployT --> E2E["E2E 冒烟测试"]
+  E2E -->|通过| Approve["人工审批"]
+  Approve --> DeployP["部署生产<br/>滚动更新"]
+  DeployP --> Health["健康检查探活"]
+  Health -->|失败| RB["回滚到上一个镜像标签"]
+  Health -->|成功| Done["发布完成"]
+</pre>
+
+<p>GitHub Actions 的实现：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .github/workflows/deploy.yml</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">build-and-deploy</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [<span class="string">main</span>]</span><br><span class="line">    <span class="attr">tags:</span> [<span class="string">&#x27;v*&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">permissions:</span></span><br><span class="line">      <span class="attr">contents:</span> <span class="string">read</span></span><br><span class="line">      <span class="attr">packages:</span> <span class="string">write</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v4</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">docker/setup-buildx-action@v3</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">docker/login-action@v3</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">registry:</span> <span class="string">registry.example.com</span></span><br><span class="line">          <span class="attr">username:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.REGISTRY_USER</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">password:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.REGISTRY_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">meta</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">docker/metadata-action@v5</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">images:</span> <span class="string">registry.example.com/frontend/admin-web</span></span><br><span class="line">          <span class="attr">tags:</span> <span class="string">|</span></span><br><span class="line"><span class="string">            type=semver,pattern=&#123;&#123;version&#125;&#125;</span></span><br><span class="line"><span class="string">            type=sha,format=short</span></span><br><span class="line"><span class="string">            type=raw,value=latest,enable=&#123;&#123;is_default_branch&#125;&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">docker/build-push-action@v6</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">          <span class="attr">push:</span> <span class="literal">true</span></span><br><span class="line">          <span class="attr">tags:</span> <span class="string">$&#123;&#123;</span> <span class="string">steps.meta.outputs.tags</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="comment"># 用 registry 缓存，跨 runner 复用依赖层</span></span><br><span class="line">          <span class="attr">cache-from:</span> <span class="string">type=registry,ref=registry.example.com/frontend/admin-web:buildcache</span></span><br><span class="line">          <span class="attr">cache-to:</span> <span class="string">type=registry,ref=registry.example.com/frontend/admin-web:buildcache,mode=max</span></span><br></pre></td></tr></table></figure>
+
+<p><code>cache-from</code> &#x2F; <code>cache-to</code> 是 CI 里最有效的优化项。GitHub Actions 的 runner 每次都是干净环境，本地层缓存无从复用；把缓存推到镜像仓库，依赖没变时 <code>npm ci</code> 那一层能直接命中，构建时间通常能砍掉一半以上。</p>
+<p>GitLab CI 的等价写法：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">docker:29</span></span><br><span class="line">  <span class="attr">services:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">docker:29-dind</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;$CI_REGISTRY_PASSWORD&quot;</span> <span class="string">|</span> <span class="string">docker</span> <span class="string">login</span> <span class="string">-u</span> <span class="string">&quot;$CI_REGISTRY_USER&quot;</span> <span class="string">--password-stdin</span> <span class="string">&quot;$CI_REGISTRY&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">docker</span> <span class="string">build</span></span><br><span class="line">        <span class="string">--cache-from</span> <span class="string">&quot;$CI_REGISTRY_IMAGE:buildcache&quot;</span></span><br><span class="line">        <span class="string">--build-arg</span> <span class="string">BUILDKIT_INLINE_CACHE=1</span></span><br><span class="line">        <span class="string">-t</span> <span class="string">&quot;$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA&quot;</span></span><br><span class="line">        <span class="string">-t</span> <span class="string">&quot;$CI_REGISTRY_IMAGE:buildcache&quot;</span> <span class="string">.</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">docker</span> <span class="string">push</span> <span class="string">&quot;$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">docker</span> <span class="string">push</span> <span class="string">&quot;$CI_REGISTRY_IMAGE:buildcache&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>服务器端的滚动更新脚本，核心是<strong>先探活再切流量，失败能回滚</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="built_in">set</span> -euo pipefail</span><br><span class="line"></span><br><span class="line">IMAGE=<span class="string">&quot;registry.example.com/frontend/admin-web:<span class="variable">$1</span>&quot;</span></span><br><span class="line">OLD_IMAGE=$(docker inspect --format <span class="string">&#x27;&#123;&#123;.Config.Image&#125;&#125;&#x27;</span> admin-web 2&gt;/dev/null || <span class="built_in">echo</span> <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">docker pull <span class="string">&quot;<span class="variable">$IMAGE</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 先起新容器占用临时端口，探活通过再替换</span></span><br><span class="line">docker run -d --name admin-web-new -p 8081:80 <span class="string">&quot;<span class="variable">$IMAGE</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">seq</span> 1 30); <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> curl -fsS http://127.0.0.1:8081/healthz &gt; /dev/null; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;health check passed&quot;</span></span><br><span class="line">    docker <span class="built_in">rm</span> -f admin-web 2&gt;/dev/null || <span class="literal">true</span></span><br><span class="line">    docker rename admin-web-new admin-web</span><br><span class="line">    <span class="comment"># 重新映射正式端口（生产更常见的做法是让 Nginx upstream 切换）</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">sleep</span> 2</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;health check failed, rolling back&quot;</span></span><br><span class="line">docker <span class="built_in">rm</span> -f admin-web-new</span><br><span class="line">[ -n <span class="string">&quot;<span class="variable">$OLD_IMAGE</span>&quot;</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;still running old image: <span class="variable">$OLD_IMAGE</span>&quot;</span></span><br><span class="line"><span class="built_in">exit</span> 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-多架构镜像：M-系列-Mac-的经典坑"><a href="#7-3-多架构镜像：M-系列-Mac-的经典坑" class="headerlink" title="7.3 多架构镜像：M 系列 Mac 的经典坑"></a>7.3 多架构镜像：M 系列 Mac 的经典坑</h3><p>在 Apple Silicon 上构建的镜像默认是 <code>linux/arm64</code>，推到只有 x86 服务器的生产环境会直接起不来：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec /usr/local/bin/docker-entrypoint.sh: exec format error</span><br></pre></td></tr></table></figure>
+
+<p>用 buildx 构建多架构镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建支持多架构的 builder（一次性）</span></span><br><span class="line">docker buildx create --name multi --driver docker-container --use</span><br><span class="line">docker buildx inspect --bootstrap</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同时构建两种架构并推送</span></span><br><span class="line">docker buildx build \</span><br><span class="line">  --platform linux/amd64,linux/arm64 \</span><br><span class="line">  -t registry.example.com/frontend/admin-web:1.4.2 \</span><br><span class="line">  --push .</span><br></pre></td></tr></table></figure>
+
+<p>只需要 x86 时指定单一平台即可，但注意在 arm 机器上做 amd64 构建是靠 QEMU 模拟，会明显变慢：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker buildx build --platform linux/amd64 -t my-app:1.0 --push .</span><br></pre></td></tr></table></figure>
+
+<p>更好的做法是让 CI 在 x86 runner 上构建，本地只做开发——这也是「构建产物由流水线产出，不由个人电脑产出」这条规范的现实理由。</p>
+<h3 id="7-4-安全加固"><a href="#7-4-安全加固" class="headerlink" title="7.4 安全加固"></a>7.4 安全加固</h3><p>镜像安全在企业里通常是硬性检查项：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">20</span>-alpine AS runner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 创建并切换到非 root 用户</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> addgroup -S -g 1001 nodejs &amp;&amp; adduser -S -u 1001 -G nodejs nodejs</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder --<span class="built_in">chown</span>=nodejs:nodejs /app/dist ./dist</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder --<span class="built_in">chown</span>=nodejs:nodejs /app/node_modules ./node_modules</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">USER</span> nodejs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 声明健康检查，让编排系统知道容器是否真的可用</span></span><br><span class="line"><span class="keyword">HEALTHCHECK</span><span class="language-bash"> --interval=30s --<span class="built_in">timeout</span>=3s --start-period=20s --retries=3 \</span></span><br><span class="line"><span class="language-bash">  CMD wget -qO- http://127.0.0.1:3000/healthz || <span class="built_in">exit</span> 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;dist/main.js&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>运行时进一步收紧权限：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">read_only:</span> <span class="literal">true</span>              <span class="comment"># 根文件系统只读</span></span><br><span class="line">    <span class="attr">tmpfs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/tmp</span>                     <span class="comment"># 需要写入的目录单独给 tmpfs</span></span><br><span class="line">    <span class="attr">cap_drop:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ALL</span>                      <span class="comment"># 丢弃所有 Linux capability</span></span><br><span class="line">    <span class="attr">security_opt:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="literal">no</span><span class="string">-new-privileges:true</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>密钥绝不能进镜像。</strong> 镜像层是可被任意读取的，<code>RUN rm</code> 删掉也没用，历史层里还在：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 密钥永久留在镜像层里</span></span><br><span class="line"><span class="keyword">ENV</span> NPM_TOKEN=xxxx</span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm ci &amp;&amp; <span class="built_in">rm</span> -f .npmrc</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 用 BuildKit secret，不写入任何层</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> --mount=<span class="built_in">type</span>=secret,<span class="built_in">id</span>=npmrc,target=/root/.npmrc npm ci</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --secret <span class="built_in">id</span>=npmrc,src=<span class="variable">$HOME</span>/.npmrc -t my-app:1.0 .</span><br></pre></td></tr></table></figure>
+
+<p>运行时密钥通过环境变量或 secret 管理器注入，<code>.env</code> 文件加入 <code>.gitignore</code> 和 <code>.dockerignore</code>。</p>
+<p>镜像扫描接进流水线：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Trivy 扫描，发现高危漏洞就让 CI 失败</span></span><br><span class="line">trivy image --severity HIGH,CRITICAL --exit-code 1 my-app:1.0</span><br></pre></td></tr></table></figure>
+
+<p>日常最有效的减少漏洞的手段其实是<strong>换更小的基础镜像</strong>——<code>alpine</code> 比 <code>debian</code> 少一个数量级的包，<code>distroless</code> 甚至不含 shell，攻击面小得多：</p>
+<table>
+<thead>
+<tr>
+<th>基础镜像</th>
+<th>大小</th>
+<th>已知 CVE 量级</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>node:20</code></td>
+<td>~1.1 GB</td>
+<td>多</td>
+<td>含完整工具链</td>
+</tr>
+<tr>
+<td><code>node:20-slim</code></td>
+<td>~250 MB</td>
+<td>中</td>
+<td>Debian 精简版</td>
+</tr>
+<tr>
+<td><code>node:20-alpine</code></td>
+<td>~180 MB</td>
+<td>少</td>
+<td>musl libc，个别原生模块需注意兼容性</td>
+</tr>
+<tr>
+<td><code>gcr.io/distroless/nodejs20</code></td>
+<td>~170 MB</td>
+<td>最少</td>
+<td>无 shell、无包管理器，调试较麻烦</td>
+</tr>
+</tbody></table>
+<h3 id="7-5-资源限制与日志"><a href="#7-5-资源限制与日志" class="headerlink" title="7.5 资源限制与日志"></a>7.5 资源限制与日志</h3><p>不设限制的容器可以吃光整台机器的内存，把邻居服务一起拖死：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">resources:</span></span><br><span class="line">        <span class="attr">limits:</span></span><br><span class="line">          <span class="attr">cpus:</span> <span class="string">&quot;1.0&quot;</span></span><br><span class="line">          <span class="attr">memory:</span> <span class="string">512M</span></span><br><span class="line">        <span class="attr">reservations:</span></span><br><span class="line">          <span class="attr">memory:</span> <span class="string">256M</span></span><br><span class="line">    <span class="attr">logging:</span></span><br><span class="line">      <span class="attr">driver:</span> <span class="string">json-file</span></span><br><span class="line">      <span class="attr">options:</span></span><br><span class="line">        <span class="attr">max-size:</span> <span class="string">&quot;10m&quot;</span></span><br><span class="line">        <span class="attr">max-file:</span> <span class="string">&quot;3&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Node 应用还要额外注意：<strong>容器内存限制对 V8 是不可见的</strong>。V8 会按宿主机内存决定堆上限，容器限 512 MB 而 V8 以为自己有 16 GB，结果堆还没触发 GC 就被内核 OOM Killer 杀掉（退出码 137）：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把堆上限设成容器内存限制的 75% 左右</span></span><br><span class="line"><span class="keyword">ENV</span> NODE_OPTIONS=<span class="string">&quot;--max-old-space-size=384&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>日志一律输出到 stdout &#x2F; stderr，交给 Docker 的日志驱动，不要在容器内写文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✅ 输出到 stdout，由 docker logs / 采集器接管</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">level</span>: <span class="string">&#x27;info&#x27;</span>, <span class="attr">msg</span>: <span class="string">&#x27;request&#x27;</span>, <span class="attr">path</span>: req.<span class="property">path</span> &#125;));</span><br></pre></td></tr></table></figure>
+
+<p>写文件的话既要自己处理切割，又要挂卷才能持久化，还让集中式日志采集（Loki、ELK、云日志服务）无法直接消费。</p>
+<h3 id="7-6-从-Docker-到-Kubernetes"><a href="#7-6-从-Docker-到-Kubernetes" class="headerlink" title="7.6 从 Docker 到 Kubernetes"></a>7.6 从 Docker 到 Kubernetes</h3><p>单机到几台机器，<code>docker compose</code> 够用。服务数量和机器数量上来后会遇到 Compose 处理不了的问题：跨机调度、自动扩缩容、滚动更新与自动回滚、服务发现与负载均衡。这时才需要 K8s。</p>
+<p>好消息是本文的功课不会浪费，前面每一项都能一一对应过去：</p>
+<table>
+<thead>
+<tr>
+<th>Docker &#x2F; Compose</th>
+<th>Kubernetes</th>
+<th>本文对应小节</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>镜像</td>
+<td>镜像（完全相同）</td>
+<td>四</td>
+</tr>
+<tr>
+<td><code>compose.yaml</code> 的 service</td>
+<td>Deployment + Service</td>
+<td>五</td>
+</tr>
+<tr>
+<td><code>healthcheck</code></td>
+<td>livenessProbe &#x2F; readinessProbe</td>
+<td>5.4、7.4</td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td>ConfigMap &#x2F; Secret</td>
+<td>4.7、7.4</td>
+</tr>
+<tr>
+<td><code>volumes</code></td>
+<td>PersistentVolumeClaim</td>
+<td>6.2</td>
+</tr>
+<tr>
+<td><code>deploy.resources</code></td>
+<td>resources.limits &#x2F; requests</td>
+<td>7.5</td>
+</tr>
+<tr>
+<td>服务名 DNS</td>
+<td>Service DNS</td>
+<td>6.1</td>
+</tr>
+</tbody></table>
+<p>优雅关闭、状态外置、健康检查、一次构建多环境部署——这些在 K8s 里全都是硬性要求。在 Docker 阶段做对了，迁移基本就是换一套 YAML。</p>
+<hr>
+<h2 id="八、常见问题排查"><a href="#八、常见问题排查" class="headerlink" title="八、常见问题排查"></a>八、常见问题排查</h2><h3 id="8-1-容器启动就退出"><a href="#8-1-容器启动就退出" class="headerlink" title="8.1 容器启动就退出"></a>8.1 容器启动就退出</h3><p>最高频的问题。排查路径：</p>
+<pre class="mermaid">
+flowchart TB
+  S["docker ps -a 看到 Exited"] --> Code{"退出码是多少"}
+  Code -->|"0"| Z["主进程正常结束<br/>命令不是常驻进程"]
+  Code -->|"1 / 其他非 0"| E["应用报错<br/>docker logs 看堆栈"]
+  Code -->|"137"| O["被 SIGKILL<br/>多为内存超限 OOM"]
+  Code -->|"139"| SG["段错误<br/>常见于架构不匹配"]
+  Z --> Z1["Nginx 加 daemon off<br/>PM2 用 pm2-runtime"]
+  E --> E1["修复配置或依赖<br/>检查环境变量是否缺失"]
+  O --> O1["调大 memory 限制<br/>Node 设 max-old-space-size"]
+  SG --> SG1["确认镜像架构<br/>buildx 构建 amd64"]
+</pre>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a                    <span class="comment"># 看 STATUS 里的 Exited (码)</span></span><br><span class="line">docker logs &lt;容器名&gt;             <span class="comment"># 看具体报错</span></span><br></pre></td></tr></table></figure>
+
+<p>容器的生存前提是<strong>主进程必须在前台常驻</strong>。几个典型修法：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]           <span class="comment"># ✅ 而不是 nginx（会 daemon 化后退出）</span></span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;pm2-runtime&quot;</span>, <span class="string">&quot;start&quot;</span>, <span class="string">&quot;app.js&quot;</span>]       <span class="comment"># ✅ 而不是 pm2 start</span></span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;server.js&quot;</span>]                    <span class="comment"># ✅ 而不是 npm start（多一层进程，信号传不到）</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-构建缓存总是失效"><a href="#8-2-构建缓存总是失效" class="headerlink" title="8.2 构建缓存总是失效"></a>8.2 构建缓存总是失效</h3><p>现象：只改了一行业务代码，构建却重装了所有依赖。</p>
+<p>对照 4.4 节检查三件事：</p>
+<ol>
+<li><code>COPY package.json</code> 是否在 <code>COPY . .</code> <strong>之前</strong></li>
+<li><code>.dockerignore</code> 是否排除了 <code>node_modules</code>、<code>dist</code>、<code>.git</code></li>
+<li>依赖清单里是否有每次构建都会变的内容（比如版本号被 CI 自动改写）</li>
+</ol>
+<p>调试时可以看每一层的缓存命中情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build --progress=plain -t my-app:1.0 .   <span class="comment"># 输出里 CACHED 表示命中</span></span><br><span class="line">docker <span class="built_in">history</span> my-app:1.0                        <span class="comment"># 看每层大小，定位体积异常</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="8-3-端口冲突"><a href="#8-3-端口冲突" class="headerlink" title="8.3 端口冲突"></a>8.3 端口冲突</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: bind: address already in use</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找出占用端口的进程</span></span><br><span class="line">lsof -i :8080                    <span class="comment"># macOS / Linux</span></span><br><span class="line">netstat -ano | findstr :8080     <span class="comment"># Windows</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者是残留的旧容器占着</span></span><br><span class="line">docker ps -a --filter <span class="string">&quot;publish=8080&quot;</span></span><br><span class="line">docker <span class="built_in">rm</span> -f &lt;容器名&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-4-容器里连不上数据库"><a href="#8-4-容器里连不上数据库" class="headerlink" title="8.4 容器里连不上数据库"></a>8.4 容器里连不上数据库</h3><p>按 6.1 节的对照表逐项确认：</p>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是否在同一网络</td>
+<td><code>docker network inspect &lt;网络名&gt;</code></td>
+</tr>
+<tr>
+<td>用的是服务名而不是 localhost</td>
+<td>检查代码 &#x2F; 环境变量</td>
+</tr>
+<tr>
+<td>服务名能否解析</td>
+<td><code>docker compose exec api ping mysql</code></td>
+</tr>
+<tr>
+<td>目标端口是否真的在监听</td>
+<td><code>docker compose exec api wget -qO- mysql:3306</code></td>
+</tr>
+<tr>
+<td>数据库是否已就绪</td>
+<td><code>docker compose logs mysql</code>，配 healthcheck</td>
+</tr>
+</tbody></table>
+<h3 id="8-5-刷新页面-404"><a href="#8-5-刷新页面-404" class="headerlink" title="8.5 刷新页面 404"></a>8.5 刷新页面 404</h3><p>前端路由的经典问题，容器化之后依然存在——因为 Nginx 配置现在归你管了。回到 4.6 节，确认 <code>try_files $uri $uri/ /index.html;</code> 已配置。</p>
+<p>验证配置是否真的生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> web <span class="built_in">cat</span> /etc/nginx/conf.d/default.conf</span><br><span class="line">docker <span class="built_in">exec</span> web nginx -t          <span class="comment"># 语法检查</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用的是模板机制（4.7 节），要检查环境变量是否成功替换——变量没传时 <code>${BACKEND_HOST}</code> 会被替换成空字符串，导致 <code>proxy_pass http:///</code> 这种非法配置，Nginx 会启动失败。</p>
+<h3 id="8-6-磁盘被吃光"><a href="#8-6-磁盘被吃光" class="headerlink" title="8.6 磁盘被吃光"></a>8.6 磁盘被吃光</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker system <span class="built_in">df</span> -v</span><br></pre></td></tr></table></figure>
+
+<p>按占用大小依次清理，一般 build cache 是最大头：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker builder prune -f</span><br><span class="line">docker image prune -a</span><br><span class="line">docker container prune -f</span><br></pre></td></tr></table></figure>
+
+<p>日常预防就两件事：<code>daemon.json</code> 配好 <code>log-opts</code> 的日志切割（2.2 节），CI runner 上定期跑 <code>docker system prune</code>。</p>
+<h3 id="8-7-容器内时间不对"><a href="#8-7-容器内时间不对" class="headerlink" title="8.7 容器内时间不对"></a>8.7 容器内时间不对</h3><p>容器默认 UTC，日志时间比北京时间差 8 小时：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">TZ:</span> <span class="string">Asia/Shanghai</span></span><br></pre></td></tr></table></figure>
+
+<p>Alpine 镜像还需要装时区数据：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apk add --no-cache tzdata &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">echo</span> <span class="string">&quot;Asia/Shanghai&quot;</span> &gt; /etc/timezone</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="8-8-其他高频问题速查"><a href="#8-8-其他高频问题速查" class="headerlink" title="8.8 其他高频问题速查"></a>8.8 其他高频问题速查</h3><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>exec format error</code></td>
+<td>镜像架构与机器不匹配（M 系列 Mac 构建，x86 部署）</td>
+<td>buildx 指定 <code>--platform linux/amd64</code>（7.3）</td>
+</tr>
+<tr>
+<td><code>Cannot find module</code> 且报 <code>invalid ELF header</code></td>
+<td>宿主机的 <code>node_modules</code> 被复制进镜像</td>
+<td>加进 <code>.dockerignore</code>，在镜像内重新安装</td>
+</tr>
+<tr>
+<td>挂载源码后热更新不生效</td>
+<td>macOS &#x2F; Windows 文件事件传不进容器</td>
+<td>设 <code>CHOKIDAR_USEPOLLING=true</code>，或 dev server 跑在宿主机</td>
+</tr>
+<tr>
+<td>容器内 <code>node_modules</code> 是空的</td>
+<td>绑定挂载覆盖了镜像内的目录</td>
+<td>补一个匿名卷 <code>- /app/node_modules</code>（5.5）</td>
+</tr>
+<tr>
+<td>环境变量改了没生效</td>
+<td>前端变量是构建期注入的</td>
+<td>用 Nginx 代理或运行时生成 config.js（4.7）</td>
+</tr>
+<tr>
+<td><code>docker stop</code> 要等 10 秒</td>
+<td>应用没处理 <code>SIGTERM</code></td>
+<td>监听信号并 <code>server.close()</code>（3.2）</td>
+</tr>
+<tr>
+<td>退出码 137</td>
+<td>内存超限被 OOM Killer 杀掉</td>
+<td>调大 memory 限制 + 设 <code>--max-old-space-size</code>（7.5）</td>
+</tr>
+<tr>
+<td>容器时间是 UTC</td>
+<td>未设时区</td>
+<td>设 <code>TZ</code>，Alpine 还要装 <code>tzdata</code>（8.7）</td>
+</tr>
+<tr>
+<td><code>docker exec</code> 报容器不在运行</td>
+<td>容器已退出</td>
+<td>改用 <code>docker logs</code> 看退出原因（8.1）</td>
+</tr>
+<tr>
+<td><code>permission denied</code> 写文件失败</td>
+<td>切了非 root 用户但目录属主没改</td>
+<td><code>COPY --chown=</code>，或 <code>chown</code> 目标目录</td>
+</tr>
+<tr>
+<td>拉取镜像极慢 &#x2F; 超时</td>
+<td>未配镜像加速</td>
+<td>配 <code>registry-mirrors</code>（2.2）</td>
+</tr>
+<tr>
+<td><code>docker compose</code> 找不到命令</td>
+<td>装的是 v1 (<code>docker-compose</code>)</td>
+<td>装 compose 插件，改用 <code>docker compose</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="九、上生产前的检查清单"><a href="#九、上生产前的检查清单" class="headerlink" title="九、上生产前的检查清单"></a>九、上生产前的检查清单</h2><p><strong>镜像</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 用多阶段构建，最终镜像不含源码、devDependencies、构建工具链</li>
+<li><input disabled="" type="checkbox"> 基础镜像用 <code>alpine</code> &#x2F; <code>slim</code> &#x2F; <code>distroless</code>，且<strong>锁定具体版本</strong>而非 <code>latest</code></li>
+<li><input disabled="" type="checkbox"> <code>COPY package.json</code> 在 <code>COPY . .</code> 之前，依赖层可命中缓存</li>
+<li><input disabled="" type="checkbox"> 用 <code>npm ci</code> &#x2F; <code>--frozen-lockfile</code> 而不是 <code>npm install</code></li>
+<li><input disabled="" type="checkbox"> <code>.dockerignore</code> 已排除 <code>node_modules</code>、<code>.git</code>、<code>dist</code>、<code>.env</code></li>
+<li><input disabled="" type="checkbox"> 镜像里没有任何密钥（需要时用 BuildKit secret）</li>
+<li><input disabled="" type="checkbox"> 镜像打了不可变标签（版本号或 commit SHA），生产不用 <code>latest</code></li>
+<li><input disabled="" type="checkbox"> 需要跨架构时用 buildx 构建对应平台</li>
+</ul>
+<p><strong>运行</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> <code>CMD</code> 用数组形式，主进程在前台常驻且能收到 <code>SIGTERM</code></li>
+<li><input disabled="" type="checkbox"> 应用监听 <code>SIGTERM</code>，<code>server.close()</code> 后再退出，有超时兜底</li>
+<li><input disabled="" type="checkbox"> 以非 root 用户运行，必要目录已 <code>--chown</code></li>
+<li><input disabled="" type="checkbox"> 配了 <code>HEALTHCHECK</code> 或 Compose <code>healthcheck</code></li>
+<li><input disabled="" type="checkbox"> 配了 CPU &#x2F; 内存限制，Node 应用同步设了 <code>--max-old-space-size</code></li>
+<li><input disabled="" type="checkbox"> 日志输出到 stdout &#x2F; stderr，daemon 配了 <code>max-size</code> 与 <code>max-file</code></li>
+<li><input disabled="" type="checkbox"> 设了 <code>TZ</code>，日志时间正确</li>
+</ul>
+<p><strong>编排与网络</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 有状态服务全部挂了命名卷，<code>down -v</code> 的影响范围清楚</li>
+<li><input disabled="" type="checkbox"> 数据库、Redis 端口只绑 <code>127.0.0.1</code> 或不映射</li>
+<li><input disabled="" type="checkbox"> 服务间用服务名互访，代码里没有硬编码 <code>localhost</code></li>
+<li><input disabled="" type="checkbox"> <code>depends_on</code> 配了 <code>condition: service_healthy</code>，应用层也有重试</li>
+<li><input disabled="" type="checkbox"> 生产用 <code>-f compose.yaml</code> 显式指定配置，不误带 override</li>
+</ul>
+<p><strong>前端专项</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Nginx 配了 <code>try_files ... /index.html</code>，history 路由刷新不 404</li>
+<li><input disabled="" type="checkbox"> <code>index.html</code> 与 <code>config.js</code> 不缓存，带 hash 的静态资源长缓存</li>
+<li><input disabled="" type="checkbox"> 开了 gzip（或 brotli）</li>
+<li><input disabled="" type="checkbox"> 同一镜像能通过环境变量切换环境，不需要为每个环境重新构建</li>
+<li><input disabled="" type="checkbox"> 有 <code>/healthz</code> 端点供探针使用</li>
+</ul>
+<p><strong>流水线</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 镜像由 CI 构建，不由个人电脑构建</li>
+<li><input disabled="" type="checkbox"> 配了 layer cache（<code>cache-from</code> &#x2F; <code>cache-to</code>）</li>
+<li><input disabled="" type="checkbox"> 接入镜像安全扫描，高危漏洞阻断发布</li>
+<li><input disabled="" type="checkbox"> 部署脚本先探活再切流量，失败能回滚到上一个标签</li>
+<li><input disabled="" type="checkbox"> 定期 <code>docker system prune</code>，磁盘不会被构建缓存写满</li>
+</ul>
+<hr>
+<h2 id="十、小结"><a href="#十、小结" class="headerlink" title="十、小结"></a>十、小结</h2><p>Docker 的命令不多，<code>build</code> &#x2F; <code>run</code> &#x2F; <code>logs</code> &#x2F; <code>exec</code> &#x2F; <code>compose up</code> 就覆盖了日常九成场景。真正的难点在于<strong>理解它的几条边界</strong>：镜像是只读且分层的，所以缓存顺序决定构建速度；容器的可写层随容器销毁，所以数据必须挂卷；容器有独立网络命名空间，所以 <code>localhost</code> 不再指宿主机；前端环境变量是构建期注入的，所以「一次构建多环境部署」需要额外设计。这四条想清楚了，绝大多数「本地能跑、容器里不行」的问题都能自己定位。</p>
+<p>按重要性排序，前端工程师最值得先做对的三件事：</p>
+<ol>
+<li><strong>多阶段构建 + 缓存顺序</strong>——镜像从 1 GB 降到 25 MB，CI 构建从 90 秒降到 20 秒，这是投入产出比最高的一项</li>
+<li><strong>运行时配置注入</strong>——用 Nginx 代理或启动时生成 <code>config.js</code>，让同一个镜像走完测试、预发、生产。做不到这点，容器化的可复现性就打了对折</li>
+<li><strong>Compose 管本地中间件</strong>——把 MySQL、Redis 收进一份 YAML，新同事入职从「配环境一整天」变成「<code>docker compose up -d</code> 等两分钟」</li>
+</ol>
+<p>至于要不要全面容器化：纯静态站点用 CDN 更合适，容器化的收益主要体现在<strong>需要自己管运行环境</strong>的场景——有 Nginx 配置要交付、有后端服务要联调、有多环境要部署。而一旦服务数量和机器数量上来，需要跨机调度和弹性伸缩，再迁到 Kubernetes——届时本文关于镜像瘦身、健康检查、优雅关闭、配置外置的功课，一行都不会浪费。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">2light</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://enhezzz.github.io/2026/09/26/backend/docker/Docker实战完全指南：前端工程师的容器化入门/">https://enhezzz.github.io/2026/09/26/backend/docker/Docker实战完全指南：前端工程师的容器化入门/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://enhezzz.github.io">2light Blog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Docker/">Docker</a><a class="post-meta__tags" href="/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/">容器化</a><a class="post-meta__tags" href="/tags/%E8%BF%90%E7%BB%B4%E9%83%A8%E7%BD%B2/">运维部署</a><a class="post-meta__tags" href="/tags/CI-CD/">CI/CD</a><a class="post-meta__tags" href="/tags/Nginx/">Nginx</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2026/09/25/security/web-security/Web%E5%AE%89%E5%85%A8%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%B8%B8%E8%A7%81%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86%E4%B8%8E%E9%98%B2%E8%8C%83%E5%AE%9E%E6%88%98/"><span>Web 安全完全指南：常见攻击原理与防范实战</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: 'Ov23liC275BZ4L9UWZzz',
+  clientSecret: '3470fa0c9d53aab29d465cdff6423f401e8d4fdd',
+  repo: 'enhezzz.github.io',
+  owner: 'enhezzz',
+  admin: 'enhezzz',
+  id: md5(decodeURI(location.pathname)),
+  language: 'zh-CN'
+})
+gitalk.render('gitalk-container')</script></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2019 - 2026 By 2light</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">Good luck to you.</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script src="/js/search/algolia.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    securityLevel: 'strict',
+    flowchart: { curve: 'basis', useMaxWidth: true },
+    sequence: { useMaxWidth: true, showSequenceNumbers: false },
+  });
+</script>
+</body></html>
