@@ -1,0 +1,1006 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Agent Skill 完全指南：从触发机制到自定义开发"><meta name="keywords" content="AI Agent,Skill,Claude Code,自动化,Workflow"><meta name="author" content="2light"><meta name="copyright" content="2light"><title>Agent Skill 完全指南：从触发机制到自定义开发 | 2light Blog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"V1UE0WUPR6","apiKey":"5e389abe6aee51e81779d869389a8cda","indexName":"dev_blog","hits":{"per_page":10},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '8.1.1'
+} </script><meta name="generator" content="Hexo 8.1.1"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%85%88%E6%8A%8A%E5%85%B3%E7%B3%BB%E7%90%86%E6%B8%85%E6%A5%9A%EF%BC%9ASkill-%E4%B8%8D%E6%98%AF%E5%B7%A5%E5%85%B7%EF%BC%8C%E6%98%AF%E2%80%9D%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BF%86%E2%80%9D"><span class="toc-number">1.</span> <span class="toc-text">一、先把关系理清楚：Skill 不是工具，是”工作记忆”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Skill-%E5%9C%A8%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%A2%AB%E8%A7%A6%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">二、Skill 在什么时候被触发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91%E6%97%B6%E6%9C%BA%E6%9C%89%E4%B8%A4%E7%A7%8D"><span class="toc-number">2.1.</span> <span class="toc-text">触发时机有两种</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E5%BC%8F%E8%B0%83%E7%94%A8%EF%BC%9A%E6%96%9C%E6%9D%A0%E5%91%BD%E4%BB%A4"><span class="toc-number">2.2.</span> <span class="toc-text">显式调用：斜杠命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%90%E5%BC%8F%E5%8C%B9%E9%85%8D%EF%BC%9A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80"><span class="toc-number">2.3.</span> <span class="toc-text">隐式匹配：自然语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%B8%8D%E4%BC%9A%E8%A7%A6%E5%8F%91-Skill"><span class="toc-number">2.4.</span> <span class="toc-text">什么时候不会触发 Skill</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Skill-%E9%87%8C%E5%88%B0%E5%BA%95%E5%8C%85%E6%8B%AC%E5%93%AA%E4%BA%9B%E5%86%85%E5%AE%B9"><span class="toc-number">3.</span> <span class="toc-text">三、Skill 里到底包括哪些内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">标准结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95%E5%A5%97%E4%BB%B6"><span class="toc-number">3.2.</span> <span class="toc-text">2. 运行测试套件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A1%AE%E8%AE%A4%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">3.3.</span> <span class="toc-text">3. 确认环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%89%93%E7%89%88%E6%9C%AC%E6%A0%87%E7%AD%BE"><span class="toc-number">3.4.</span> <span class="toc-text">4. 打版本标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%89%A7%E8%A1%8C%E9%83%A8%E7%BD%B2"><span class="toc-number">3.5.</span> <span class="toc-text">5. 执行部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%83%A8%E7%BD%B2%E5%90%8E%E9%AA%8C%E8%AF%81"><span class="toc-number">3.6.</span> <span class="toc-text">6. 部署后验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E6%BB%9A%E6%B5%81%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">回滚流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">5.</span> <span class="toc-text">注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-description%EF%BC%88%E5%BF%85%E9%9C%80%EF%BC%89"><span class="toc-number">5.1.</span> <span class="toc-text">2. description（必需）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-tags%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">3. tags（可选）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skill-%E5%86%85%E5%AE%B9%E7%9A%84%E5%86%99%E4%BD%9C%E8%A7%84%E8%8C%83"><span class="toc-number">5.3.</span> <span class="toc-text">Skill 内容的写作规范</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84-Skill"><span class="toc-number">6.</span> <span class="toc-text">四、如何创建自己的 Skill</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-1%EF%BC%9A%E7%A1%AE%E5%AE%9A-Skill-%E7%9A%84%E8%8C%83%E5%9B%B4"><span class="toc-number">6.1.</span> <span class="toc-text">步骤 1：确定 Skill 的范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-2%EF%BC%9A%E5%88%9B%E5%BB%BA-Skill-%E6%96%87%E4%BB%B6"><span class="toc-number">6.2.</span> <span class="toc-text">步骤 2：创建 Skill 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-3%EF%BC%9A%E7%BC%96%E5%86%99-Skill-%E5%86%85%E5%AE%B9"><span class="toc-number">6.3.</span> <span class="toc-text">步骤 3：编写 Skill 内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-4%EF%BC%9A%E6%B5%8B%E8%AF%95-Skill"><span class="toc-number">6.4.</span> <span class="toc-text">步骤 4：测试 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-5%EF%BC%9A%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%90%AF%E7%94%A8%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">6.5.</span> <span class="toc-text">步骤 5：在项目中启用（可选）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%88%9B%E5%BB%BA-Skill-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">7.</span> <span class="toc-text">五、创建 Skill 的注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Description-%E6%98%AF%E6%88%90%E8%B4%A5%E7%9A%84%E5%85%B3%E9%94%AE"><span class="toc-number">7.1.</span> <span class="toc-text">1. Description 是成败的关键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8E%A7%E5%88%B6-Skill-%E7%9A%84%E7%B2%92%E5%BA%A6"><span class="toc-number">7.2.</span> <span class="toc-text">2. 控制 Skill 的粒度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%98%8E%E7%A1%AE%E7%94%A8%E6%88%B7%E7%A1%AE%E8%AE%A4%E7%82%B9"><span class="toc-number">7.3.</span> <span class="toc-text">3. 明确用户确认点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%81%BF%E5%85%8D-Skill-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96"><span class="toc-number">7.4.</span> <span class="toc-text">4. 避免 Skill 之间的循环依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%89%88%E6%9C%AC%E5%8C%96%E4%BD%A0%E7%9A%84-Skills"><span class="toc-number">7.5.</span> <span class="toc-text">5. 版本化你的 Skills</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%B5%8B%E8%AF%95%E4%BD%A0%E7%9A%84-Skill"><span class="toc-number">7.6.</span> <span class="toc-text">6. 测试你的 Skill</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81Agent-%E5%92%8C-Skill-%E7%9A%84%E5%AE%8C%E6%95%B4%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">8.</span> <span class="toc-text">六、Agent 和 Skill 的完整执行流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E7%9A%84%E5%85%B3%E9%94%AE%E7%82%B9"><span class="toc-number">8.1.</span> <span class="toc-text">执行流程的关键点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skill-%E5%9C%A8-Agent-%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">8.2.</span> <span class="toc-text">Skill 在 Agent 上下文中的位置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81Skill-vs-%E5%85%B6%E4%BB%96%E6%A6%82%E5%BF%B5%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="toc-number">9.</span> <span class="toc-text">七、Skill vs 其他概念的对比</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Skill-vs-Tool"><span class="toc-number">9.1.</span> <span class="toc-text">Skill vs Tool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skill-vs-Prompt"><span class="toc-number">9.2.</span> <span class="toc-text">Skill vs Prompt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skill-vs-Workflow"><span class="toc-number">9.3.</span> <span class="toc-text">Skill vs Workflow</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B%EF%BC%9A%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5-Skill"><span class="toc-number">10.</span> <span class="toc-text">八、实战案例：一个完整的代码审查 Skill</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-number">10.1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#code-review-skill-md"><span class="toc-number">10.2.</span> <span class="toc-text">code-review.skill.md</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-%E6%80%A7%E8%83%BD%E8%80%83%E8%99%91"><span class="toc-number">10.2.1.</span> <span class="toc-text">3.3 性能考虑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7%EF%BC%88a11y%EF%BC%89"><span class="toc-number">10.2.2.</span> <span class="toc-text">3.4 可访问性（a11y）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-number">10.2.3.</span> <span class="toc-text">3.5 安全性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">10.2.4.</span> <span class="toc-text">3.6 错误处理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-4%EF%BC%9A%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E6%A3%80%E6%9F%A5"><span class="toc-number">10.3.</span> <span class="toc-text">步骤 4：测试覆盖检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-5%EF%BC%9A%E7%94%9F%E6%88%90%E5%AE%A1%E6%9F%A5%E6%8A%A5%E5%91%8A"><span class="toc-number">10.4.</span> <span class="toc-text">步骤 5：生成审查报告</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E6%8A%A5%E5%91%8A"><span class="toc-number">11.</span> <span class="toc-text">代码审查报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8A-%E6%80%BB%E8%A7%88"><span class="toc-number">11.1.</span> <span class="toc-text">📊 总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B4-Critical-Issues%EF%BC%88%E5%BF%85%E9%A1%BB%E4%BF%AE%E5%A4%8D%EF%BC%89"><span class="toc-number">11.2.</span> <span class="toc-text">🔴 Critical Issues（必须修复）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%9F%A1-Warnings%EF%BC%88%E5%BB%BA%E8%AE%AE%E4%BF%AE%E5%A4%8D%EF%BC%89"><span class="toc-number">11.3.</span> <span class="toc-text">🟡 Warnings（建议修复）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B5-Suggestions%EF%BC%88%E5%8F%AF%E9%80%89%E4%BC%98%E5%8C%96%EF%BC%89"><span class="toc-number">11.4.</span> <span class="toc-text">🔵 Suggestions（可选优化）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%85-%E5%81%9A%E5%BE%97%E5%A5%BD%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">11.5.</span> <span class="toc-text">✅ 做得好的地方</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%88-%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96"><span class="toc-number">11.6.</span> <span class="toc-text">📈 测试覆盖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8E%AF-%E4%B8%8B%E4%B8%80%E6%AD%A5"><span class="toc-number">11.7.</span> <span class="toc-text">🎯 下一步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-1"><span class="toc-number">11.8.</span> <span class="toc-text">注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A1%E6%9F%A5%E5%8E%9F%E5%88%99"><span class="toc-number">11.8.1.</span> <span class="toc-text">审查原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1"><span class="toc-number">11.8.2.</span> <span class="toc-text">常见陷阱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88%E7%89%B9%E5%AE%9A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">11.8.3.</span> <span class="toc-text">技术栈特定注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB"><span class="toc-number">11.8.4.</span> <span class="toc-text">扩展阅读</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars.githubusercontent.com/u/29703980?v=4"></div><div class="author-info__name text-center">2light</div><div class="author-info__description text-center"></div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/enhezzz">关注我</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">28</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">87</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">12</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">2light Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Posts</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title">Agent Skill 完全指南：从触发机制到自定义开发</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2026-09-18<span class="post-meta__separator">|</span><i class="fa fa-calendar-check-o" aria-hidden="true"></i> 更新于 2026-09-18</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/AI/">AI</a><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">8.3k</span><span class="post-meta__separator">|</span><span>阅读时长: 31 分钟</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>给 Agent 分配任务，每次都要解释一遍”怎么做”：部署要先检查环境变量、跑测试、打 tag，代码审查要看命名、看边界、看测试覆盖……重复一百遍，Agent 还是得靠上下文记住。<strong>Skill（技能）要解决的就是这个”每次都要教一遍”的问题</strong>：把团队&#x2F;项目的标准操作流程打包成可复用的指令集，让 Agent 一次学会、每次都对。</p>
+<p>本文按这个顺序展开：Agent 和 Skill 到底是什么关系、Skill 在什么时刻被触发、Skill 里装了哪些东西、怎么创建自己的 Skill、有哪些注意要点，最后梳理整个执行流程。</p>
+<span id="more"></span>
+
+<h2 id="一、先把关系理清楚：Skill-不是工具，是”工作记忆”"><a href="#一、先把关系理清楚：Skill-不是工具，是”工作记忆”" class="headerlink" title="一、先把关系理清楚：Skill 不是工具，是”工作记忆”"></a>一、先把关系理清楚：Skill 不是工具，是”工作记忆”</h2><p>最常见的误解是把 Skill 当成”函数”或”工具”。它不是。<strong>Skill 是一套打包好的指令</strong>，告诉 Agent “遇到这类任务该怎么做”。</p>
+<p>三个概念必须分清：</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>是什么</th>
+<th>类比</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Agent（代理）</strong></td>
+<td>执行任务的 AI 实体，持有上下文、调用工具</td>
+<td>一个有经验的工程师</td>
+</tr>
+<tr>
+<td><strong>Tool（工具）</strong></td>
+<td>Agent 调用的原子能力，如读文件、跑命令</td>
+<td>工程师手里的 Git、Docker、IDE</td>
+</tr>
+<tr>
+<td><strong>Skill（技能）</strong></td>
+<td>针对特定任务的操作指南，教 Agent “怎么做好”</td>
+<td>工程师脑子里的”部署 SOP”</td>
+</tr>
+</tbody></table>
+<p>一个类比更清楚：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">没有 Skill：</span><br><span class="line">用户：&quot;帮我部署到生产环境&quot;</span><br><span class="line">Agent：开始猜测 → 可能直接 push → 忘记检查环境变量 → 出事</span><br><span class="line"></span><br><span class="line">有了 Skill：</span><br><span class="line">用户：&quot;帮我部署到生产环境&quot;</span><br><span class="line">Agent：识别到这是 /deploy 任务 → 加载 deploy.skill.md</span><br><span class="line">      → 按指令：检查分支 → 跑测试 → 确认环境变量 → 打 tag → 部署 → 验证</span><br></pre></td></tr></table></figure>
+
+<pre class="mermaid">
+graph TB
+    U["用户请求"] --> A["Agent 代理"]
+    
+    subgraph "Agent 工作流"
+        A --> D["理解任务"]
+        D --> M{"需要专业<br/>知识吗?"}
+        M -->|"是<br/>(部署/审查/测试)"| S["加载对应 Skill"]
+        M -->|"否<br/>(简单查询/编辑)"| E["直接执行"]
+        S --> L["按 Skill 指令执行"]
+        L --> T["调用 Tools"]
+        E --> T
+    end
+    
+    subgraph "Skill 库"
+        SK1["deploy.skill.md<br/>部署 SOP"]
+        SK2["code-review.skill.md<br/>代码审查清单"]
+        SK3["test.skill.md<br/>测试策略"]
+    end
+    
+    S -.-> SK1
+    S -.-> SK2
+    S -.-> SK3
+    
+    subgraph "Tool 箱"
+        T1["Read 读文件"]
+        T2["Bash 跑命令"]
+        T3["Edit 改代码"]
+    end
+    
+    T --> T1
+    T --> T2
+    T --> T3
+    
+    style S fill:#e1f5ff
+    style SK1 fill:#fff4e1
+    style SK2 fill:#fff4e1
+    style SK3 fill:#fff4e1
+</pre>
+
+<p><strong>Skill 完全不参与”执行”</strong>。它不会自己读文件、跑命令、改代码——这些都是 Tools 干的事。Skill 只是一份”剧本”，告诉 Agent：</p>
+<ul>
+<li>遇到这个任务，先做什么、再做什么</li>
+<li>哪些地方容易出错</li>
+<li>什么情况要停下来问用户</li>
+</ul>
+<p>这也是为什么同一个 Skill 可以被多个 Agent 使用、可以在不同项目间复用——它只是知识，不包含状态。</p>
+<pre class="mermaid">
+flowchart LR
+    subgraph before["没有 Skill：每次都要教"]
+        U1["用户"] -->|"怎么部署?"| A1["Agent"]
+        A1 -->|"要检查什么?"| U1
+        U1 -->|"先跑测试..."| A1
+        A1 -->|"然后呢?"| U1
+        U1 -->|"打 tag..."| A1
+    end
+    
+    subgraph after["有 Skill：教一次，用无数次"]
+        U2["用户"] -->|"/deploy"| A2["Agent"]
+        A2 --> S["加载 deploy skill"]
+        S --> A2
+        A2 -->|"按 SOP 执行"| Done["✓ 完成"]
+    end
+    
+    style before fill:#ffe0e0
+    style after fill:#e0ffe0
+</pre>
+
+<h2 id="二、Skill-在什么时候被触发"><a href="#二、Skill-在什么时候被触发" class="headerlink" title="二、Skill 在什么时候被触发"></a>二、Skill 在什么时候被触发</h2><p>这是理解 Skill 的关键：<strong>触发方式决定了 Skill 的设计</strong>。</p>
+<h3 id="触发时机有两种"><a href="#触发时机有两种" class="headerlink" title="触发时机有两种"></a>触发时机有两种</h3><pre class="mermaid">
+stateDiagram-v2
+    [*] --> 用户输入
+    
+    用户输入 --> 显式调用: 输入斜杠命令<br/>/deploy, /review
+    用户输入 --> 隐式匹配: 自然语言描述<br/>"帮我部署", "审查这个 PR"
+    
+    显式调用 --> 立即加载Skill
+    隐式匹配 --> Agent判断: Agent 分析任务
+    Agent判断 --> 加载Skill: 匹配到合适的 Skill
+    Agent判断 --> 直接执行: 无需 Skill
+    
+    立即加载Skill --> Skill执行
+    加载Skill --> Skill执行
+    直接执行 --> [*]
+    Skill执行 --> [*]
+    
+    note right of 显式调用
+        确定性高
+        用户明确知道要用哪个 Skill
+    end note
+    
+    note right of 隐式匹配
+        需要 Agent 推理
+        依赖 Skill 的描述质量
+    end note
+</pre>
+
+<table>
+<thead>
+<tr>
+<th>触发方式</th>
+<th>何时使用</th>
+<th>例子</th>
+<th>匹配依据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>显式调用</strong></td>
+<td>用户输入斜杠命令</td>
+<td><code>/deploy</code>、<code>/code-review</code></td>
+<td>命令名精确匹配</td>
+</tr>
+<tr>
+<td><strong>隐式匹配</strong></td>
+<td>用户用自然语言描述任务</td>
+<td>“帮我部署”、”审查这段代码”</td>
+<td>Skill 的 description 字段</td>
+</tr>
+<tr>
+<td><strong>项目强制</strong></td>
+<td>CLAUDE.md 规定某些操作必须用</td>
+<td>“所有部署必须走 &#x2F;deploy skill”</td>
+<td>项目配置文件</td>
+</tr>
+<tr>
+<td><strong>目录作用域</strong></td>
+<td>特定目录下自动启用</td>
+<td><code>apps/web/</code> 下自动用 web-test</td>
+<td>目录前缀匹配</td>
+</tr>
+</tbody></table>
+<h3 id="显式调用：斜杠命令"><a href="#显式调用：斜杠命令" class="headerlink" title="显式调用：斜杠命令"></a>显式调用：斜杠命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用户直接敲命令</span></span><br><span class="line">/deploy production</span><br><span class="line"></span><br><span class="line"><span class="comment"># Agent 的内部处理</span></span><br><span class="line">1. 识别到 /deploy 是一个 skill 名称</span><br><span class="line">2. 查找 .claude/skills/deploy.skill.md</span><br><span class="line">3. 把文件内容加载到当前 turn 的上下文</span><br><span class="line">4. 按照 Skill 里的指令执行</span><br></pre></td></tr></table></figure>
+
+<p>这是最可控的方式。用户清楚自己在调用什么，Agent 也不会误判。</p>
+<h3 id="隐式匹配：自然语言"><a href="#隐式匹配：自然语言" class="headerlink" title="隐式匹配：自然语言"></a>隐式匹配：自然语言</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用户用自然语言</span></span><br><span class="line"><span class="string">&quot;帮我把 feature/login 合到主分支，记得跑测试和代码审查&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Agent 的推理过程</span></span><br><span class="line">1. 分析任务：涉及合并、测试、代码审查</span><br><span class="line">2. 查看可用 Skills 列表（来自 system-reminder）</span><br><span class="line">3. 匹配 description：</span><br><span class="line">   - merge-pr.skill: <span class="string">&quot;合并 PR 前的完整检查流程&quot;</span> ✓</span><br><span class="line">   - code-review.skill: <span class="string">&quot;代码审查清单&quot;</span> ✓</span><br><span class="line">4. 决定：先用 code-review，再用 merge-pr</span><br><span class="line">5. 依次加载并执行</span><br></pre></td></tr></table></figure>
+
+<p>隐式匹配的关键是 <strong>Skill 的 description 必须写得足够具体</strong>，要包含能让 Agent 识别的关键词。</p>
+<h3 id="什么时候不会触发-Skill"><a href="#什么时候不会触发-Skill" class="headerlink" title="什么时候不会触发 Skill"></a>什么时候不会触发 Skill</h3><p>即使有 Skill，以下情况也不会自动触发：</p>
+<ol>
+<li><strong>任务太简单</strong>：”读一下 README” → 直接 Read，不需要 Skill</li>
+<li><strong>没有匹配的 Skill</strong>：”帮我写个 Python 爬虫” → 项目里没有 web-scraping skill</li>
+<li><strong>Skill 描述不匹配</strong>：用户说”上线”，但 Skill 描述里只写了”deploy”</li>
+<li><strong>已经在 Skill 内部</strong>：Skill 执行过程中不会再次触发自己（防止递归）</li>
+</ol>
+<pre class="mermaid">
+sequenceDiagram
+    participant U as 用户
+    participant A as Agent
+    participant SL as Skill 列表
+    participant SK as deploy.skill
+    participant T as Tools
+    
+    U->>A: "部署到生产环境"
+    
+    rect rgb(230, 240, 255)
+        Note over A: 触发判断阶段
+        A->>SL: 查询可用 Skills
+        SL-->>A: [deploy, test, review, ...]
+        A->>A: 分析任务关键词<br/>"部署" "生产环境"
+        A->>SK: 匹配到 deploy skill
+        SK-->>A: 加载 skill 内容
+    end
+    
+    rect rgb(240, 255, 240)
+        Note over A: Skill 执行阶段
+        A->>A: 按 Skill 指令<br/>1. 检查分支
+        A->>T: git branch --show-current
+        T-->>A: master
+        
+        A->>A: 2. 跑测试
+        A->>T: npm test
+        T-->>A: All tests passed
+        
+        A->>A: 3. 确认环境变量
+        A->>U: 需要确认生产环境配置
+        U-->>A: 确认
+        
+        A->>A: 4. 部署
+        A->>T: kubectl apply -f prod.yaml
+        T-->>A: Deployed successfully
+    end
+    
+    A->>U: ✓ 部署完成
+</pre>
+
+<h2 id="三、Skill-里到底包括哪些内容"><a href="#三、Skill-里到底包括哪些内容" class="headerlink" title="三、Skill 里到底包括哪些内容"></a>三、Skill 里到底包括哪些内容</h2><p>一个完整的 Skill 文件是 <strong>Markdown 格式的指令文档</strong>，Agent 会把它当作”此刻的工作指南”来遵循。</p>
+<h3 id="标准结构"><a href="#标准结构" class="headerlink" title="标准结构"></a>标准结构</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: deploy</span><br><span class="line">description: 部署到生产环境的完整流程，包括预检、测试、发布和验证</span><br><span class="line"><span class="section">tags: [deployment, production, ci-cd]</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 部署 Skill</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 适用场景</span></span><br><span class="line">当用户要求部署到生产环境、发布新版本、推送到 prod 时使用此 Skill。</span><br><span class="line"></span><br><span class="line"><span class="section">## 前置条件检查</span></span><br><span class="line"><span class="bullet">1.</span> 当前分支必须是 <span class="code">`main`</span> 或 <span class="code">`master`</span></span><br><span class="line"><span class="bullet">2.</span> 所有测试必须通过</span><br><span class="line"><span class="bullet">3.</span> 没有未提交的更改</span><br><span class="line"><span class="bullet">4.</span> 生产环境配置文件存在</span><br><span class="line"></span><br><span class="line"><span class="section">## 执行步骤</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 1. 环境检查</span></span><br><span class="line"><span class="code">```bash</span></span><br><span class="line"><span class="code">git status  # 确保工作区干净</span></span><br><span class="line"><span class="code">git branch --show-current  # 确认在主分支</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有未提交的更改，<strong>停止并询问用户</strong>。</p>
+<h3 id="2-运行测试套件"><a href="#2-运行测试套件" class="headerlink" title="2. 运行测试套件"></a>2. 运行测试套件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm run <span class="built_in">test</span>:all</span><br><span class="line">npm run lint</span><br></pre></td></tr></table></figure>
+
+<p>如果测试失败，<strong>不要继续部署</strong>，向用户报告失败的测试。</p>
+<h3 id="3-确认环境变量"><a href="#3-确认环境变量" class="headerlink" title="3. 确认环境变量"></a>3. 确认环境变量</h3><p>检查以下文件是否存在且配置正确：</p>
+<ul>
+<li><code>.env.production</code></li>
+<li><code>k8s/prod-config.yaml</code></li>
+</ul>
+<p><strong>必须向用户确认</strong>：”生产环境配置检查完毕，是否继续部署？”</p>
+<h3 id="4-打版本标签"><a href="#4-打版本标签" class="headerlink" title="4. 打版本标签"></a>4. 打版本标签</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">VERSION=$(npm version patch)  <span class="comment"># 或 minor/major</span></span><br><span class="line">git push --tags</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-执行部署"><a href="#5-执行部署" class="headerlink" title="5. 执行部署"></a>5. 执行部署</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm run build:prod</span><br><span class="line">kubectl apply -f k8s/prod-config.yaml</span><br><span class="line">kubectl rollout status deployment/myapp-prod</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-部署后验证"><a href="#6-部署后验证" class="headerlink" title="6. 部署后验证"></a>6. 部署后验证</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://api.example.com/health</span><br></pre></td></tr></table></figure>
+
+<p>期望返回 <code>{&quot;status&quot;: &quot;healthy&quot;}</code></p>
+<h2 id="回滚流程"><a href="#回滚流程" class="headerlink" title="回滚流程"></a>回滚流程</h2><p>如果部署失败或验证不通过：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout undo deployment/myapp-prod</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>⚠️ 生产部署是高风险操作，每个关键步骤都要向用户确认</li>
+<li>⚠️ 如果任何步骤失败，立即停止并报告</li>
+<li>⚠️ 部署成功后，通知用户新版本号和访问地址</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Skill 的组成部分</span><br><span class="line"></span><br><span class="line">&lt;pre class=&quot;mermaid&quot;&gt;</span><br><span class="line">mindmap</span><br><span class="line">  root((Skill 文件))</span><br><span class="line">    Frontmatter 元数据</span><br><span class="line">      name&lt;br/&gt;唯一标识符</span><br><span class="line">      description&lt;br/&gt;触发匹配的关键</span><br><span class="line">      tags&lt;br/&gt;分类标签</span><br><span class="line">      version&lt;br/&gt;版本号</span><br><span class="line">    适用场景</span><br><span class="line">      什么时候用这个 Skill</span><br><span class="line">      关键词触发条件</span><br><span class="line">    前置条件</span><br><span class="line">      必须满足的环境要求</span><br><span class="line">      缺少条件时的处理</span><br><span class="line">    执行步骤</span><br><span class="line">      详细的操作指令</span><br><span class="line">      代码片段</span><br><span class="line">      检查点</span><br><span class="line">    决策分支</span><br><span class="line">      if-else 逻辑</span><br><span class="line">      错误处理</span><br><span class="line">      用户确认点</span><br><span class="line">    注意事项</span><br><span class="line">      风险提示</span><br><span class="line">      最佳实践</span><br><span class="line">      常见陷阱</span><br><span class="line">    输出规范</span><br><span class="line">      成功时返回什么</span><br><span class="line">      失败时返回什么</span><br><span class="line">&lt;/pre&gt;</span><br><span class="line"></span><br><span class="line">### 关键字段详解</span><br><span class="line"></span><br><span class="line">#### 1. `name`（必需）</span><br><span class="line">```yaml</span><br><span class="line">name: deploy-frontend</span><br></pre></td></tr></table></figure>
+<ul>
+<li>唯一标识符，用于 <code>/deploy-frontend</code> 这样的显式调用</li>
+<li>使用 kebab-case</li>
+<li>避免与内置命令冲突（如 help、clear）</li>
+</ul>
+<h4 id="2-description（必需）"><a href="#2-description（必需）" class="headerlink" title="2. description（必需）"></a>2. <code>description</code>（必需）</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">部署前端应用到生产环境，包括构建、上传</span> <span class="string">CDN、更新</span> <span class="string">Nginx</span> <span class="string">配置和健康检查</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>最重要的字段</strong>，决定了隐式匹配的成败</li>
+<li>必须包含用户可能用的关键词</li>
+<li>说清楚这个 Skill 做什么、不做什么</li>
+</ul>
+<p>坏的例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">部署用的</span>  <span class="comment"># 太模糊</span></span><br></pre></td></tr></table></figure>
+
+<p>好的例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">部署前端应用（React/Vue）到生产环境，自动构建、上传</span> <span class="string">CDN、清除缓存、验证访问</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-tags（可选）"><a href="#3-tags（可选）" class="headerlink" title="3. tags（可选）"></a>3. <code>tags</code>（可选）</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">tags:</span> [<span class="string">frontend</span>, <span class="string">deployment</span>, <span class="string">cdn</span>, <span class="string">production</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>帮助 Agent 更精确匹配</li>
+<li>可以用于未来的 Skill 分组和过滤</li>
+</ul>
+<h3 id="Skill-内容的写作规范"><a href="#Skill-内容的写作规范" class="headerlink" title="Skill 内容的写作规范"></a>Skill 内容的写作规范</h3><pre class="mermaid">
+graph TB
+    Start["Skill 开始"] --> Check["前置条件检查"]
+    
+    Check -->|"满足"| Step1["步骤 1：环境准备"]
+    Check -->|"不满足"| Stop1["停止 + 报告缺失项"]
+    
+    Step1 --> Step2["步骤 2：执行主流程"]
+    Step2 --> Decision{"是否需要<br/>用户确认?"}
+    
+    Decision -->|"是<br/>(高风险操作)"| Ask["向用户确认"]
+    Decision -->|"否"| Step3
+    
+    Ask -->|"用户同意"| Step3["步骤 3：继续操作"]
+    Ask -->|"用户拒绝"| Stop2["停止 + 说明原因"]
+    
+    Step3 --> Verify["验证结果"]
+    Verify -->|"成功"| Success["报告成功 + 关键信息"]
+    Verify -->|"失败"| Rollback["执行回滚"]
+    
+    Rollback --> Stop3["停止 + 报告错误"]
+    
+    style Ask fill:#ffe0b2
+    style Stop1 fill:#ffcdd2
+    style Stop2 fill:#ffcdd2
+    style Stop3 fill:#ffcdd2
+    style Success fill:#c8e6c9
+</pre>
+
+<p><strong>必须包含的要素</strong>：</p>
+<ol>
+<li><strong>明确的检查点</strong></li>
+</ol>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">检查 <span class="code">`package.json`</span> 中的 <span class="code">`version`</span> 字段是否已更新。</span><br><span class="line">如果没有更新，<span class="strong">**停止并询问用户**</span>：&quot;版本号未更新，是否继续？&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>具体的命令</strong></li>
+</ol>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 不好：检查测试</span></span><br><span class="line"><span class="section"># 好：</span></span><br><span class="line">运行测试：</span><br><span class="line">\<span class="code">`\`</span>\`bash</span><br><span class="line">npm test -- --coverage --watchAll=false</span><br><span class="line">\<span class="code">`\`</span>\`</span><br><span class="line">期望所有测试通过，覆盖率 ≥ 80%。</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>错误处理</strong></li>
+</ol>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果构建失败（exit code ≠ 0）：</span><br><span class="line"><span class="bullet">1.</span> <span class="strong">**不要继续后续步骤**</span></span><br><span class="line"><span class="bullet">2.</span> 向用户展示错误日志</span><br><span class="line"><span class="bullet">3.</span> 询问：&quot;是否需要查看详细的构建日志？&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><strong>用户确认点</strong></li>
+</ol>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">⚠️ <span class="strong">**部署前最后确认**</span></span><br><span class="line">即将部署到生产环境：</span><br><span class="line"><span class="bullet">-</span> 版本：v1.2.3</span><br><span class="line"><span class="bullet">-</span> 目标：https://example.com</span><br><span class="line"><span class="bullet">-</span> 构建包大小：2.3 MB</span><br><span class="line"></span><br><span class="line"><span class="strong">**询问用户：&quot;确认部署吗？&quot;**</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="四、如何创建自己的-Skill"><a href="#四、如何创建自己的-Skill" class="headerlink" title="四、如何创建自己的 Skill"></a>四、如何创建自己的 Skill</h2><h3 id="步骤-1：确定-Skill-的范围"><a href="#步骤-1：确定-Skill-的范围" class="headerlink" title="步骤 1：确定 Skill 的范围"></a>步骤 1：确定 Skill 的范围</h3><p>先问自己三个问题：</p>
+<ol>
+<li><p><strong>这是一个重复性任务吗？</strong></p>
+<ul>
+<li>是 → 适合做成 Skill</li>
+<li>不是 → 可能只是一次性脚本</li>
+</ul>
+</li>
+<li><p><strong>这个任务有标准流程吗？</strong></p>
+<ul>
+<li>有 → 适合做成 Skill</li>
+<li>没有，每次都不同 → 不适合</li>
+</ul>
+</li>
+<li><p><strong>这个任务需要人工判断吗？</strong></p>
+<ul>
+<li>需要一些判断 → 在 Skill 里加确认点</li>
+<li>完全自动化 → 考虑做成工具或脚本</li>
+<li>完全靠人 → 不适合做成 Skill</li>
+</ul>
+</li>
+</ol>
+<p><strong>适合做成 Skill 的任务</strong>：</p>
+<ul>
+<li>✅ 部署流程（有标准步骤，但需要人确认关键节点）</li>
+<li>✅ 代码审查清单（重复性高，但需要人判断）</li>
+<li>✅ 数据库迁移（标准流程，高风险需要确认）</li>
+<li>✅ 创建新组件（有脚手架模板，但可能需要调整）</li>
+</ul>
+<p><strong>不适合做成 Skill 的任务</strong>：</p>
+<ul>
+<li>❌ 修复特定 bug（一次性任务）</li>
+<li>❌ 探索性数据分析（每次都不同）</li>
+<li>❌ 紧急故障处理（太依赖上下文）</li>
+</ul>
+<h3 id="步骤-2：创建-Skill-文件"><a href="#步骤-2：创建-Skill-文件" class="headerlink" title="步骤 2：创建 Skill 文件"></a>步骤 2：创建 Skill 文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 标准位置</span></span><br><span class="line">.claude/</span><br><span class="line">  skills/</span><br><span class="line">    deploy-frontend.skill.md      <span class="comment"># 单个 Skill</span></span><br><span class="line">    code-review.skill.md</span><br><span class="line">    db-migration.skill.md</span><br><span class="line">    shared/                        <span class="comment"># 共享 Skills</span></span><br><span class="line">      git-workflow.skill.md</span><br></pre></td></tr></table></figure>
+
+<p>目录作用域（可选）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apps/</span><br><span class="line">  web/</span><br><span class="line">    .claude/</span><br><span class="line">      skills/</span><br><span class="line">        web-test.skill.md          <span class="comment"># 只在 apps/web/ 下可用</span></span><br><span class="line">  mobile/</span><br><span class="line">    .claude/</span><br><span class="line">      skills/</span><br><span class="line">        mobile-test.skill.md       <span class="comment"># 只在 apps/mobile/ 下可用</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="步骤-3：编写-Skill-内容"><a href="#步骤-3：编写-Skill-内容" class="headerlink" title="步骤 3：编写 Skill 内容"></a>步骤 3：编写 Skill 内容</h3><p><strong>模板：</strong></p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: my-skill</span><br><span class="line">description: 用一句话说清楚这个 Skill 做什么，包含关键词</span><br><span class="line">tags: [tag1, tag2]</span><br><span class="line"><span class="section">version: 1.0.0</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># Skill 名称</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 适用场景</span></span><br><span class="line">明确说明：</span><br><span class="line"><span class="bullet">-</span> 什么时候用这个 Skill</span><br><span class="line"><span class="bullet">-</span> 用户可能用什么词描述这个任务</span><br><span class="line"></span><br><span class="line"><span class="section">## 前置条件</span></span><br><span class="line">列出必须满足的条件：</span><br><span class="line"><span class="bullet">-</span> [ ] 条件 1</span><br><span class="line"><span class="bullet">-</span> [ ] 条件 2</span><br><span class="line"></span><br><span class="line">如果不满足，应该如何处理。</span><br><span class="line"></span><br><span class="line"><span class="section">## 执行步骤</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 步骤 1：xxx</span></span><br><span class="line">详细说明要做什么，包括：</span><br><span class="line"><span class="bullet">-</span> 要运行的命令</span><br><span class="line"><span class="bullet">-</span> 期望的输出</span><br><span class="line"><span class="bullet">-</span> 错误时的处理</span><br><span class="line"></span><br><span class="line">\<span class="code">`\`</span>\`bash</span><br><span class="line"><span class="section"># 具体命令</span></span><br><span class="line">command here</span><br><span class="line">\<span class="code">`\`</span>\`</span><br><span class="line"></span><br><span class="line"><span class="strong">**检查点：**</span> 期望看到 xxx，如果没有，停止并询问用户。</span><br><span class="line"></span><br><span class="line"><span class="section">### 步骤 2：xxx</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="section">### 步骤 N：验证</span></span><br><span class="line">说明如何验证操作成功。</span><br><span class="line"></span><br><span class="line"><span class="section">## 错误处理</span></span><br><span class="line">常见错误和对应的处理方式。</span><br><span class="line"></span><br><span class="line"><span class="section">## 注意事项</span></span><br><span class="line"><span class="bullet">-</span> ⚠️ 风险提示</span><br><span class="line"><span class="bullet">-</span> 💡 最佳实践</span><br><span class="line"><span class="bullet">-</span> 🐛 常见陷阱</span><br></pre></td></tr></table></figure>
+
+<h3 id="步骤-4：测试-Skill"><a href="#步骤-4：测试-Skill" class="headerlink" title="步骤 4：测试 Skill"></a>步骤 4：测试 Skill</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法 1：显式调用</span></span><br><span class="line">在 Agent 中输入：/my-skill</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法 2：自然语言触发</span></span><br><span class="line">在 Agent 中输入：&lt;用 description 里的关键词描述任务&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法 3：检查 Skill 是否被识别</span></span><br><span class="line">在 Agent 中输入：/help</span><br><span class="line"><span class="comment"># 查看 my-skill 是否在列表中</span></span><br></pre></td></tr></table></figure>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant D as 开发者
+    participant F as Skill 文件
+    participant A as Agent
+    participant U as 用户
+    
+    rect rgb(255, 248, 230)
+        Note over D,F: 创建阶段
+        D->>F: 编写 deploy-frontend.skill.md
+        D->>F: 定义 name, description, tags
+        D->>F: 编写执行步骤
+        D->>F: 添加检查点和确认点
+    end
+    
+    rect rgb(230, 248, 255)
+        Note over F,A: 注册阶段
+        F->>A: Agent 启动时扫描 .claude/skills/
+        A->>A: 解析 frontmatter
+        A->>A: 加入可用 Skills 列表
+    end
+    
+    rect rgb(240, 255, 240)
+        Note over U,A: 使用阶段
+        U->>A: "部署前端到生产"
+        A->>A: 匹配到 deploy-frontend skill
+        A->>F: 加载 skill 内容
+        F-->>A: 返回指令
+        A->>A: 按 skill 执行
+        A->>U: 完成部署
+    end
+    
+    rect rgb(255, 240, 245)
+        Note over D,U: 迭代阶段
+        U->>D: 反馈："少了 CDN 缓存清理"
+        D->>F: 更新 skill，添加清理步骤
+        F->>A: Agent 重启时自动更新
+    end
+</pre>
+
+<h3 id="步骤-5：在项目中启用（可选）"><a href="#步骤-5：在项目中启用（可选）" class="headerlink" title="步骤 5：在项目中启用（可选）"></a>步骤 5：在项目中启用（可选）</h3><p>如果希望团队成员都使用这个 Skill，在 <code>CLAUDE.md</code> 中声明：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># CLAUDE.md</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 强制使用的 Skills</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**部署操作必须使用 `/deploy-frontend` skill**</span></span><br><span class="line"><span class="bullet">  -</span> 包括：部署到生产、部署到预发、发布新版本</span><br><span class="line"><span class="bullet">  -</span> 原因：确保每次部署都经过完整检查</span><br><span class="line">  </span><br><span class="line"><span class="bullet">-</span> <span class="strong">**代码审查必须使用 `/code-review` skill**</span></span><br><span class="line"><span class="bullet">  -</span> 包括：审查 PR、review 代码、代码质量检查</span><br><span class="line"><span class="bullet">  -</span> 原因：保证审查的一致性和完整性</span><br><span class="line"></span><br><span class="line"><span class="section">## 目录专用 Skills</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="code">`apps/web/`</span> 下的测试使用 <span class="code">`/web-test`</span> skill</span><br><span class="line"><span class="bullet">-</span> <span class="code">`apps/api/`</span> 下的部署使用 <span class="code">`/api-deploy`</span> skill</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、创建-Skill-的注意事项"><a href="#五、创建-Skill-的注意事项" class="headerlink" title="五、创建 Skill 的注意事项"></a>五、创建 Skill 的注意事项</h2><h3 id="1-Description-是成败的关键"><a href="#1-Description-是成败的关键" class="headerlink" title="1. Description 是成败的关键"></a>1. Description 是成败的关键</h3><pre class="mermaid">
+graph LR
+    User["用户：<br/>'把代码推到线上'"] --> Agent["Agent 分析"]
+    
+    Agent --> Bad["❌ 坏的 description:<br/>'部署用的'"]
+    Agent --> Good["✓ 好的 description:<br/>'部署代码到生产环境，<br/>支持推送、上线、发布'"]
+    
+    Bad --> Miss["匹配失败"]
+    Good --> Match["成功匹配"]
+    
+    style Bad fill:#ffcdd2
+    style Good fill:#c8e6c9
+    style Miss fill:#ffcdd2
+    style Match fill:#c8e6c9
+</pre>
+
+<p><strong>好的 description 特征</strong>：</p>
+<ul>
+<li>✅ 包含用户可能用的同义词（部署 &#x2F; 上线 &#x2F; 发布 &#x2F; 推送）</li>
+<li>✅ 说明具体做什么（”包括构建、上传、验证”）</li>
+<li>✅ 指明适用范围（”前端应用” vs “后端服务”）</li>
+</ul>
+<p><strong>坏的 description 特征</strong>：</p>
+<ul>
+<li>❌ 太简单（”部署”）</li>
+<li>❌ 太宽泛（”处理代码相关的事”）</li>
+<li>❌ 没有关键词（”Skill 1”）</li>
+</ul>
+<h3 id="2-控制-Skill-的粒度"><a href="#2-控制-Skill-的粒度" class="headerlink" title="2. 控制 Skill 的粒度"></a>2. 控制 Skill 的粒度</h3><pre class="mermaid">
+graph TB
+    subgraph "❌ 粒度太细：维护负担重"
+        S1["login-check.skill"]
+        S2["build-check.skill"]
+        S3["test-check.skill"]
+        S4["deploy-exec.skill"]
+        S5["deploy-verify.skill"]
+    end
+    
+    subgraph "✓ 粒度适中：一个完整流程"
+        S6["deploy.skill<br/>包含检查 → 构建 → 测试 → 部署 → 验证"]
+    end
+    
+    subgraph "❌ 粒度太粗：难以复用"
+        S7["everything.skill<br/>包含部署、测试、审查、文档..."]
+    end
+    
+    style S6 fill:#c8e6c9
+    style S1 fill:#ffcdd2
+    style S2 fill:#ffcdd2
+    style S3 fill:#ffcdd2
+    style S4 fill:#ffcdd2
+    style S5 fill:#ffcdd2
+    style S7 fill:#ffcdd2
+</pre>
+
+<p><strong>黄金原则</strong>：一个 Skill &#x3D; 一个完整的用户任务</p>
+<p>好的拆分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">✓ deploy-frontend.skill      (前端部署的完整流程)</span><br><span class="line">✓ deploy-backend.skill       (后端部署的完整流程)</span><br><span class="line">✓ code-review.skill          (代码审查的完整清单)</span><br><span class="line">✓ db-migration.skill         (数据库迁移的完整流程)</span><br></pre></td></tr></table></figure>
+
+<p>不好的拆分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">❌ deploy-step1.skill         (部署的第一步)</span><br><span class="line">❌ deploy-step2.skill         (部署的第二步)</span><br><span class="line">   → 用户不会说&quot;执行部署的第二步&quot;</span><br><span class="line"></span><br><span class="line">❌ do-everything.skill        (包含所有操作)</span><br><span class="line">   → 太宽泛，难以维护</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-明确用户确认点"><a href="#3-明确用户确认点" class="headerlink" title="3. 明确用户确认点"></a>3. 明确用户确认点</h3><pre class="mermaid">
+stateDiagram-v2
+    [*] --> 低风险操作: 读取配置、检查状态
+    低风险操作 --> 低风险操作: 无需确认，直接执行
+    
+    低风险操作 --> 中风险操作: 修改文件、安装依赖
+    中风险操作 --> 提示用户: "即将修改 X 文件"
+    提示用户 --> 中风险操作: 继续执行
+    
+    中风险操作 --> 高风险操作: 部署生产、删除数据
+    高风险操作 --> 必须确认: "⚠️ 即将部署到生产，确认？"
+    必须确认 --> 等待回复
+    等待回复 --> 高风险操作: 用户确认
+    等待回复 --> [*]: 用户拒绝
+    
+    高风险操作 --> [*]
+    
+    note right of 低风险操作
+        可逆、无副作用
+        自动执行
+    end note
+    
+    note right of 中风险操作
+        有副作用，但可回滚
+        告知用户即可
+    end note
+    
+    note right of 高风险操作
+        难以回滚、影响生产
+        必须用户确认
+    end note
+</pre>
+
+<p>在 Skill 中明确标记：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">### 步骤 3：部署到生产</span></span><br><span class="line"></span><br><span class="line">⚠️ <span class="strong">**高风险操作，必须确认**</span></span><br><span class="line"></span><br><span class="line">即将执行：</span><br><span class="line"><span class="bullet">-</span> 部署目标：https://example.com</span><br><span class="line"><span class="bullet">-</span> 版本：v1.2.3</span><br><span class="line"><span class="bullet">-</span> 影响：所有线上用户</span><br><span class="line"></span><br><span class="line"><span class="strong">**停下来，向用户展示以上信息，询问：&quot;确认部署吗？&quot;**</span></span><br><span class="line"></span><br><span class="line">只有在用户明确回复&quot;是&quot;、&quot;确认&quot;、&quot;继续&quot;时才继续。</span><br><span class="line">如果用户回复&quot;否&quot;、&quot;取消&quot;或任何犹豫的话，立即停止。</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-避免-Skill-之间的循环依赖"><a href="#4-避免-Skill-之间的循环依赖" class="headerlink" title="4. 避免 Skill 之间的循环依赖"></a>4. 避免 Skill 之间的循环依赖</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">❌ 不好的设计：</span><br><span class="line">deploy.skill → 调用 test.skill → 调用 build.skill → 调用 deploy.skill (循环！)</span><br><span class="line"></span><br><span class="line">✓ 好的设计：</span><br><span class="line">deploy.skill</span><br><span class="line">  → 直接包含测试步骤</span><br><span class="line">  → 直接包含构建步骤</span><br><span class="line">  → 不调用其他 Skills</span><br><span class="line"></span><br><span class="line">或者：</span><br><span class="line">deploy.skill → 调用 test.skill (test 不调用其他 skill)</span><br><span class="line"><span class="code">            → 调用 build.skill (build 不调用其他 skill)</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>原则：Skill 之间保持平级关系</strong>，一个 Skill 完成一个独立任务。</p>
+<h3 id="5-版本化你的-Skills"><a href="#5-版本化你的-Skills" class="headerlink" title="5. 版本化你的 Skills"></a>5. 版本化你的 Skills</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: deploy</span><br><span class="line">description: ...</span><br><span class="line">version: 2.1.0</span><br><span class="line">changelog:</span><br><span class="line"><span class="bullet">  -</span> 2.1.0 (2024-03-15): 添加 CDN 缓存清理</span><br><span class="line"><span class="bullet">  -</span> 2.0.0 (2024-03-01): 重构为新的部署流程</span><br><span class="line"><span class="section">  - 1.0.0 (2024-02-01): 初始版本</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
+
+<p>当 Skill 的逻辑有重大变更时：</p>
+<ul>
+<li>更新 <code>version</code></li>
+<li>在 <code>changelog</code> 里记录变更</li>
+<li>考虑在团队中公告</li>
+</ul>
+<h3 id="6-测试你的-Skill"><a href="#6-测试你的-Skill" class="headerlink" title="6. 测试你的 Skill"></a>6. 测试你的 Skill</h3><pre class="mermaid">
+graph TB
+    Write["编写 Skill"] --> Test1["测试 1：显式调用"]
+    Test1 --> Check1{"是否按预期<br/>执行?"}
+    Check1 -->|"否"| Debug1["检查步骤逻辑"]
+    Check1 -->|"是"| Test2["测试 2：隐式触发"]
+    
+    Debug1 --> Write
+    
+    Test2 --> Check2{"是否能被<br/>匹配到?"}
+    Check2 -->|"否"| Debug2["优化 description"]
+    Check2 -->|"是"| Test3["测试 3：错误场景"]
+    
+    Debug2 --> Write
+    
+    Test3 --> Check3{"错误处理<br/>是否正确?"}
+    Check3 -->|"否"| Debug3["完善错误处理"]
+    Check3 -->|"是"| Test4["测试 4：边界条件"]
+    
+    Debug3 --> Write
+    
+    Test4 --> Check4{"边界情况<br/>处理正确?"}
+    Check4 -->|"否"| Debug4["添加检查点"]
+    Check4 -->|"是"| Done["✓ 完成"]
+    
+    Debug4 --> Write
+    
+    style Done fill:#c8e6c9
+    style Debug1 fill:#ffe0b2
+    style Debug2 fill:#ffe0b2
+    style Debug3 fill:#ffe0b2
+    style Debug4 fill:#ffe0b2
+</pre>
+
+<p><strong>测试清单</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">□ 显式调用测试</span><br><span class="line"><span class="bullet">  -</span> [ ] /my-skill 能正确触发</span><br><span class="line"><span class="bullet">  -</span> [ ] 所有步骤都能执行</span><br><span class="line"><span class="bullet">  -</span> [ ] 输出符合预期</span><br><span class="line"></span><br><span class="line">□ 隐式触发测试</span><br><span class="line"><span class="bullet">  -</span> [ ] 用自然语言能匹配到</span><br><span class="line"><span class="bullet">  -</span> [ ] 测试多种表述方式</span><br><span class="line"><span class="bullet">  -</span> [ ] 不会误匹配其他任务</span><br><span class="line"></span><br><span class="line">□ 错误处理测试</span><br><span class="line"><span class="bullet">  -</span> [ ] 前置条件不满足时能正确停止</span><br><span class="line"><span class="bullet">  -</span> [ ] 中间步骤失败时能正确报错</span><br><span class="line"><span class="bullet">  -</span> [ ] 错误信息清晰可理解</span><br><span class="line"></span><br><span class="line">□ 边界条件测试</span><br><span class="line"><span class="bullet">  -</span> [ ] 空输入</span><br><span class="line"><span class="bullet">  -</span> [ ] 异常输入</span><br><span class="line"><span class="bullet">  -</span> [ ] 超大输入</span><br><span class="line"></span><br><span class="line">□ 用户交互测试</span><br><span class="line"><span class="bullet">  -</span> [ ] 确认点能正确等待用户输入</span><br><span class="line"><span class="bullet">  -</span> [ ] 用户拒绝时能正确停止</span><br><span class="line"><span class="bullet">  -</span> [ ] 用户输入异常时有提示</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、Agent-和-Skill-的完整执行流程"><a href="#六、Agent-和-Skill-的完整执行流程" class="headerlink" title="六、Agent 和 Skill 的完整执行流程"></a>六、Agent 和 Skill 的完整执行流程</h2><p>让我们把整个流程串起来，看看从用户输入到任务完成，Agent 和 Skill 是如何协作的。</p>
+<pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant U as 用户
+    participant A as Agent 主循环
+    participant SM as Skill 管理器
+    participant SK as deploy.skill
+    participant LLM as 大语言模型
+    participant T as Tools (Bash/Read/Edit)
+    
+    rect rgb(255, 250, 240)
+        Note over U,A: 阶段 1：任务理解
+        U->>A: "把前端代码部署到生产"
+        A->>LLM: 理解任务意图
+        LLM-->>A: 这是一个部署任务
+    end
+    
+    rect rgb(240, 248, 255)
+        Note over A,SK: 阶段 2：Skill 匹配
+        A->>SM: 查询可用 Skills
+        SM-->>A: [deploy, test, review, ...]
+        A->>LLM: 哪个 Skill 最匹配？
+        LLM-->>A: deploy.skill (description 匹配)
+        A->>SK: 加载 deploy.skill 内容
+        SK-->>A: 返回完整指令
+    end
+    
+    rect rgb(240, 255, 240)
+        Note over A,T: 阶段 3：按 Skill 执行
+        A->>A: 解析 Skill：步骤 1 是检查分支
+        A->>T: git branch --show-current
+        T-->>A: master
+        
+        A->>A: 步骤 2：运行测试
+        A->>T: npm test
+        T-->>A: All tests passed ✓
+        
+        A->>A: 步骤 3：需要用户确认
+        A->>U: ⚠️ 即将部署到生产，确认？
+        U-->>A: 确认
+        
+        A->>A: 步骤 4：执行部署
+        A->>T: npm run build && npm run deploy:prod
+        T-->>A: Deployed successfully
+        
+        A->>A: 步骤 5：验证部署
+        A->>T: curl https://example.com/health
+        T-->>A: {"status": "ok"}
+    end
+    
+    rect rgb(255, 245, 255)
+        Note over A,U: 阶段 4：报告结果
+        A->>U: ✓ 部署完成<br/>版本：v1.2.3<br/>地址：https://example.com
+    end
+</pre>
+
+<h3 id="执行流程的关键点"><a href="#执行流程的关键点" class="headerlink" title="执行流程的关键点"></a>执行流程的关键点</h3><pre class="mermaid">
+flowchart TB
+    Start([用户输入]) --> Parse[Agent 解析任务]
+    
+    Parse --> NeedSkill{需要专业<br/>知识吗?}
+    
+    NeedSkill -->|"否<br/>(简单任务)"| Direct[直接调用 Tools]
+    NeedSkill -->|"是<br/>(复杂任务)"| FindSkill[查找匹配的 Skill]
+    
+    FindSkill --> HasSkill{找到<br/>Skill?}
+    HasSkill -->|"否"| AskLLM[LLM 自己推理]
+    HasSkill -->|"是"| LoadSkill[加载 Skill 内容]
+    
+    LoadSkill --> Context["Skill 进入 Agent 上下文<br/>(作为当前任务的指南)"]
+    
+    Context --> Execute[Agent 按 Skill 执行]
+    
+    Execute --> Step[执行当前步骤]
+    Step --> Tool[调用 Tools]
+    Tool --> Check{检查点?}
+    
+    Check -->|"通过"| Next{还有下一步?}
+    Check -->|"失败"| Error[报告错误 + 停止]
+    
+    Next -->|"是"| Step
+    Next -->|"否"| Verify[验证最终结果]
+    
+    Verify --> Success{成功?}
+    Success -->|"是"| Report[报告成功]
+    Success -->|"否"| Rollback[执行回滚]
+    
+    Direct --> Report
+    AskLLM --> Tool
+    Rollback --> Error
+    
+    Report --> End([完成])
+    Error --> End
+    
+    style LoadSkill fill:#e1f5ff
+    style Context fill:#e1f5ff
+    style Execute fill:#e1f5ff
+    style Report fill:#c8e6c9
+    style Error fill:#ffcdd2
+</pre>
+
+<h3 id="Skill-在-Agent-上下文中的位置"><a href="#Skill-在-Agent-上下文中的位置" class="headerlink" title="Skill 在 Agent 上下文中的位置"></a>Skill 在 Agent 上下文中的位置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────┐</span><br><span class="line">│ Agent 的当前上下文 (Context Window)              │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│ 1. 系统提示 (System Prompt)                     │</span><br><span class="line">│    - Agent 的基本能力                            │</span><br><span class="line">│    - 可用的 Tools 列表                           │</span><br><span class="line">│    - 安全规则                                    │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│ 2. 可用 Skills 列表 (Skill Registry)            │</span><br><span class="line">│    - deploy.skill: &quot;部署到生产环境...&quot;           │</span><br><span class="line">│    - test.skill: &quot;运行测试套件...&quot;               │</span><br><span class="line">│    - review.skill: &quot;代码审查清单...&quot;             │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│ 3. 对话历史 (Conversation History)              │</span><br><span class="line">│    - 用户之前的问题                              │</span><br><span class="line">│    - Agent 之前的回答                            │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│ 4. 当前任务 (Current Task)                      │</span><br><span class="line">│    - 用户：&quot;把前端代码部署到生产&quot;                │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│ 5. ✨ 加载的 Skill (Loaded Skill)               │</span><br><span class="line">│    ┌───────────────────────────────────────┐   │</span><br><span class="line">│    │ deploy.skill 的完整内容                 │   │</span><br><span class="line">│    │ - 前置条件检查                         │   │</span><br><span class="line">│    │ - 步骤 1：检查分支                     │   │</span><br><span class="line">│    │ - 步骤 2：运行测试                     │   │</span><br><span class="line">│    │ - 步骤 3：用户确认                     │   │</span><br><span class="line">│    │ - 步骤 4：执行部署                     │   │</span><br><span class="line">│    │ - 步骤 5：验证                         │   │</span><br><span class="line">│    └───────────────────────────────────────┘   │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│ 6. 执行状态 (Execution State)                   │</span><br><span class="line">│    - 当前在步骤 3                                │</span><br><span class="line">│    - 等待用户确认                                │</span><br><span class="line">└─────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p><strong>关键点</strong>：</p>
+<ul>
+<li>Skill 不是”函数调用”，而是临时加载到上下文的”指导手册”</li>
+<li>Agent 按照 Skill 的指令一步步执行，就像在遵循一份 SOP</li>
+<li>执行过程中 Agent 仍然可以调用所有 Tools</li>
+<li>Skill 执行完成后，内容会从上下文中移除（节省 token）</li>
+</ul>
+<h2 id="七、Skill-vs-其他概念的对比"><a href="#七、Skill-vs-其他概念的对比" class="headerlink" title="七、Skill vs 其他概念的对比"></a>七、Skill vs 其他概念的对比</h2><h3 id="Skill-vs-Tool"><a href="#Skill-vs-Tool" class="headerlink" title="Skill vs Tool"></a>Skill vs Tool</h3><pre class="mermaid">
+graph TB
+    subgraph "Tool 是原子能力"
+        T1["Read 读文件"]
+        T2["Bash 跑命令"]
+        T3["Edit 改代码"]
+        
+        Note1["特点：<br/>- 单一功能<br/>- 无状态<br/>- 立即执行"]
+    end
+    
+    subgraph "Skill 是流程编排"
+        S1["deploy.skill<br/>1. 检查环境<br/>2. 跑测试<br/>3. 确认<br/>4. 部署<br/>5. 验证"]
+        
+        Note2["特点：<br/>- 多步骤<br/>- 有决策<br/>- 需确认"]
+    end
+    
+    S1 -.-> T1
+    S1 -.-> T2
+    S1 -.-> T3
+    
+    Note3["Skill 编排 Tools"]
+    
+    style S1 fill:#e1f5ff
+    style T1 fill:#fff4e1
+    style T2 fill:#fff4e1
+    style T3 fill:#fff4e1
+</pre>
+
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Tool（工具）</th>
+<th>Skill（技能）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>定位</strong></td>
+<td>原子操作</td>
+<td>流程指南</td>
+</tr>
+<tr>
+<td><strong>执行方式</strong></td>
+<td>立即执行，返回结果</td>
+<td>分步执行，可能需要多次调用 Tools</td>
+</tr>
+<tr>
+<td><strong>状态</strong></td>
+<td>无状态</td>
+<td>有状态（记住当前在哪一步）</td>
+</tr>
+<tr>
+<td><strong>决策</strong></td>
+<td>不包含决策</td>
+<td>包含 if-else、检查点、确认点</td>
+</tr>
+<tr>
+<td><strong>例子</strong></td>
+<td><code>Read</code>、<code>Bash</code>、<code>Edit</code></td>
+<td><code>deploy.skill</code>、<code>review.skill</code></td>
+</tr>
+<tr>
+<td><strong>类比</strong></td>
+<td>锤子、螺丝刀、扳手</td>
+<td>装修施工图</td>
+</tr>
+</tbody></table>
+<h3 id="Skill-vs-Prompt"><a href="#Skill-vs-Prompt" class="headerlink" title="Skill vs Prompt"></a>Skill vs Prompt</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Skill</th>
+<th>Prompt（提示词）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>触发方式</strong></td>
+<td>隐式匹配 或 显式命令</td>
+<td>仅显式命令</td>
+</tr>
+<tr>
+<td><strong>作用时机</strong></td>
+<td>Agent 执行任务时</td>
+<td>用户想改变 Agent 行为时</td>
+</tr>
+<tr>
+<td><strong>内容</strong></td>
+<td>操作步骤、检查点</td>
+<td>角色设定、输出格式、语气</td>
+</tr>
+<tr>
+<td><strong>持久性</strong></td>
+<td>持久化在文件中</td>
+<td>可能只在当前会话有效</td>
+</tr>
+<tr>
+<td><strong>例子</strong></td>
+<td><code>/deploy</code> → 执行部署流程</td>
+<td><code>/speak-chinese</code> → 用中文回答</td>
+</tr>
+</tbody></table>
+<h3 id="Skill-vs-Workflow"><a href="#Skill-vs-Workflow" class="headerlink" title="Skill vs Workflow"></a>Skill vs Workflow</h3><p>如果你的项目支持 Workflow（多 Agent 编排），关系是：</p>
+<pre class="mermaid">
+graph TB
+    W["Workflow<br/>(多 Agent 协作)"]
+    A1["Agent 1"]
+    A2["Agent 2"]
+    A3["Agent 3"]
+    
+    S1["Skill 1"]
+    S2["Skill 2"]
+    S3["Skill 3"]
+    
+    T["Tools"]
+    
+    W --> A1
+    W --> A2
+    W --> A3
+    
+    A1 -.-> S1
+    A2 -.-> S2
+    A3 -.-> S3
+    
+    S1 -.-> T
+    S2 -.-> T
+    S3 -.-> T
+    
+    Note1["Workflow 编排 Agents<br/>Skill 指导单个 Agent<br/>Tools 是执行层"]
+    
+    style W fill:#d1c4e9
+    style A1 fill:#e1f5ff
+    style A2 fill:#e1f5ff
+    style A3 fill:#e1f5ff
+    style S1 fill:#fff9c4
+    style S2 fill:#fff9c4
+    style S3 fill:#fff9c4
+</pre>
+
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>概念</th>
+<th>负责什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>编排层</strong></td>
+<td>Workflow</td>
+<td>协调多个 Agent</td>
+</tr>
+<tr>
+<td><strong>执行层</strong></td>
+<td>Agent</td>
+<td>完成单个任务</td>
+</tr>
+<tr>
+<td><strong>指导层</strong></td>
+<td>Skill</td>
+<td>告诉 Agent 怎么做</td>
+</tr>
+<tr>
+<td><strong>能力层</strong></td>
+<td>Tool</td>
+<td>提供原子能力</td>
+</tr>
+</tbody></table>
+<h2 id="八、实战案例：一个完整的代码审查-Skill"><a href="#八、实战案例：一个完整的代码审查-Skill" class="headerlink" title="八、实战案例：一个完整的代码审查 Skill"></a>八、实战案例：一个完整的代码审查 Skill</h2><p>让我们通过一个真实的例子，把前面的所有知识点串起来。</p>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>前端团队要求所有 PR 合并前必须经过统一的代码审查，包括：</p>
+<ul>
+<li>代码规范检查</li>
+<li>边界条件处理</li>
+<li>性能考虑</li>
+<li>可访问性（a11y）</li>
+<li>测试覆盖</li>
+</ul>
+<h3 id="code-review-skill-md"><a href="#code-review-skill-md" class="headerlink" title="code-review.skill.md"></a>code-review.skill.md</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: code-review</span><br><span class="line">description: 前端代码审查完整清单，检查代码规范、边界处理、性能、可访问性和测试覆盖，适用于 PR 审查、代码 review、合并前检查</span><br><span class="line">tags: [code-quality, review, frontend, pr]</span><br><span class="line"><span class="section">version: 1.2.0</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 前端代码审查 Skill</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 适用场景</span></span><br><span class="line"><span class="bullet">-</span> 用户说&quot;审查这个 PR&quot;、&quot;review 代码&quot;、&quot;检查代码质量&quot;</span><br><span class="line"><span class="bullet">-</span> 用户说&quot;看看这段代码有什么问题&quot;</span><br><span class="line"><span class="bullet">-</span> 合并前的代码检查</span><br><span class="line"></span><br><span class="line"><span class="section">## 前置条件</span></span><br><span class="line"><span class="bullet">-</span> [ ] 代码已提交（有 git diff 可看）或指定了文件路径</span><br><span class="line"><span class="bullet">-</span> [ ] 项目有明确的技术栈（React/Vue/Angular）</span><br><span class="line"></span><br><span class="line"><span class="section">## 执行步骤</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 步骤 1：识别变更范围</span></span><br><span class="line"></span><br><span class="line">如果是 PR 审查：</span><br><span class="line">\<span class="code">`\`</span>\`bash</span><br><span class="line">git diff origin/main --name-only</span><br><span class="line">\<span class="code">`\`</span>\`</span><br><span class="line"></span><br><span class="line">如果用户指定了文件，直接读取文件。</span><br><span class="line"></span><br><span class="line"><span class="strong">**输出**</span>：列出要审查的文件，按类型分组：</span><br><span class="line"><span class="bullet">-</span> 组件文件（.tsx/.vue）</span><br><span class="line"><span class="bullet">-</span> 样式文件（.css/.scss）</span><br><span class="line"><span class="bullet">-</span> 工具函数（utils/）</span><br><span class="line"><span class="bullet">-</span> 配置文件</span><br><span class="line"></span><br><span class="line"><span class="section">### 步骤 2：代码规范检查</span></span><br><span class="line"></span><br><span class="line">对每个文件运行 linter：</span><br><span class="line">\<span class="code">`\`</span>\`bash</span><br><span class="line">npm run lint -- <span class="language-xml"><span class="tag">&lt;<span class="name">file-path</span>&gt;</span></span></span><br><span class="line">\<span class="code">`\`</span>\`</span><br><span class="line"></span><br><span class="line"><span class="strong">**检查点**</span>：</span><br><span class="line"><span class="bullet">-</span> 如果有 lint 错误，<span class="strong">**记录下来，但继续审查**</span>（不要停止）</span><br><span class="line"><span class="bullet">-</span> 区分&quot;错误&quot;和&quot;警告&quot;</span><br><span class="line"></span><br><span class="line"><span class="section">### 步骤 3：人工代码审查（核心）</span></span><br><span class="line"></span><br><span class="line">对每个文件，按以下维度检查：</span><br><span class="line"></span><br><span class="line"><span class="section">#### 3.1 命名和可读性</span></span><br><span class="line"><span class="bullet">-</span> [ ] 变量名是否语义化（不要 <span class="code">`temp1`</span>、<span class="code">`data2`</span>）</span><br><span class="line"><span class="bullet">-</span> [ ] 函数名是否表意（<span class="code">`getUserInfo`</span> 优于 <span class="code">`get`</span>）</span><br><span class="line"><span class="bullet">-</span> [ ] 魔法数字是否提取为常量</span><br><span class="line"></span><br><span class="line"><span class="section">#### 3.2 边界条件处理</span></span><br><span class="line"><span class="bullet">-</span> [ ] 空数组、空对象的处理</span><br><span class="line">  <span class="code">```tsx</span></span><br><span class="line"><span class="code">  // ❌ 不好</span></span><br><span class="line"><span class="code">  const firstItem = items[0]</span></span><br><span class="line"><span class="code">  </span></span><br><span class="line"><span class="code">  // ✓ 好</span></span><br><span class="line"><span class="code">  const firstItem = items?.[0] ?? defaultItem</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><input disabled="" type="checkbox"> null&#x2F;undefined 的处理</li>
+<li><input disabled="" type="checkbox"> 异步操作的 loading&#x2F;error 状态</li>
+</ul>
+<h4 id="3-3-性能考虑"><a href="#3-3-性能考虑" class="headerlink" title="3.3 性能考虑"></a>3.3 性能考虑</h4><ul>
+<li><input disabled="" type="checkbox"> 是否有不必要的重复渲染<ul>
+<li>React：是否缺少 <code>useMemo</code>&#x2F;<code>useCallback</code></li>
+<li>Vue：是否正确使用 <code>computed</code></li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> 大列表是否做了虚拟滚动</li>
+<li><input disabled="" type="checkbox"> 图片是否懒加载</li>
+</ul>
+<h4 id="3-4-可访问性（a11y）"><a href="#3-4-可访问性（a11y）" class="headerlink" title="3.4 可访问性（a11y）"></a>3.4 可访问性（a11y）</h4><ul>
+<li><input disabled="" type="checkbox"> 按钮是否有 <code>aria-label</code></li>
+<li><input disabled="" type="checkbox"> 图片是否有 <code>alt</code></li>
+<li><input disabled="" type="checkbox"> 表单是否有 <code>label</code></li>
+<li><input disabled="" type="checkbox"> 键盘导航是否可用（<code>tabIndex</code>）</li>
+</ul>
+<h4 id="3-5-安全性"><a href="#3-5-安全性" class="headerlink" title="3.5 安全性"></a>3.5 安全性</h4><ul>
+<li><input disabled="" type="checkbox"> 用户输入是否转义（防 XSS）</li>
+<li><input disabled="" type="checkbox"> API 调用是否有鉴权</li>
+<li><input disabled="" type="checkbox"> 敏感信息是否暴露在前端</li>
+</ul>
+<h4 id="3-6-错误处理"><a href="#3-6-错误处理" class="headerlink" title="3.6 错误处理"></a>3.6 错误处理</h4><ul>
+<li><input disabled="" type="checkbox"> try-catch 包裹异步操作</li>
+<li><input disabled="" type="checkbox"> 错误信息是否友好（用户能懂）</li>
+<li><input disabled="" type="checkbox"> 是否有错误上报（Sentry 等）</li>
+</ul>
+<h3 id="步骤-4：测试覆盖检查"><a href="#步骤-4：测试覆盖检查" class="headerlink" title="步骤 4：测试覆盖检查"></a>步骤 4：测试覆盖检查</h3><p>```bash<br>npm run test:coverage – <file-path><br>```</p>
+<p><strong>评估标准</strong>：</p>
+<ul>
+<li>覆盖率 ≥ 80%：✓ 通过</li>
+<li>覆盖率 60-80%：⚠️ 建议补充</li>
+<li>覆盖率 &lt; 60%：❌ 要求补充测试</li>
+</ul>
+<h3 id="步骤-5：生成审查报告"><a href="#步骤-5：生成审查报告" class="headerlink" title="步骤 5：生成审查报告"></a>步骤 5：生成审查报告</h3><p>按以下格式输出：</p>
+<p>```markdown</p>
+<h1 id="代码审查报告"><a href="#代码审查报告" class="headerlink" title="代码审查报告"></a>代码审查报告</h1><h2 id="📊-总览"><a href="#📊-总览" class="headerlink" title="📊 总览"></a>📊 总览</h2><ul>
+<li>审查文件数：X</li>
+<li>发现问题数：Y</li>
+<li>严重程度：🔴 Critical: A | 🟡 Warning: B | 🔵 Suggestion: C</li>
+</ul>
+<h2 id="🔴-Critical-Issues（必须修复）"><a href="#🔴-Critical-Issues（必须修复）" class="headerlink" title="🔴 Critical Issues（必须修复）"></a>🔴 Critical Issues（必须修复）</h2><ol>
+<li><strong>文件</strong>：<code>src/components/UserProfile.tsx:42</code><br><strong>问题</strong>：未处理 API 错误，可能导致白屏<br><strong>建议</strong>：<br>```tsx<br>try {<br>  const data &#x3D; await fetchUser()<br>} catch (error) {<br>  showErrorMessage(error)<br>}<br>```</li>
+</ol>
+<h2 id="🟡-Warnings（建议修复）"><a href="#🟡-Warnings（建议修复）" class="headerlink" title="🟡 Warnings（建议修复）"></a>🟡 Warnings（建议修复）</h2><ol>
+<li><strong>文件</strong>：<code>src/utils/format.ts:15</code><br><strong>问题</strong>：魔法数字 <code>86400000</code><br><strong>建议</strong>：提取为 <code>const ONE_DAY_MS = 86400000</code></li>
+</ol>
+<h2 id="🔵-Suggestions（可选优化）"><a href="#🔵-Suggestions（可选优化）" class="headerlink" title="🔵 Suggestions（可选优化）"></a>🔵 Suggestions（可选优化）</h2><ol>
+<li><strong>性能</strong>：<code>UserList</code> 组件可以用 <code>React.memo</code> 优化</li>
+</ol>
+<h2 id="✅-做得好的地方"><a href="#✅-做得好的地方" class="headerlink" title="✅ 做得好的地方"></a>✅ 做得好的地方</h2><ul>
+<li>✓ 所有组件都有 TypeScript 类型</li>
+<li>✓ 错误边界已正确设置</li>
+<li>✓ 可访问性标注完整</li>
+</ul>
+<h2 id="📈-测试覆盖"><a href="#📈-测试覆盖" class="headerlink" title="📈 测试覆盖"></a>📈 测试覆盖</h2><ul>
+<li>总体覆盖率：75%</li>
+<li>建议补充：<code>formatDate</code> 函数的边界条件测试</li>
+</ul>
+<h2 id="🎯-下一步"><a href="#🎯-下一步" class="headerlink" title="🎯 下一步"></a>🎯 下一步</h2><p>[ ] 修复 Critical Issues<br>[ ] 考虑 Warnings<br>[ ] 补充测试到 80%</p>
+<p>是否批准合并：⚠️ 建议修复 Critical Issues 后合并<br>```</p>
+<h2 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="审查原则"><a href="#审查原则" class="headerlink" title="审查原则"></a>审查原则</h3><ol>
+<li><p><strong>不是找茬，是帮助</strong></p>
+<ul>
+<li>指出问题的同时给出建议</li>
+<li>肯定做得好的地方</li>
+</ul>
+</li>
+<li><p><strong>区分严重程度</strong></p>
+<ul>
+<li>Critical：必须修复（安全、功能缺陷）</li>
+<li>Warning：应该修复（性能、可维护性）</li>
+<li>Suggestion：锦上添花（风格、优化）</li>
+</ul>
+</li>
+<li><p><strong>提供示例代码</strong></p>
+<ul>
+<li>不要只说”这里有问题”</li>
+<li>给出”应该怎么改”的代码示例</li>
+</ul>
+</li>
+</ol>
+<h3 id="常见陷阱"><a href="#常见陷阱" class="headerlink" title="常见陷阱"></a>常见陷阱</h3><ul>
+<li>⚠️ 不要因为一个小问题就拒绝整个 PR</li>
+<li>⚠️ 不要过度关注代码风格（那是 linter 的工作）</li>
+<li>⚠️ 不要忽略测试覆盖（这是质量保证的底线）</li>
+</ul>
+<h3 id="技术栈特定注意事项"><a href="#技术栈特定注意事项" class="headerlink" title="技术栈特定注意事项"></a>技术栈特定注意事项</h3><p><strong>React</strong>：</p>
+<ul>
+<li>检查 Hooks 依赖数组是否正确</li>
+<li>检查是否有不必要的 re-render</li>
+</ul>
+<p><strong>Vue</strong>：</p>
+<ul>
+<li>检查 <code>ref</code> 和 <code>reactive</code> 的使用是否合理</li>
+<li>检查 <code>watch</code> 是否需要 <code>deep</code> 选项</li>
+</ul>
+<p><strong>TypeScript</strong>：</p>
+<ul>
+<li>检查是否有 <code>any</code> 类型（应该用具体类型）</li>
+<li>检查是否有未处理的 <code>Promise</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 使用示例</span><br><span class="line"></span><br><span class="line">&lt;pre class=&quot;mermaid&quot;&gt;</span><br><span class="line">sequenceDiagram</span><br><span class="line">    participant U as 用户</span><br><span class="line">    participant A as Agent</span><br><span class="line">    participant SK as code-review.skill</span><br><span class="line">    participant T as Tools</span><br><span class="line">    </span><br><span class="line">    U-&gt;&gt;A: &quot;帮我 review 这个 PR&quot;</span><br><span class="line">    A-&gt;&gt;SK: 加载 code-review skill</span><br><span class="line">    </span><br><span class="line">    rect rgb(240, 248, 255)</span><br><span class="line">        Note over A,T: 步骤 1：识别变更</span><br><span class="line">        A-&gt;&gt;T: git diff origin/main --name-only</span><br><span class="line">        T--&gt;&gt;A: src/components/UserProfile.tsx&lt;br/&gt;src/utils/format.ts</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    rect rgb(255, 248, 240)</span><br><span class="line">        Note over A,T: 步骤 2：Lint 检查</span><br><span class="line">        A-&gt;&gt;T: npm run lint</span><br><span class="line">        T--&gt;&gt;A: 3 warnings in UserProfile.tsx</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    rect rgb(240, 255, 240)</span><br><span class="line">        Note over A,T: 步骤 3：人工审查</span><br><span class="line">        A-&gt;&gt;T: Read src/components/UserProfile.tsx</span><br><span class="line">        T--&gt;&gt;A: [文件内容]</span><br><span class="line">        A-&gt;&gt;A: 按 skill 清单逐项检查&lt;br/&gt;- 命名 ✓&lt;br/&gt;- 边界处理 ✗ (缺少 error handling)&lt;br/&gt;- 性能 ✓&lt;br/&gt;- a11y ⚠️ (缺少 aria-label)</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    rect rgb(255, 240, 240)</span><br><span class="line">        Note over A,T: 步骤 4：测试覆盖</span><br><span class="line">        A-&gt;&gt;T: npm run test:coverage</span><br><span class="line">        T--&gt;&gt;A: Coverage: 75%</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    rect rgb(248, 240, 255)</span><br><span class="line">        Note over A,U: 步骤 5：生成报告</span><br><span class="line">        A-&gt;&gt;U: 📊 代码审查报告&lt;br/&gt;🔴 1 Critical&lt;br/&gt;🟡 2 Warnings&lt;br/&gt;🔵 1 Suggestion&lt;br/&gt;&lt;br/&gt;建议修复 Critical 后合并</span><br><span class="line">    end</span><br><span class="line">&lt;/pre&gt;</span><br><span class="line"></span><br><span class="line">## 九、总结</span><br><span class="line"></span><br><span class="line">&lt;pre class=&quot;mermaid&quot;&gt;</span><br><span class="line">mindmap</span><br><span class="line">  root((Agent Skill))</span><br><span class="line">    是什么</span><br><span class="line">      打包的指令集</span><br><span class="line">      可复用的 SOP</span><br><span class="line">      工作记忆</span><br><span class="line">    何时触发</span><br><span class="line">      显式调用&lt;br/&gt;/skill-name</span><br><span class="line">      隐式匹配&lt;br/&gt;自然语言</span><br><span class="line">      项目强制&lt;br/&gt;CLAUDE.md</span><br><span class="line">    包含什么</span><br><span class="line">      适用场景</span><br><span class="line">      前置条件</span><br><span class="line">      执行步骤</span><br><span class="line">      检查点和确认点</span><br><span class="line">      错误处理</span><br><span class="line">      注意事项</span><br><span class="line">    如何创建</span><br><span class="line">      确定任务范围</span><br><span class="line">      编写 Skill 文件</span><br><span class="line">      测试触发和执行</span><br><span class="line">      版本化和维护</span><br><span class="line">    注意事项</span><br><span class="line">      Description 是关键</span><br><span class="line">      控制粒度</span><br><span class="line">      明确确认点</span><br><span class="line">      避免循环依赖</span><br><span class="line">      充分测试</span><br><span class="line">    与其他概念的关系</span><br><span class="line">      vs Tool&lt;br/&gt;流程编排 vs 原子能力</span><br><span class="line">      vs Prompt&lt;br/&gt;操作指南 vs 行为设定</span><br><span class="line">      vs Workflow&lt;br/&gt;单 Agent vs 多 Agent</span><br><span class="line">&lt;/pre&gt;</span><br><span class="line"></span><br><span class="line">### 关键要点回顾</span><br><span class="line"></span><br><span class="line">1. **Skill 是指令，不是工具**</span><br><span class="line">   - Skill 告诉 Agent &quot;怎么做&quot;</span><br><span class="line">   - Tool 提供 Agent &quot;能做什么&quot;</span><br><span class="line"></span><br><span class="line">2. **触发方式决定设计**</span><br><span class="line">   - 显式调用：命令名要简洁</span><br><span class="line">   - 隐式匹配：description 要详细</span><br><span class="line"></span><br><span class="line">3. **一个 Skill = 一个完整任务**</span><br><span class="line">   - 不要拆得太细</span><br><span class="line">   - 不要做成万能 Skill</span><br><span class="line"></span><br><span class="line">4. **用户确认是核心**</span><br><span class="line">   - 高风险操作必须确认</span><br><span class="line">   - 确认点要明确清晰</span><br><span class="line"></span><br><span class="line">5. **测试是必须的**</span><br><span class="line">   - 测试显式调用</span><br><span class="line">   - 测试隐式匹配</span><br><span class="line">   - 测试错误场景</span><br><span class="line"></span><br><span class="line">### 下一步行动</span><br><span class="line"></span><br><span class="line">如果你想开始使用 Skill：</span><br><span class="line"></span><br><span class="line">```bash</span><br><span class="line"># 1. 创建 Skill 目录</span><br><span class="line">mkdir -p .claude/skills</span><br><span class="line"></span><br><span class="line"># 2. 从模板开始</span><br><span class="line">cp skill-template.md .claude/skills/my-first-skill.skill.md</span><br><span class="line"></span><br><span class="line"># 3. 编辑 Skill 内容</span><br><span class="line"># 参考本文的 &quot;如何创建自己的 Skill&quot; 章节</span><br><span class="line"></span><br><span class="line"># 4. 测试 Skill</span><br><span class="line"># 在 Agent 中输入：/my-first-skill</span><br></pre></td></tr></table></figure>
+
+<p><strong>推荐先做的 Skills</strong>：</p>
+<ol>
+<li>✅ <code>deploy.skill</code> - 部署流程（最实用）</li>
+<li>✅ <code>code-review.skill</code> - 代码审查（提升质量）</li>
+<li>✅ <code>test.skill</code> - 测试策略（保障稳定性）</li>
+<li>✅ <code>new-component.skill</code> - 创建组件（提高效率）</li>
+</ol>
+<h3 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h3><ul>
+<li><a href="./Agent%E4%B8%8EMCP%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97.md">MCP 协议详解</a>：了解 Agent 如何调用外部工具</li>
+<li><a href="./Agent%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97.md">Agent 工作流</a>：了解多 Agent 协作</li>
+<li><a href="./%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%AE%9E%E6%88%98.md">提示词工程</a>：优化 Skill 的 description</li>
+</ul>
+<hr>
+<p><strong>相关文章</strong>：</p>
+<ul>
+<li><a href="./Agent%E4%B8%8EMCP%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97.md">Agent 与 MCP 完全指南</a></li>
+<li><a href="../ai-agent-development/Vue-NestJS%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BDAI-Agent%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97.md">Vue + NestJS 构建智能 AI Agent</a></li>
+</ul>
+<p><strong>工具推荐</strong>：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://claude.ai/code">Claude Code</a> - 内置 Skill 支持的 AI 编程助手</li>
+<li><a target="_blank" rel="noopener" href="https://cursor.sh/">Cursor</a> - 支持自定义 Skill 的 IDE</li>
+</ul>
+<p>如果你有任何关于 Skill 的问题或想分享你的 Skill，欢迎在评论区交流！🚀</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">2light</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://enhezzz.github.io/2026/09/18/ai/agent-skill/Agent-Skill完全指南：从触发机制到自定义开发/">https://enhezzz.github.io/2026/09/18/ai/agent-skill/Agent-Skill完全指南：从触发机制到自定义开发/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://enhezzz.github.io">2light Blog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI-Agent/">AI Agent</a><a class="post-meta__tags" href="/tags/Skill/">Skill</a><a class="post-meta__tags" href="/tags/Claude-Code/">Claude Code</a><a class="post-meta__tags" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a><a class="post-meta__tags" href="/tags/Workflow/">Workflow</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2026/09/18/frontend/bundler/%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%EF%BC%9AWebpack%E4%B8%8EVite%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94/"><i class="fa fa-chevron-left">  </i><span>现代前端构建工具完全指南：Webpack 与 Vite 深度对比</span></a></div><div class="next-post pull-right"><a href="/2026/09/18/frontend/javascript-complete-guide/"><span>JavaScript 完全指南：业务开发与面试要点全解析</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: 'Ov23liC275BZ4L9UWZzz',
+  clientSecret: '3470fa0c9d53aab29d465cdff6423f401e8d4fdd',
+  repo: 'enhezzz.github.io',
+  owner: 'enhezzz',
+  admin: 'enhezzz',
+  id: md5(decodeURI(location.pathname)),
+  language: 'zh-CN'
+})
+gitalk.render('gitalk-container')</script></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2019 - 2026 By 2light</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">Good luck to you.</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script src="/js/search/algolia.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    securityLevel: 'strict',
+    flowchart: { curve: 'basis', useMaxWidth: true },
+    sequence: { useMaxWidth: true, showSequenceNumbers: false },
+  });
+</script>
+</body></html>
