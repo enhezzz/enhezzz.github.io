@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="面向切面编程 AOP：从前端拦截器到 NestJS"><meta name="keywords" content="AOP,设计模式,前端工程化,NestJS,TypeScript"><meta name="author" content="2light"><meta name="copyright" content="2light"><title>面向切面编程 AOP：从前端拦截器到 NestJS | 2light Blog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"V1UE0WUPR6","apiKey":"5e389abe6aee51e81779d869389a8cda","indexName":"dev_blog","hits":{"per_page":10},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '8.1.1'
+} </script><meta name="generator" content="Hexo 8.1.1"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81AOP-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%87%BA%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">一、AOP 为什么出现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%89%8D%E7%AB%AF%E5%93%AA%E9%87%8C%E8%83%BD%E7%9C%8B%E5%88%B0-AOP-%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">二、前端哪里能看到 AOP 的思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Axios%EF%BC%9A%E6%8A%8A%E9%80%9A%E7%94%A8%E9%80%BB%E8%BE%91%E6%94%BE%E5%9C%A8%E8%AF%B7%E6%B1%82%E8%BE%B9%E7%95%8C"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 Axios：把通用逻辑放在请求边界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Vue-Router%EF%BC%9A%E5%9C%A8%E5%AF%BC%E8%88%AA%E5%89%8D%E5%81%9A%E7%BB%9F%E4%B8%80%E6%A3%80%E6%9F%A5"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Vue Router：在导航前做统一检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81NestJS-%E4%B8%AD%E7%9A%84-AOP-%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="toc-number">3.</span> <span class="toc-text">三、NestJS 中的 AOP 在哪里</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%86%99%E4%B8%80%E4%B8%AA%E8%80%97%E6%97%B6%E7%BB%9F%E8%AE%A1%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 写一个耗时统计拦截器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%A4%9A%E4%B8%AA%E6%8B%A6%E6%88%AA%E5%99%A8%E5%A6%82%E4%BD%95%E5%8C%85%E8%A3%B9%E4%B8%9A%E5%8A%A1"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 多个拦截器如何包裹业务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%80%BC%E5%BE%97%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">四、什么时候值得使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars.githubusercontent.com/u/29703980?v=4"></div><div class="author-info__name text-center">2light</div><div class="author-info__description text-center"></div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/enhezzz">关注我</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">29</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">89</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">12</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">2light Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Posts</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title">面向切面编程 AOP：从前端拦截器到 NestJS</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2026-09-24<span class="post-meta__separator">|</span><i class="fa fa-calendar-check-o" aria-hidden="true"></i> 更新于 2026-09-24</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Design-Patterns/">Design Patterns</a><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">2.9k</span><span class="post-meta__separator">|</span><span>阅读时长: 9 分钟</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>假设你在做一个订单系统。<code>createOrder()</code> 负责创建订单，<code>cancelOrder()</code> 负责取消订单，<code>getOrder()</code> 负责查询订单。现在要给这些操作统一加上耗时日志、权限检查和异常上报。最直接的写法是在每个函数里各塞一遍代码；接口越多，重复越多，业务逻辑也越来越难读。</p>
+<p>这正是面向切面编程（Aspect-Oriented Programming，AOP）要解决的问题：<strong>把散落在不同业务流程中的共同逻辑抽出来，在约定的执行位置统一接入</strong>。本文从这个使用背景出发，先看浏览器端的 Axios 拦截器和路由守卫，再看 NestJS 如何把同一思路放进服务端请求流程。</p>
+<span id="more"></span>
+
+<h2 id="一、AOP-为什么出现"><a href="#一、AOP-为什么出现" class="headerlink" title="一、AOP 为什么出现"></a>一、AOP 为什么出现</h2><p>订单模块的主要工作是处理订单，但日志、鉴权、监控、缓存等能力会同时出现在订单、用户、支付等多个模块中。这类需求叫<strong>横切关注点</strong>：它们横跨多个业务边界，却不属于某一个业务对象的核心职责。</p>
+<pre class="mermaid">
+flowchart LR
+  subgraph B["按业务划分的模块"]
+    O["订单：创建 / 取消 / 查询"]
+    U["用户：注册 / 修改 / 查询"]
+    P["支付：发起 / 退款 / 查询"]
+  end
+  L["耗时日志"] -.-> O
+  L -.-> U
+  L -.-> P
+  A["权限检查"] -.-> O
+  A -.-> U
+  A -.-> P
+  E["异常上报"] -.-> O
+  E -.-> U
+  E -.-> P
+</pre>
+
+<p>如果在每个方法里复制这些代码，改一次日志格式就得改很多地方，还可能漏掉新接口。AOP 的做法是让业务方法专心处理订单，同时把日志等规则绑定到一组目标方法或请求阶段。</p>
+<p>先记住四个词就够了：<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/reference/core/aop/introduction-defn.html">Spring 的 AOP 概念文档</a>对这些术语有严格定义。</p>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>通俗理解</th>
+<th>订单系统里的例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>连接点（Join point）</td>
+<td>程序运行中可以插入额外逻辑的位置</td>
+<td>执行 <code>createOrder()</code> 时</td>
+</tr>
+<tr>
+<td>切入点（Pointcut）</td>
+<td>选中哪些连接点的规则</td>
+<td>所有订单写操作</td>
+</tr>
+<tr>
+<td>通知（Advice）</td>
+<td>在选中的位置执行什么</td>
+<td>调用前记录开始时间，结束后打印耗时</td>
+</tr>
+<tr>
+<td>切面（Aspect）</td>
+<td>把选中范围和附加行为组织起来</td>
+<td>一套统一的耗时统计逻辑</td>
+</tr>
+</tbody></table>
+<p>把切面应用到目标流程的过程常称为<strong>织入（Weaving）</strong>。实现方式因工具而异：可能在编译时处理，也可能在运行时用代理或拦截链组合。写前端或 NestJS 时，通常无需自己实现织入机制；框架已经提供了接入点。</p>
+<p>一个环绕式的切面可以想成这样：</p>
+<pre class="mermaid">
+flowchart LR
+  A["进入：记录开始时间"] --> B["业务方法：创建订单"] --> C["退出：记录耗时"]
+  B -->|"发生异常"| D["异常上报"]
+</pre>
+
+<p>这里最关键的区别是<strong>附加逻辑由统一入口接入，而不是散写在每个业务方法内部</strong>。它不会取代面向对象的模块划分；业务仍由订单、用户等模块承担。</p>
+<h2 id="二、前端哪里能看到-AOP-的思路"><a href="#二、前端哪里能看到-AOP-的思路" class="headerlink" title="二、前端哪里能看到 AOP 的思路"></a>二、前端哪里能看到 AOP 的思路</h2><p>浏览器端并不一定使用传统 AOP 框架，但很多常见 API 都提供了“在统一位置处理多个调用”的能力。</p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>可以统一处理什么</th>
+<th>接入范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Axios 请求、响应拦截器</td>
+<td>附加请求头、记录耗时、处理通用错误</td>
+<td>使用该 Axios 实例发出的请求</td>
+</tr>
+<tr>
+<td>Vue Router 导航守卫</td>
+<td>登录态检查、页面访问限制、导航埋点</td>
+<td>经过对应守卫的路由跳转</td>
+</tr>
+<tr>
+<td>React 高阶组件或组件包装器</td>
+<td>为一组页面加入埋点、权限提示等行为</td>
+<td>被包装的组件</td>
+</tr>
+</tbody></table>
+<p>它们体现的是<strong>AOP 式的横切思路</strong>，不等于具备 Spring AOP 那样的切入点表达式和自动代理能力。单纯抽出一个工具函数、再让每个业务函数手动调用，也只是代码复用；统一接入到请求或导航生命周期，才更接近这里讨论的用法。</p>
+<h3 id="2-1-Axios：把通用逻辑放在请求边界"><a href="#2-1-Axios：把通用逻辑放在请求边界" class="headerlink" title="2.1 Axios：把通用逻辑放在请求边界"></a>2.1 Axios：把通用逻辑放在请求边界</h3><p>下面的代码适用于 Axios 1.x。页面只需要调用 <code>api.get(&#39;/orders&#39;)</code>，无需每个页面都重复读取 Token、拼请求头和识别 <code>401</code>。Axios 官方文档分别提供<a target="_blank" rel="noopener" href="https://axios-http.com/docs/interceptors">请求和响应拦截器</a>。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// api.ts</span></span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> api = axios.<span class="title function_">create</span>(&#123; <span class="attr">baseURL</span>: <span class="string">&#x27;/api&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line">api.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(<span class="function">(<span class="params">config</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> token = <span class="variable language_">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;accessToken&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (token) &#123;</span><br><span class="line">    config.<span class="property">headers</span>.<span class="title function_">set</span>(<span class="string">&#x27;Authorization&#x27;</span>, <span class="string">`Bearer <span class="subst">$&#123;token&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">api.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span><br><span class="line">  <span class="function">(<span class="params">response</span>) =&gt;</span> response,</span><br><span class="line">  <span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (error.<span class="property">response</span>?.<span class="property">status</span> === <span class="number">401</span>) &#123;</span><br><span class="line">      <span class="comment">// 通知登录状态管理器，让界面引导用户重新登录</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error); <span class="comment">// 保留错误，让具体页面决定如何提示</span></span><br><span class="line">  &#125;,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<pre class="mermaid">
+flowchart LR
+  V["页面调用 api.get"] --> R["请求拦截器<br/>附加 Token"] --> H["发送 HTTP 请求"]
+  H --> S["收到 HTTP 响应"] --> I["响应拦截器<br/>处理通用错误"] --> V2["页面处理结果"]
+</pre>
+
+<p>这里的“切入点”可以理解为这个 <code>api</code> 实例的请求与响应阶段。拦截器只覆盖通过该实例发送的请求；使用原生 <code>fetch</code> 或另一个 Axios 实例时不会自动生效。多个拦截器的先后顺序也会影响结果，新增时要留意执行顺序。</p>
+<h3 id="2-2-Vue-Router：在导航前做统一检查"><a href="#2-2-Vue-Router：在导航前做统一检查" class="headerlink" title="2.2 Vue Router：在导航前做统一检查"></a>2.2 Vue Router：在导航前做统一检查</h3><p>Vue Router 的 <code>beforeEach</code> 会在导航时运行，可以按目标路由的元信息决定放行或重定向：<a target="_blank" rel="noopener" href="https://router.vuejs.org/guide/advanced/navigation-guards">官方导航守卫文档</a>。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设 authStore 已由项目的状态管理模块提供</span></span><br><span class="line">router.<span class="title function_">beforeEach</span>(<span class="function">(<span class="params">to</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (to.<span class="property">meta</span>.<span class="property">requiresAuth</span> &amp;&amp; !authStore.<span class="property">isLoggedIn</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;login&#x27;</span>,</span><br><span class="line">      <span class="attr">query</span>: &#123; <span class="attr">redirect</span>: to.<span class="property">fullPath</span> &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这样新增受保护页面时，只需要声明 <code>requiresAuth</code>，不必在每个页面组件的生命周期里复制登录判断。<strong>前端守卫改善的是页面导航体验，真正的访问权限仍必须由服务端验证</strong>：攻击者可以绕过浏览器页面直接调用接口。</p>
+<h2 id="三、NestJS-中的-AOP-在哪里"><a href="#三、NestJS-中的-AOP-在哪里" class="headerlink" title="三、NestJS 中的 AOP 在哪里"></a>三、NestJS 中的 AOP 在哪里</h2><p>NestJS 是运行在 Node.js 上的<strong>服务端框架</strong>。前端工程师做 BFF 或全栈项目时常会接触它。NestJS 官方明确说明，<a target="_blank" rel="noopener" href="https://docs.nestjs.com/interceptors">Interceptor（拦截器）的能力受到 AOP 启发</a>：它可以在处理函数执行前后增加逻辑、转换结果或异常，甚至在特定条件下直接返回结果。</p>
+<p>NestJS 还有一整套适合横切需求的组件。它们职责不同，不能全部当成同一种“拦截器”：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>典型用途</th>
+<th>相对路由处理函数的位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Middleware（中间件）</td>
+<td>请求日志、给请求附加通用信息</td>
+<td>路由处理前；此时尚不知道最终处理函数的元数据</td>
+</tr>
+<tr>
+<td>Guard（守卫）</td>
+<td>鉴权、角色与权限检查</td>
+<td>决定请求能否进入后续流程</td>
+</tr>
+<tr>
+<td>Interceptor（拦截器）</td>
+<td>耗时统计、响应转换、缓存</td>
+<td>可包裹处理函数的前后过程</td>
+</tr>
+<tr>
+<td>Pipe（管道）</td>
+<td>参数转换与校验</td>
+<td>处理函数收到参数前</td>
+</tr>
+<tr>
+<td>Exception Filter（异常过滤器）</td>
+<td>统一处理未捕获异常并生成响应</td>
+<td>出现未捕获异常时</td>
+</tr>
+</tbody></table>
+<p>正常情况下，<a target="_blank" rel="noopener" href="https://docs.nestjs.com/faq/request-lifecycle">NestJS 请求生命周期</a>大致如下；异常会跳转到异常处理流程，<strong>过滤器不是每次请求都执行</strong>。</p>
+<pre class="mermaid">
+flowchart LR
+  Q["HTTP 请求"] --> M["Middleware"] --> G["Guard"] --> I1["Interceptor<br/>进入阶段"] --> P["Pipe"] --> C["Controller / Service"] --> I2["Interceptor<br/>返回阶段"] --> R["HTTP 响应"]
+  G -.->|"拒绝或抛错"| F["异常处理 / Filter"]
+  P -.->|"抛错"| F
+  C -.->|"抛错"| F
+  I2 -.->|"未处理异常"| F
+  F --> R
+</pre>
+
+<p>其中，Guard 适合回答“能不能访问”，Pipe 适合回答“参数是否有效”，Interceptor 适合回答“执行前后做什么”，Filter 适合回答“未处理异常如何返回”。一个接口可以同时用到它们，但每种组件的运行时机不同。</p>
+<h3 id="3-1-写一个耗时统计拦截器"><a href="#3-1-写一个耗时统计拦截器" class="headerlink" title="3.1 写一个耗时统计拦截器"></a>3.1 写一个耗时统计拦截器</h3><p>下面是一个完整的拦截器。<code>next.handle()</code> 返回的是 RxJS <code>Observable</code>；<code>finalize()</code> 会在流结束时运行，因此正常完成或出错都能记录耗时。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// timing.interceptor.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  <span class="title class_">CallHandler</span>,</span><br><span class="line">  <span class="title class_">ExecutionContext</span>,</span><br><span class="line">  <span class="title class_">Injectable</span>,</span><br><span class="line">  <span class="title class_">NestInterceptor</span>,</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&#x27;@nestjs/common&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Observable</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;rxjs&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; finalize &#125; <span class="keyword">from</span> <span class="string">&#x27;rxjs/operators&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">TimingInterceptor</span> <span class="keyword">implements</span> <span class="title class_">NestInterceptor</span> &#123;</span><br><span class="line">  <span class="title function_">intercept</span>(<span class="attr">context</span>: <span class="title class_">ExecutionContext</span>, <span class="attr">next</span>: <span class="title class_">CallHandler</span>): <span class="title class_">Observable</span>&lt;<span class="built_in">unknown</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> label = <span class="string">`<span class="subst">$&#123;context.getClass().name&#125;</span>.<span class="subst">$&#123;context.getHandler().name&#125;</span>`</span>;</span><br><span class="line">    <span class="keyword">const</span> startedAt = performance.<span class="title function_">now</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> next.<span class="title function_">handle</span>().<span class="title function_">pipe</span>(</span><br><span class="line">      <span class="title function_">finalize</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> elapsed = <span class="title class_">Math</span>.<span class="title function_">round</span>(performance.<span class="title function_">now</span>() - startedAt);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;label&#125;</span> took <span class="subst">$&#123;elapsed&#125;</span>ms`</span>);</span><br><span class="line">      &#125;),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>把它绑定到路由方法：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// orders.controller.ts；OrdersService 是已有的业务服务</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Controller</span>, <span class="title class_">Get</span>, <span class="title class_">Param</span>, <span class="title class_">UseInterceptors</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@nestjs/common&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">TimingInterceptor</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./timing.interceptor&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">OrdersService</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./orders.service&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span>(<span class="string">&#x27;orders&#x27;</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">OrdersController</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">private</span> <span class="keyword">readonly</span> <span class="attr">ordersService</span>: <span class="title class_">OrdersService</span></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Get</span>(<span class="string">&#x27;:id&#x27;</span>)</span><br><span class="line">  <span class="meta">@UseInterceptors</span>(<span class="title class_">TimingInterceptor</span>)</span><br><span class="line">  <span class="title function_">getOrder</span>(<span class="params"><span class="meta">@Param</span>(<span class="string">&#x27;id&#x27;</span>) <span class="attr">id</span>: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">ordersService</span>.<span class="title function_">findById</span>(id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在 <code>GET /orders/:id</code> 的耗时统计与 <code>findById()</code> 的业务逻辑分开了。这里通过 <code>@UseInterceptors</code> <strong>显式选择</strong>要增强的路由；如果所有路由都需要统计，可以在应用层注册全局拦截器。<code>@UseInterceptors</code> 是绑定声明，真正执行附加逻辑的是 <code>TimingInterceptor</code>。这个计时从拦截器进入时开始，不包含它之前的 Middleware 和 Guard 阶段。</p>
+<h3 id="3-2-多个拦截器如何包裹业务"><a href="#3-2-多个拦截器如何包裹业务" class="headerlink" title="3.2 多个拦截器如何包裹业务"></a>3.2 多个拦截器如何包裹业务</h3><p>假设同时绑定日志和响应转换两个拦截器，它们会形成嵌套调用。NestJS 的入站顺序是<strong>全局 → 控制器 → 路由</strong>，返回时则<strong>路由 → 控制器 → 全局</strong>，类似层层打开再反向收起：</p>
+<pre class="mermaid">
+flowchart LR
+  A["全局拦截器：进入"] --> B["控制器拦截器：进入"] --> C["路由拦截器：进入"] --> D["处理函数"] --> E["路由拦截器：返回"] --> F["控制器拦截器：返回"] --> G["全局拦截器：返回"]
+</pre>
+
+<p>这也解释了为什么响应转换、缓存、异常映射等功能适合放在拦截器里：它既能在调用前决定是否继续，也能处理返回的数据流。若拦截器不调用 <code>next.handle()</code>，处理函数就不会执行。具体能力和限制可参考 <a target="_blank" rel="noopener" href="https://docs.nestjs.com/interceptors">NestJS Interceptors 文档</a>。</p>
+<h2 id="四、什么时候值得使用"><a href="#四、什么时候值得使用" class="headerlink" title="四、什么时候值得使用"></a>四、什么时候值得使用</h2><p>适合抽成切面的，是<strong>规则一致、需要跨多个业务点复用、且有明确接入位置</strong>的逻辑，例如请求日志、性能监控、鉴权、参数校验和统一错误处理。某个订单状态转换的特殊业务规则只属于订单领域，仍应留在业务服务中。</p>
+<p>设计时还要守住三条边界：</p>
+<ol>
+<li><strong>选择正确的阶段</strong>：NestJS 鉴权优先考虑 Guard，参数校验用 Pipe，处理函数前后逻辑用 Interceptor；不要让一个组件承担所有事情。</li>
+<li><strong>留意覆盖范围与顺序</strong>：Axios 实例、路由级绑定、控制器级绑定和全局绑定，作用范围不同；多个拦截器的顺序会改变结果。</li>
+<li><strong>保持行为可追踪</strong>：切面越多，调用链越不直观。为拦截器命名清楚，并让错误继续传递给负责处理它的层。</li>
+</ol>
+<p>记住一句话：<strong>AOP 解决的是“同一类附加规则如何统一接入多个业务流程”</strong>。前端的请求拦截器、导航守卫，以及 NestJS 的 Guard、Interceptor、Pipe 和 Filter，都能从这个视角理解；但每种机制有自己的生命周期和边界，使用前先确定要拦截的到底是哪一步。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/reference/core/aop/introduction-defn.html">Spring Framework：AOP Concepts</a></li>
+<li><a target="_blank" rel="noopener" href="https://axios-http.com/docs/interceptors">Axios：Interceptors</a></li>
+<li><a target="_blank" rel="noopener" href="https://router.vuejs.org/guide/advanced/navigation-guards">Vue Router：Navigation Guards</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.nestjs.com/interceptors">NestJS：Interceptors</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.nestjs.com/faq/request-lifecycle">NestJS：Request lifecycle</a></li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">2light</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://enhezzz.github.io/2026/09/24/design-patterns/面向切面编程AOP：从前端拦截器到NestJS/">https://enhezzz.github.io/2026/09/24/design-patterns/面向切面编程AOP：从前端拦截器到NestJS/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://enhezzz.github.io">2light Blog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AOP/">AOP</a><a class="post-meta__tags" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><a class="post-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/">前端工程化</a><a class="post-meta__tags" href="/tags/NestJS/">NestJS</a><a class="post-meta__tags" href="/tags/TypeScript/">TypeScript</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2026/09/25/security/web-security/Web%E5%AE%89%E5%85%A8%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%B8%B8%E8%A7%81%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86%E4%B8%8E%E9%98%B2%E8%8C%83%E5%AE%9E%E6%88%98/"><i class="fa fa-chevron-left">  </i><span>Web 安全完全指南：常见攻击原理与防范实战</span></a></div><div class="next-post pull-right"><a href="/2026/09/20/backend/oauth/OAuth2.0%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E7%94%9F%E4%BA%A7%E5%AE%9E%E8%B7%B5/"><span>OAuth 2.0 完全指南：从原理到生产实践</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: 'Ov23liC275BZ4L9UWZzz',
+  clientSecret: '3470fa0c9d53aab29d465cdff6423f401e8d4fdd',
+  repo: 'enhezzz.github.io',
+  owner: 'enhezzz',
+  admin: 'enhezzz',
+  id: md5(decodeURI(location.pathname)),
+  language: 'zh-CN'
+})
+gitalk.render('gitalk-container')</script></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2019 - 2026 By 2light</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">Good luck to you.</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script src="/js/search/algolia.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    securityLevel: 'strict',
+    flowchart: { curve: 'basis', useMaxWidth: true },
+    sequence: { useMaxWidth: true, showSequenceNumbers: false },
+  });
+</script>
+</body></html>
