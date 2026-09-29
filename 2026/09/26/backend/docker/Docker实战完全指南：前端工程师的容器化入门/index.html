@@ -8,7 +8,7 @@
     noSupport: '浏览器不支持'
   },
   hexoVersion: '8.1.1'
-} </script><meta name="generator" content="Hexo 8.1.1"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Docker"><span class="toc-number">1.</span> <span class="toc-text">一、为什么需要 Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%B8%89%E4%B8%AA%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 三个典型场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%B9%E5%99%A8%E5%92%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 容器和虚拟机的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Docker-%E5%9C%A8%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E9%87%8C%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 Docker 在前端工作流里的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 核心概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E9%95%9C%E5%83%8F%E5%88%86%E5%B1%82%EF%BC%9A%E7%90%86%E8%A7%A3%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 镜像分层：理解构建缓存的基础</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-number">2.</span> <span class="toc-text">二、安装与快速上手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%9B%BD%E5%86%85%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 国内环境配置镜像加速</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%B8%89%E5%8D%81%E7%A7%92%E8%B7%91%E8%B5%B7%E6%9D%A5"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 三十秒跑起来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E8%A6%81%E4%B8%8D%E8%A6%81%E7%94%A8-Docker"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 本地开发要不要用 Docker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">三、常用命令详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%95%9C%E5%83%8F%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 镜像操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AE%B9%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 容器生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%BF%9B%E5%AE%B9%E5%99%A8%E8%B0%83%E8%AF%95"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 进容器调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 清理磁盘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%94%A8-Dockerfile-%E6%89%93%E5%8C%85%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE"><span class="toc-number">4.</span> <span class="toc-text">四、用 Dockerfile 打包前端项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%85%88%E7%9C%8B%E4%B8%80%E4%B8%AA%E8%83%BD%E8%B7%91%E4%BD%86%E5%BE%88%E7%B3%9F%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 先看一个能跑但很糟的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 常用指令速查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%A4%9A%E9%98%B6%E6%AE%B5%E6%9E%84%E5%BB%BA%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84%E6%A0%87%E5%87%86%E5%86%99%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 多阶段构建：前端容器化的标准写法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%85%88-COPY-package-json"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 构建缓存：为什么要先 COPY package.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-dockerignore%EF%BC%9A%E5%88%AB%E6%8A%8A-node-modules-%E6%89%93%E8%BF%9B%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 .dockerignore：别把 node_modules 打进上下文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-Nginx-%E9%85%8D%E7%BD%AE%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%B9%E5%99%A8%E7%BB%95%E4%B8%8D%E5%BC%80%E7%9A%84%E4%B8%89%E4%BB%B6%E4%BA%8B"><span class="toc-number">4.6.</span> <span class="toc-text">4.6 Nginx 配置：前端容器绕不开的三件事</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%9A%E4%B8%80%E6%AC%A1%E6%9E%84%E5%BB%BA%EF%BC%8C%E5%A4%9A%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="toc-number">4.7.</span> <span class="toc-text">4.7 环境变量：一次构建，多环境部署</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%94%A8-Compose-%E7%BC%96%E6%8E%92%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-number">5.</span> <span class="toc-text">五、用 Compose 编排本地开发环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Compose"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 为什么需要 Compose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 一份完整的开发环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%B8%B8%E7%94%A8-Compose-%E5%91%BD%E4%BB%A4"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 常用 Compose 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-depends-on-%E7%9A%84%E9%99%B7%E9%98%B1%EF%BC%9A%E5%90%AF%E5%8A%A8%E4%BA%86%E4%B8%8D%E7%AD%89%E4%BA%8E%E8%83%BD%E7%94%A8%E4%BA%86"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 depends_on 的陷阱：启动了不等于能用了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%8C%82%E8%BD%BD%E6%BA%90%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 开发模式：挂载源码实现热更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-number">6.</span> <span class="toc-text">六、网络与数据卷</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 网络模式与服务发现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E6%95%B0%E6%8D%AE%E5%8D%B7%EF%BC%9A%E5%AE%B9%E5%99%A8%E5%88%A0%E4%BA%86%E6%95%B0%E6%8D%AE%E8%BF%98%E5%9C%A8"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 数据卷：容器删了数据还在</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E4%BC%81%E4%B8%9A%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%AE%9E%E8%B7%B5"><span class="toc-number">7.</span> <span class="toc-text">七、企业开发中的实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E4%B8%8E%E6%A0%87%E7%AD%BE%E8%A7%84%E8%8C%83"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 镜像仓库与标签规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-CI-CD-%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="toc-number">7.2.</span> <span class="toc-text">7.2 CI&#x2F;CD 流水线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E5%A4%9A%E6%9E%B6%E6%9E%84%E9%95%9C%E5%83%8F%EF%BC%9AM-%E7%B3%BB%E5%88%97-Mac-%E7%9A%84%E7%BB%8F%E5%85%B8%E5%9D%91"><span class="toc-number">7.3.</span> <span class="toc-text">7.3 多架构镜像：M 系列 Mac 的经典坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA"><span class="toc-number">7.4.</span> <span class="toc-text">7.4 安全加固</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E6%97%A5%E5%BF%97"><span class="toc-number">7.5.</span> <span class="toc-text">7.5 资源限制与日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-6-%E4%BB%8E-Docker-%E5%88%B0-Kubernetes"><span class="toc-number">7.6.</span> <span class="toc-text">7.6 从 Docker 到 Kubernetes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="toc-number">8.</span> <span class="toc-text">八、常见问题排查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E5%B0%B1%E9%80%80%E5%87%BA"><span class="toc-number">8.1.</span> <span class="toc-text">8.1 容器启动就退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E6%80%BB%E6%98%AF%E5%A4%B1%E6%95%88"><span class="toc-number">8.2.</span> <span class="toc-text">8.2 构建缓存总是失效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E7%AB%AF%E5%8F%A3%E5%86%B2%E7%AA%81"><span class="toc-number">8.3.</span> <span class="toc-text">8.3 端口冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-%E5%AE%B9%E5%99%A8%E9%87%8C%E8%BF%9E%E4%B8%8D%E4%B8%8A%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">8.4.</span> <span class="toc-text">8.4 容器里连不上数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2-404"><span class="toc-number">8.5.</span> <span class="toc-text">8.5 刷新页面 404</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-6-%E7%A3%81%E7%9B%98%E8%A2%AB%E5%90%83%E5%85%89"><span class="toc-number">8.6.</span> <span class="toc-text">8.6 磁盘被吃光</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-7-%E5%AE%B9%E5%99%A8%E5%86%85%E6%97%B6%E9%97%B4%E4%B8%8D%E5%AF%B9"><span class="toc-number">8.7.</span> <span class="toc-text">8.7 容器内时间不对</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-8-%E5%85%B6%E4%BB%96%E9%AB%98%E9%A2%91%E9%97%AE%E9%A2%98%E9%80%9F%E6%9F%A5"><span class="toc-number">8.8.</span> <span class="toc-text">8.8 其他高频问题速查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E4%B8%8A%E7%94%9F%E4%BA%A7%E5%89%8D%E7%9A%84%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">9.</span> <span class="toc-text">九、上生产前的检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-number">10.</span> <span class="toc-text">十、小结</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars.githubusercontent.com/u/29703980?v=4"></div><div class="author-info__name text-center">2light</div><div class="author-info__description text-center"></div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/enhezzz">关注我</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">29</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">89</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">12</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">2light Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Posts</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title">Docker 实战完全指南：前端工程师的容器化入门</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2026-09-26<span class="post-meta__separator">|</span><i class="fa fa-calendar-check-o" aria-hidden="true"></i> 更新于 2026-09-24</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Backend/">Backend</a><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">12.7k</span><span class="post-meta__separator">|</span><span>阅读时长: 50 分钟</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>前端工程师第一次被要求「把项目容器化」的时候，多半会有一种错位感：我写的是浏览器里跑的代码，为什么要关心 Linux 镜像和端口映射？直到遇上这几件事——本地 <code>npm run build</code> 好好的，CI 上构建失败，因为同事的 Node 是 22 而流水线是 18；联调要装 MySQL 和 Redis，换台电脑重来一遍；测试环境刷新页面 404 而生产正常，因为两台机器的 Nginx 配置不一样。</p>
+} </script><meta name="generator" content="Hexo 8.1.1"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Docker"><span class="toc-number">1.</span> <span class="toc-text">一、为什么需要 Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%B8%89%E4%B8%AA%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 三个典型场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%B9%E5%99%A8%E5%92%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 容器和虚拟机的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Docker-%E5%9C%A8%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E9%87%8C%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 Docker 在前端工作流里的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 核心概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E9%95%9C%E5%83%8F%E5%88%86%E5%B1%82%EF%BC%9A%E7%90%86%E8%A7%A3%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 镜像分层：理解构建缓存的基础</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-number">2.</span> <span class="toc-text">二、安装与快速上手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%9B%BD%E5%86%85%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 国内环境配置镜像加速</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%B8%89%E5%8D%81%E7%A7%92%E8%B7%91%E8%B5%B7%E6%9D%A5"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 三十秒跑起来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E8%A6%81%E4%B8%8D%E8%A6%81%E7%94%A8-Docker"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 本地开发要不要用 Docker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">三、常用命令详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%95%9C%E5%83%8F%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 镜像操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AE%B9%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 容器生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%BF%9B%E5%AE%B9%E5%99%A8%E8%B0%83%E8%AF%95"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 进容器调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 清理磁盘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%94%A8-Dockerfile-%E6%89%93%E5%8C%85%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE"><span class="toc-number">4.</span> <span class="toc-text">四、用 Dockerfile 打包前端项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%85%88%E7%9C%8B%E4%B8%80%E4%B8%AA%E8%83%BD%E8%B7%91%E4%BD%86%E5%BE%88%E7%B3%9F%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 先看一个能跑但很糟的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 常用指令速查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%A4%9A%E9%98%B6%E6%AE%B5%E6%9E%84%E5%BB%BA%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84%E6%A0%87%E5%87%86%E5%86%99%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 多阶段构建：前端容器化的标准写法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%85%88-COPY-package-json"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 构建缓存：为什么要先 COPY package.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-dockerignore%EF%BC%9A%E5%88%AB%E6%8A%8A-node-modules-%E6%89%93%E8%BF%9B%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 .dockerignore：别把 node_modules 打进上下文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-Nginx-%E9%85%8D%E7%BD%AE%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%B9%E5%99%A8%E7%BB%95%E4%B8%8D%E5%BC%80%E7%9A%84%E4%B8%89%E4%BB%B6%E4%BA%8B"><span class="toc-number">4.6.</span> <span class="toc-text">4.6 Nginx 配置：前端容器绕不开的三件事</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%9A%E4%B8%80%E6%AC%A1%E6%9E%84%E5%BB%BA%EF%BC%8C%E5%A4%9A%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="toc-number">4.7.</span> <span class="toc-text">4.7 环境变量：一次构建，多环境部署</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%94%A8-Compose-%E7%BC%96%E6%8E%92%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-number">5.</span> <span class="toc-text">五、用 Compose 编排本地开发环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Compose"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 为什么需要 Compose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 一份完整的开发环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%99%E8%BF%99%E4%BB%BD%E9%85%8D%E7%BD%AE%E5%8A%A0%E4%B8%8A%E6%98%BE%E5%BC%8F%E7%BD%91%E7%BB%9C%EF%BC%9A%E5%90%84%E6%9C%8D%E5%8A%A1%E7%A9%B6%E7%AB%9F%E5%A1%AB%E4%BB%80%E4%B9%88%E5%9C%B0%E5%9D%80"><span class="toc-number">5.2.1.</span> <span class="toc-text">给这份配置加上显式网络：各服务究竟填什么地址</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%B8%B8%E7%94%A8-Compose-%E5%91%BD%E4%BB%A4"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 常用 Compose 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-depends-on-%E7%9A%84%E9%99%B7%E9%98%B1%EF%BC%9A%E5%90%AF%E5%8A%A8%E4%BA%86%E4%B8%8D%E7%AD%89%E4%BA%8E%E8%83%BD%E7%94%A8%E4%BA%86"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 depends_on 的陷阱：启动了不等于能用了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%8C%82%E8%BD%BD%E6%BA%90%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 开发模式：挂载源码实现热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%96%B0%E5%A2%9E-Compose-%E6%96%87%E4%BB%B6"><span class="toc-number">5.5.1.</span> <span class="toc-text">什么时候需要新增 Compose 文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-override-%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD%EF%BC%8Cnetwork-%E5%8D%B4%E9%9C%80%E8%A6%81%E6%8C%87%E5%AE%9A"><span class="toc-number">5.5.2.</span> <span class="toc-text">为什么 override 自动加载，network 却需要指定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E5%BC%80%E5%8F%91%E8%A6%86%E7%9B%96%E6%96%87%E4%BB%B6%E6%8E%A5%E5%85%A5%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-number">5.5.3.</span> <span class="toc-text">用开发覆盖文件接入热更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E6%97%B6%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E6%96%87%E4%BB%B6%E4%B8%8D%E4%B8%80%E5%AE%9A%E6%8A%8A%E5%89%8D%E9%9D%A2%E7%9A%84%E5%AD%97%E6%AE%B5%E6%95%B4%E4%B8%AA%E6%9B%BF%E6%8D%A2"><span class="toc-number">5.5.4.</span> <span class="toc-text">合并时，后面的文件不一定把前面的字段整个替换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-compose-yaml-%E6%80%8E%E4%B9%88%E8%AF%BB%EF%BC%9A%E5%85%88%E7%9C%8B%E7%BC%A9%E8%BF%9B%EF%BC%8C%E5%86%8D%E7%9C%8B%E5%AD%97%E6%AE%B5"><span class="toc-number">5.6.</span> <span class="toc-text">5.6 compose.yaml 怎么读：先看缩进，再看字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-number">6.</span> <span class="toc-text">六、网络与数据卷</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E7%BD%91%E7%BB%9C%EF%BC%9A%E5%85%88%E7%A1%AE%E5%AE%9A%E6%98%AF%E8%B0%81%E5%9C%A8%E6%95%B2%E5%93%AA%E6%89%87%E9%97%A8"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 网络：先确定是谁在敲哪扇门</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E6%95%B0%E6%8D%AE%E5%8D%B7%EF%BC%9A%E5%AE%B9%E5%99%A8%E5%88%A0%E4%BA%86%E6%95%B0%E6%8D%AE%E8%BF%98%E5%9C%A8"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 数据卷：容器删了数据还在</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%81%9A%E4%B8%80%E4%B8%AA%E3%80%8C%E5%88%A0%E6%88%BF%E9%97%B4%E3%80%81%E7%95%99%E6%9F%9C%E5%AD%90%E3%80%8D%E7%9A%84%E5%B0%8F%E5%AE%9E%E9%AA%8C"><span class="toc-number">6.3.</span> <span class="toc-text">6.3 做一个「删房间、留柜子」的小实验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E4%BC%81%E4%B8%9A%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%AE%9E%E8%B7%B5"><span class="toc-number">7.</span> <span class="toc-text">七、企业开发中的实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E4%B8%8E%E6%A0%87%E7%AD%BE%E8%A7%84%E8%8C%83"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 镜像仓库与标签规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-CI-CD-%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="toc-number">7.2.</span> <span class="toc-text">7.2 CI&#x2F;CD 流水线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E5%A4%9A%E6%9E%B6%E6%9E%84%E9%95%9C%E5%83%8F%EF%BC%9AM-%E7%B3%BB%E5%88%97-Mac-%E7%9A%84%E7%BB%8F%E5%85%B8%E5%9D%91"><span class="toc-number">7.3.</span> <span class="toc-text">7.3 多架构镜像：M 系列 Mac 的经典坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA"><span class="toc-number">7.4.</span> <span class="toc-text">7.4 安全加固</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E6%97%A5%E5%BF%97"><span class="toc-number">7.5.</span> <span class="toc-text">7.5 资源限制与日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-6-%E4%BB%8E-Docker-%E5%88%B0-Kubernetes"><span class="toc-number">7.6.</span> <span class="toc-text">7.6 从 Docker 到 Kubernetes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="toc-number">8.</span> <span class="toc-text">八、常见问题排查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E5%B0%B1%E9%80%80%E5%87%BA"><span class="toc-number">8.1.</span> <span class="toc-text">8.1 容器启动就退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E6%80%BB%E6%98%AF%E5%A4%B1%E6%95%88"><span class="toc-number">8.2.</span> <span class="toc-text">8.2 构建缓存总是失效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E7%AB%AF%E5%8F%A3%E5%86%B2%E7%AA%81"><span class="toc-number">8.3.</span> <span class="toc-text">8.3 端口冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-%E5%AE%B9%E5%99%A8%E9%87%8C%E8%BF%9E%E4%B8%8D%E4%B8%8A%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">8.4.</span> <span class="toc-text">8.4 容器里连不上数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2-404"><span class="toc-number">8.5.</span> <span class="toc-text">8.5 刷新页面 404</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-6-%E7%A3%81%E7%9B%98%E8%A2%AB%E5%90%83%E5%85%89"><span class="toc-number">8.6.</span> <span class="toc-text">8.6 磁盘被吃光</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-7-%E5%AE%B9%E5%99%A8%E5%86%85%E6%97%B6%E9%97%B4%E4%B8%8D%E5%AF%B9"><span class="toc-number">8.7.</span> <span class="toc-text">8.7 容器内时间不对</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-8-%E5%85%B6%E4%BB%96%E9%AB%98%E9%A2%91%E9%97%AE%E9%A2%98%E9%80%9F%E6%9F%A5"><span class="toc-number">8.8.</span> <span class="toc-text">8.8 其他高频问题速查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E4%B8%8A%E7%94%9F%E4%BA%A7%E5%89%8D%E7%9A%84%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">9.</span> <span class="toc-text">九、上生产前的检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-number">10.</span> <span class="toc-text">十、小结</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars.githubusercontent.com/u/29703980?v=4"></div><div class="author-info__name text-center">2light</div><div class="author-info__description text-center"></div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/enhezzz">关注我</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">29</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">89</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">12</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">2light Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Posts</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title">Docker 实战完全指南：前端工程师的容器化入门</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2026-09-26<span class="post-meta__separator">|</span><i class="fa fa-calendar-check-o" aria-hidden="true"></i> 更新于 2026-09-28</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Backend/">Backend</a><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">22.6k</span><span class="post-meta__separator">|</span><span>阅读时长: 83 分钟</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>前端工程师第一次被要求「把项目容器化」的时候，多半会有一种错位感：我写的是浏览器里跑的代码，为什么要关心 Linux 镜像和端口映射？直到遇上这几件事——本地 <code>npm run build</code> 好好的，CI 上构建失败，因为同事的 Node 是 22 而流水线是 18；联调要装 MySQL 和 Redis，换台电脑重来一遍；测试环境刷新页面 404 而生产正常，因为两台机器的 Nginx 配置不一样。</p>
 <p>Docker 解决的正是这一类问题。它不是「更轻的虚拟机」，而是把<strong>应用连同它的整个运行环境打包成一个可分发的产物</strong>：代码、依赖、Node 版本、Nginx 配置、系统库全在镜像里，谁拉下来跑都一样。</p>
 <p>本文按前端工程师真实会遇到的顺序推进：使用背景与核心概念、安装与快速上手、常用命令详解、用 Dockerfile 打包前端项目、用 Compose 编排本地全套环境、网络与数据卷、企业开发中的镜像仓库与 CI&#x2F;CD 实践、常见问题排查。所有内容基于 <strong>Docker Engine 29</strong> 与 <strong>Docker Compose v2</strong>。</p>
 <span id="more"></span>
@@ -128,13 +128,13 @@ flowchart LR
 </tr>
 <tr>
 <td><strong>数据卷 Volume</strong></td>
-<td>独立于容器生命周期的存储</td>
-<td>容器删了它还在，用来存数据库文件</td>
+<td>Docker 管理、独立于容器生命周期的存储</td>
+<td>像房间外的储物柜，换掉容器还能接着用原来的数据</td>
 </tr>
 <tr>
 <td><strong>网络 Network</strong></td>
-<td>容器间通信的虚拟网络，自带 DNS</td>
-<td>同一网络里可用服务名互访</td>
+<td>连接容器的虚拟网络；Compose 网络支持服务名解析</td>
+<td>像连接房间的走廊，用 <code>api</code>、<code>mysql</code> 这些门牌找服务</td>
 </tr>
 </tbody></table>
 <p>镜像与容器的关系是<strong>一对多</strong>：</p>
@@ -146,7 +146,8 @@ flowchart TB
   IMG -->|docker run| C3["容器 3<br/>独立可写层"]
 </pre>
 
-<p>三个容器共享同一份只读镜像层，各自只额外占用自己写入的那部分数据。这是容器比虚拟机省资源的根本原因，也解释了为什么<strong>容器内写的文件在删除容器后会消失</strong>——它写在临时的可写层里，而不是镜像里。</p>
+<p>三个容器共享同一份只读镜像层，各自只额外占用自己写入的那部分数据。这也是容器节省存储空间的原因之一。<strong>写在容器自身可写层里的文件，会随容器删除而消失；写到挂载的数据卷里的文件，则由数据卷保存。</strong> 停止、重启同一个容器不会清空它的可写层，删除后重新创建才是另一回事。</p>
+<p>可以先把整个应用想成一间工作室：<code>web</code> 是接待访客的前台，<code>api</code> 是处理业务的办公室，<code>mysql</code> 是管理档案的办公室。<strong>容器是房间，网络是房间之间的走廊，数据卷是独立的储物柜。</strong> 换一间办公室，不必连档案一起扔掉；办公室之间传话，也不需要搬到同一个储物柜里。第五、六节会沿着这组关系解释配置。</p>
 <h3 id="1-5-镜像分层：理解构建缓存的基础"><a href="#1-5-镜像分层：理解构建缓存的基础" class="headerlink" title="1.5 镜像分层：理解构建缓存的基础"></a>1.5 镜像分层：理解构建缓存的基础</h3><p>镜像由多个只读层叠加而成，Dockerfile 里每条 <code>RUN</code>、<code>COPY</code>、<code>ADD</code> 都会生成新的一层：</p>
 <pre class="mermaid">
 flowchart BT
@@ -372,9 +373,9 @@ stateDiagram-v2
 <pre class="mermaid">
 flowchart LR
   subgraph S1["阶段 1：builder（node:20-alpine）"]
-    A["package.json"] --> B["npm ci<br/>装全量依赖"]
+    A["package.json + pnpm-lock.yaml"] --> B["pnpm install<br/>装全量依赖"]
     B --> C["COPY 源码"]
-    C --> D["npm run build<br/>产出 dist/"]
+    C --> D["pnpm build<br/>产出 dist/"]
   end
   subgraph S2["阶段 2：runner（nginx:alpine）"]
     E["只 COPY dist/"] --> F["Nginx 配置"]
@@ -385,9 +386,53 @@ flowchart LR
   style S2 fill:#0f131c
 </pre>
 
-<p><code>node_modules</code>、源码、构建工具链全部留在第一阶段，<strong>不会进入最终镜像</strong>。完整写法：</p>
+<p>在下面这个例子中，<code>node_modules</code>、源码目录、构建工具链留在第一阶段，<strong>不会整体进入最终镜像</strong>；应用代码和需要的依赖会经过打包，以 JS &#x2F; CSS 等形式存在于 <code>dist</code> 中。完整写法：</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ===== 阶段 1：构建 =====</span></span><br><span class="line"><span class="keyword">FROM</span> node:<span class="number">20</span>-alpine AS builder</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只复制依赖清单，让依赖层能被缓存</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json pnpm-lock.yaml ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> corepack <span class="built_in">enable</span> &amp;&amp; pnpm install --frozen-lockfile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 再复制源码</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pnpm build</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===== 阶段 2：运行 =====</span></span><br><span class="line"><span class="keyword">FROM</span> nginx:alpine AS runner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只取构建产物</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /app/dist /usr/share/nginx/html</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> nginx.conf /etc/nginx/conf.d/default.conf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Nginx 必须前台运行，容器才不会立刻退出</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br></pre></td></tr></table></figure>
 
+<p><strong>是不是只有最后阶段的产物会进入最终镜像？</strong> 更准确地说：默认把最后一个阶段导出为镜像，镜像包含<strong>这个阶段的基础镜像层，以及这个阶段新增的文件层和配置</strong>，不会把前面所有阶段自动叠进去。指定 <code>docker build --target builder</code> 时，则改为导出 <code>builder</code> 阶段。官方规则见 <a target="_blank" rel="noopener" href="https://docs.docker.com/build/building/multi-stage/">多阶段构建</a>。</p>
+<p>可以把 <code>builder</code> 看成烘焙厨房：<code>pnpm install</code> 准备工具和原料，<code>COPY . .</code> 搬入配方与材料，<code>pnpm build</code> 做出蛋糕 <code>dist</code>。<code>runner</code> 是另开的成品店，<code>FROM nginx:alpine</code> 给它自己的店面，<code>COPY --from=builder /app/dist ...</code> 只把蛋糕送过去，厨房和烤箱不会跟着搬过去。</p>
+<p>所以前面的安装和源码复制确实占空间，但要分清占的是哪一份空间：</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>属于哪个阶段</th>
+<th>是否计入此例的最终镜像</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Node、Corepack、pnpm</td>
+<td><code>builder</code> 的基础环境和新增层</td>
+<td>不计入，<code>runner</code> 从 Nginx 镜像重新开始</td>
+</tr>
+<tr>
+<td><code>/app/node_modules</code>、pnpm 的依赖存储</td>
+<td><code>builder</code> 安装依赖生成的文件</td>
+<td>不整体计入；打包器实际选中的代码可能进入 <code>dist</code></td>
+</tr>
+<tr>
+<td><code>/app/src</code> 等源码</td>
+<td><code>builder</code> 中 <code>COPY . .</code> 复制的文件</td>
+<td>不直接计入；若构建生成包含源码的 sourcemap 并放进 <code>dist</code>，这些文件也会被带走</td>
+</tr>
+<tr>
+<td><code>/app/dist</code></td>
+<td><code>builder</code> 生成，显式复制到 <code>runner</code></td>
+<td>计入</td>
+</tr>
+<tr>
+<td>Nginx、其基础系统文件、<code>nginx.conf</code></td>
+<td><code>runner</code> 的基础镜像和新增内容</td>
+<td>计入</td>
+</tr>
+</tbody></table>
+<p>用一个式子记住这个示例：<strong>最终镜像 ≈ Nginx 基础镜像 + dist + Nginx 配置</strong>。构建机磁盘还可能保留 Node 基础镜像、依赖安装层等构建缓存，用来加快下次构建；它们不会因为存在于本机，就自动进入 <code>my-app:1.0</code> 或随这个标签一起推送。镜像大小和构建缓存占用可分别查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker image <span class="built_in">ls</span> my-app</span><br><span class="line">docker <span class="built_in">history</span> my-app:1.0</span><br><span class="line">docker system <span class="built_in">df</span></span><br><span class="line">docker buildx <span class="built_in">du</span>                <span class="comment"># 当前 Buildx builder 的缓存占用</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的关键是第二个 <code>FROM</code> 的来源，以及 <code>COPY --from</code> 的范围。下面两种改法都会把不需要的内容带进运行镜像：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 情况一：继承 builder，之前的依赖、源码和层也跟着继承</span></span><br><span class="line"><span class="keyword">FROM</span> builder AS runner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情况二：虽然从 Nginx 重新开始，但主动把 builder 的整个 /app 搬过来</span></span><br><span class="line"><span class="keyword">FROM</span> nginx:alpine AS runner</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /app /app</span></span><br></pre></td></tr></table></figure>
+
+<p>这两段是独立的反例，不要追加到前面的 Dockerfile。多阶段构建不会自动判断哪些文件是「构建产物」；<strong>你指定的阶段继承关系和复制路径，才决定最终带走什么</strong>。5.2 的 <code>build.target: runner</code> 就是在明确选择运行阶段；5.5 改成 <code>target: dev</code> 后，会有意保留 Node 和开发依赖供热更新使用。</p>
 <p>体积对比很直观：</p>
 <table>
 <thead>
@@ -505,12 +550,14 @@ flowchart TB
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker network create app-net</span><br><span class="line">docker run -d --name mysql --network app-net -e MYSQL_ROOT_PASSWORD=... -v mysql-data:/var/lib/mysql mysql:8.4</span><br><span class="line">docker run -d --name redis --network app-net -v redis-data:/data redis:7-alpine</span><br><span class="line">docker run -d --name api --network app-net -e DB_HOST=mysql -e REDIS_HOST=redis -p 3000:3000 my-api:1.0</span><br><span class="line">docker run -d --name web --network app-net -p 8080:80 my-web:1.0</span><br></pre></td></tr></table></figure>
 
 <p>Compose 把这些声明成一个 YAML 文件，<code>docker compose up -d</code> 一条命令搞定，还自动创建网络、按依赖顺序启动。</p>
+<p>如果把 Dockerfile 理解成「一间房间怎么装修」，Compose 就是「整间工作室怎么安排」：要几种服务、它们走哪条网络互相访问、哪些目录要接到外面的存储。<code>services</code> 下的 <code>web</code>、<code>api</code> 是你起的服务名，<code>image</code>、<code>ports</code>、<code>volumes</code> 才是 Compose 认识的配置字段。</p>
 <h3 id="5-2-一份完整的开发环境配置"><a href="#5-2-一份完整的开发环境配置" class="headerlink" title="5.2 一份完整的开发环境配置"></a>5.2 一份完整的开发环境配置</h3><p>文件名用 <code>compose.yaml</code>（Compose v2 推荐的名字，<code>docker-compose.yml</code> 同样兼容）。注意<strong>不要再写 <code>version:</code> 字段</strong>，v2 已忽略它，写了反而会告警：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">myapp</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="comment"># ---------- 前端 ----------</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./frontend</span></span><br><span class="line">      <span class="attr">target:</span> <span class="string">runner</span>              <span class="comment"># 用多阶段构建里的 runner 阶段</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8080:80&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">BACKEND_HOST:</span> <span class="string">api:3000</span>      <span class="comment"># 直接用服务名，不是 localhost</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="attr">api:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ---------- 后端 ----------</span></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./backend</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;3000:3000&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">NODE_ENV:</span> <span class="string">development</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">mysql</span></span><br><span class="line">      <span class="attr">DB_USER:</span> <span class="string">root</span></span><br><span class="line">      <span class="attr">DB_PASSWORD:</span> <span class="string">$&#123;MYSQL_ROOT_PASSWORD&#125;</span></span><br><span class="line">      <span class="attr">REDIS_URL:</span> <span class="string">redis://redis:6379</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="attr">mysql:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span></span><br><span class="line">      <span class="attr">redis:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_started</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;wget&quot;</span>, <span class="string">&quot;-qO-&quot;</span>, <span class="string">&quot;http://localhost:3000/healthz&quot;</span>]</span><br><span class="line">      <span class="attr">interval:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">3s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">20s</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ---------- 数据库 ----------</span></span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:8.4</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">$&#123;MYSQL_ROOT_PASSWORD&#125;</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">myapp</span></span><br><span class="line">      <span class="attr">TZ:</span> <span class="string">Asia/Shanghai</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;127.0.0.1:3306:3306&quot;</span>     <span class="comment"># 只绑本机，不暴露到公网</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql-data:/var/lib/mysql</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./docker/mysql/init:/docker-entrypoint-initdb.d:ro</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;mysqladmin&quot;</span>, <span class="string">&quot;ping&quot;</span>, <span class="string">&quot;-h&quot;</span>, <span class="string">&quot;127.0.0.1&quot;</span>, <span class="string">&quot;-uroot&quot;</span>, <span class="string">&quot;-p$&#123;MYSQL_ROOT_PASSWORD&#125;&quot;</span>]</span><br><span class="line">      <span class="attr">interval:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">5s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">10</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">30s</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ---------- 缓存 ----------</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">redis:7-alpine</span></span><br><span class="line">    <span class="attr">command:</span> [<span class="string">&quot;redis-server&quot;</span>, <span class="string">&quot;--appendonly&quot;</span>, <span class="string">&quot;yes&quot;</span>]</span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;127.0.0.1:6379:6379&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">redis-data:/data</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">mysql-data:</span></span><br><span class="line">  <span class="attr">redis-data:</span></span><br></pre></td></tr></table></figure>
 
 <p>配套的 <code>.env</code> 文件（Compose 会自动读取同目录下的 <code>.env</code>）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .env —— 记得加入 .gitignore</span></span><br><span class="line">MYSQL_ROOT_PASSWORD=dev_only_password</span><br></pre></td></tr></table></figure>
 
+<p>这份配置假设仓库中已有 <code>frontend/</code>、<code>backend/</code> 及各自的 Dockerfile，前端使用 4.7 节的 Nginx 模板，后端读取示例中的数据库变量、监听 <code>0.0.0.0:3000</code>，并提供 <code>/healthz</code>。后端镜像还需安装健康检查用到的 <code>wget</code>。<code>./docker/mysql/init</code> 用来放首次初始化数据库的 SQL，可以没有脚本，但应提前创建目录。这是一份项目编排范例，具体业务服务仍需要你自己的代码。</p>
 <p>服务间的网络关系是这样的，Compose 会自动建一个默认网络，服务名即主机名：</p>
 <pre class="mermaid">
 flowchart TB
@@ -524,6 +571,92 @@ flowchart TB
   RD --- V2["volume: redis-data"]
 </pre>
 
+<p>沿着图走一次「打开用户列表」的过程：浏览器向 <code>localhost:8080</code> 请求页面，Docker 把请求转给 <code>web</code> 的 80 端口；页面执行 <code>fetch(&#39;/api/users&#39;)</code>，仍请求这个浏览器地址下的 <code>/api/users</code>；Nginx 再通过内部网络访问 <code>api:3000</code>。后端通过 <code>mysql:3306</code> 查询数据，MySQL 才去读自己的数据目录，也就是挂载的 <code>mysql-data</code> 卷。</p>
+<p>这里有三种不同的关系：<strong><code>ports</code> 接入宿主机的请求，网络负责服务之间通信，<code>volumes</code> 决定文件存到哪里。</strong> API 连接 MySQL 用的是网络和数据库协议，不需要把 MySQL 的数据卷也挂到 API 上。图中的箭头表示应用实际发出的请求；默认网络里的其他服务在网络层面也能互相访问。</p>
+<h4 id="给这份配置加上显式网络：各服务究竟填什么地址"><a href="#给这份配置加上显式网络：各服务究竟填什么地址" class="headerlink" title="给这份配置加上显式网络：各服务究竟填什么地址"></a>给这份配置加上显式网络：各服务究竟填什么地址</h4><p>上面的默认网络已经可以工作。如果想把「前端到 API」和「API 到数据服务」分开，在同目录新增下面这份 <code>compose.network.yaml</code>，与 5.2 的 <code>compose.yaml</code> 合并使用。这里完整列出四个服务的网络安排，其余构建、密码、健康检查、挂载和端口发布继续沿用主文件：</p>
+<p>这里拆文件是为了演示一种可选的网络方案，<strong>不是配置网络就必须新建文件</strong>。如果项目始终使用这两个网络，直接把下面的服务网络配置和顶层 <code>networks</code> 合入主文件即可。什么时候拆分、哪些文件会自动加载，见 5.5 节。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># compose.network.yaml —— 与本节 compose.yaml 配套使用</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">front-net</span>]</span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">BACKEND_HOST:</span> <span class="string">api:3000</span>       <span class="comment"># Nginx 通过 front-net 找到 api</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">front-net</span>, <span class="string">data-net</span>]</span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">mysql</span>              <span class="comment"># 通过 data-net 找到 mysql</span></span><br><span class="line">      <span class="attr">DB_PORT:</span> <span class="string">&quot;3306&quot;</span>             <span class="comment"># 容器端口，不是宿主机映射端口</span></span><br><span class="line">      <span class="attr">DB_NAME:</span> <span class="string">myapp</span></span><br><span class="line">      <span class="attr">REDIS_URL:</span> <span class="string">redis://redis:6379</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">data-net</span>]</span><br><span class="line"></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">data-net</span>]</span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">front-net:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br><span class="line">  <span class="attr">data-net:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显式选择这两份文件，不自动混入 compose.override.yaml</span></span><br><span class="line">docker compose -f compose.yaml -f compose.network.yaml config -q</span><br><span class="line">docker compose -f compose.yaml -f compose.network.yaml up -d --build</span><br></pre></td></tr></table></figure>
+
+<p>后续查看日志、停止或更新这套环境，也使用同样的两个 <code>-f</code> 参数。Compose 会合并同名服务和 <code>environment</code> 中的键，所以主文件中的 <code>DB_USER</code>、<code>DB_PASSWORD</code> 等配置仍然保留；新增的 <code>DB_PORT</code>、<code>DB_NAME</code> 需要后端代码实际读取才会起作用。Docker 不会因为变量叫这个名字，就自动替你建立数据库连接。</p>
+<p>此时通常创建 <code>myapp_front-net</code> 和 <code>myapp_data-net</code> 两个网络。网络名表示「走哪条路」，请求地址中的主机名仍然是 <code>api</code>、<code>mysql</code>、<code>redis</code>，<strong>不要写成 <code>http://front-net:3000</code> 或 <code>myapp_data-net:3306</code></strong>。服务名解析只在共享网络内有效，规则见 <a target="_blank" rel="noopener" href="https://docs.docker.com/compose/how-tos/networking/">Compose 网络说明</a>。</p>
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>加入的网络</th>
+<th>程序在容器内监听</th>
+<th>主动连接其他服务时使用的地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>web</code></td>
+<td><code>front-net</code></td>
+<td>Nginx <code>listen 80;</code></td>
+<td><code>http://api:3000</code>，由 <code>BACKEND_HOST=api:3000</code> 渲染到 Nginx 模板</td>
+</tr>
+<tr>
+<td><code>api</code></td>
+<td><code>front-net</code>、<code>data-net</code></td>
+<td>Node <code>0.0.0.0:3000</code></td>
+<td>MySQL 主机 <code>mysql</code>、端口 <code>3306</code>、数据库 <code>myapp</code>；Redis <code>redis://redis:6379</code></td>
+</tr>
+<tr>
+<td><code>mysql</code></td>
+<td><code>data-net</code></td>
+<td>MySQL 在可供其他容器访问的接口监听 <code>3306</code></td>
+<td>此例中只接收 API 的连接，不需要填 API 地址</td>
+</tr>
+<tr>
+<td><code>redis</code></td>
+<td><code>data-net</code></td>
+<td>Redis 在可供其他容器访问的接口监听 <code>6379</code></td>
+<td>此例中只接收 API 的连接，不需要填 API 地址</td>
+</tr>
+</tbody></table>
+<p>API 就像同时通向两条走廊的办公室：接收 web 的 HTTP 请求，然后由业务代码通过数据库客户端访问 mysql 或 redis。web 没有加入 <code>data-net</code>，因此不能通过内部服务名直接访问这两个数据服务。</p>
+<p>再从宿主机看一遍。因为主文件的 <code>ports</code> 没有改变，本机工具仍然从原来的入口访问：</p>
+<table>
+<thead>
+<tr>
+<th>谁在宿主机发请求</th>
+<th>应填写的地址</th>
+<th>对应的转发</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>浏览器打开网站</td>
+<td><code>http://localhost:8080</code></td>
+<td>宿主机 8080 → web 80</td>
+</tr>
+<tr>
+<td>浏览器页面执行 <code>fetch(&#39;/api/users&#39;)</code></td>
+<td>实际请求 <code>http://localhost:8080/api/users</code></td>
+<td>web 再代理到 <code>http://api:3000/users</code></td>
+</tr>
+<tr>
+<td>Postman 直接测试 API</td>
+<td><code>http://localhost:3000/users</code></td>
+<td>宿主机 3000 → api 3000</td>
+</tr>
+<tr>
+<td>数据库客户端</td>
+<td>主机 <code>127.0.0.1</code>，端口 <code>3306</code>，数据库 <code>myapp</code></td>
+<td>宿主机 3306 → mysql 3306，账号密码对应主配置</td>
+</tr>
+<tr>
+<td>Redis 客户端</td>
+<td><code>redis://127.0.0.1:6379</code></td>
+<td>宿主机 6379 → redis 6379</td>
+</tr>
+</tbody></table>
+<p>这里 API 路径假设为 <code>/users</code>。4.7 的 Nginx 模板使用 <code>location /api/</code> 配合末尾带 <code>/</code> 的 <code>proxy_pass http://${BACKEND_HOST}/;</code>，会把前缀 <code>/api/</code> 替换为 <code>/</code>；如果后端路由本身叫 <code>/api/users</code>，就要相应调整代理规则。</p>
+<p>如果采用「Vite 跑在电脑上、后端跑在容器里」的开发方式，前端仍写 <code>fetch(&#39;/api/users&#39;)</code>，让 Vite 做同样的转发：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// frontend/vite.config.ts，省略已有的 plugins 等配置</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">proxy</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;/api&#x27;</span>: &#123;</span><br><span class="line">        <span class="attr">target</span>: <span class="string">&#x27;http://localhost:3000&#x27;</span>, <span class="comment">// Vite 在宿主机，所以走发布端口</span></span><br><span class="line">        <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">rewrite</span>: <span class="function">(<span class="params">path</span>) =&gt;</span> path.<span class="title function_">replace</span>(<span class="regexp">/^\/api/</span>, <span class="string">&#x27;&#x27;</span>),</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>浏览器此时打开 Vite 显示的地址（通常是 <code>http://localhost:5173</code>），请求 <code>/api/users</code> 后由 Vite 转发到 API。若按 5.5 把 Vite 放进已加入 <code>front-net</code> 的 web 容器，则把代理 <code>target</code> 改为 <code>http://api:3000</code>，并让 Vite 监听 <code>0.0.0.0</code>。<strong>决定地址写法的是执行代理的进程在哪里，而不是配置文件存在哪个目录。</strong> 代理选项见 <a target="_blank" rel="noopener" href="https://vite.dev/config/server-options.html#server-proxy">Vite server.proxy</a>。</p>
+<p>这份配置为本地调试保留了 API、MySQL、Redis 的宿主机入口；如果只允许通过 web 进入，可从主文件删掉这三个服务的 <code>ports</code>，内部地址照旧。仅仅拆分网络不会自动移除已发布的宿主机端口。</p>
 <h3 id="5-3-常用-Compose-命令"><a href="#5-3-常用-Compose-命令" class="headerlink" title="5.3 常用 Compose 命令"></a>5.3 常用 Compose 命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动 / 停止</span></span><br><span class="line">docker compose up -d                 <span class="comment"># 后台启动全部服务</span></span><br><span class="line">docker compose up -d --build         <span class="comment"># 顺带重新构建镜像</span></span><br><span class="line">docker compose up -d api             <span class="comment"># 只启动某个服务（含其依赖）</span></span><br><span class="line">docker compose stop                  <span class="comment"># 停止但保留容器</span></span><br><span class="line">docker compose down                  <span class="comment"># 停止并删除容器、网络（保留数据卷）</span></span><br><span class="line">docker compose down -v               <span class="comment"># 连数据卷一起删（数据会丢）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看</span></span><br><span class="line">docker compose ps</span><br><span class="line">docker compose logs -f api           <span class="comment"># 跟随某个服务日志</span></span><br><span class="line">docker compose logs -f --<span class="built_in">tail</span> 100    <span class="comment"># 所有服务最近 100 行</span></span><br><span class="line">docker compose config                <span class="comment"># 展开变量后的最终配置，排查 YAML 问题必用</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 操作</span></span><br><span class="line">docker compose <span class="built_in">exec</span> api sh           <span class="comment"># 进入运行中的服务</span></span><br><span class="line">docker compose run --<span class="built_in">rm</span> api npm <span class="built_in">test</span> <span class="comment"># 起一个临时容器跑命令，跑完删除</span></span><br><span class="line">docker compose restart api</span><br><span class="line">docker compose build --no-cache api  <span class="comment"># 强制不用缓存重建</span></span><br><span class="line">docker compose pull                  <span class="comment"># 拉取最新的第三方镜像</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 扩容（要先去掉该服务的固定端口映射，否则端口冲突）</span></span><br><span class="line">docker compose up -d --scale api=3</span><br></pre></td></tr></table></figure>
 
 <p><code>docker compose config</code> 值得单独提一下：它会把 <code>.env</code> 变量、多文件合并、默认值全部展开成最终生效的配置，排查「环境变量为什么没生效」时一眼就能看出问题。</p>
@@ -551,131 +684,715 @@ sequenceDiagram
 <p>即便配了健康检查，应用层最好也带上重试——生产环境数据库可能在运行中短暂不可用：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectWithRetry</span>(<span class="params">maxRetries = <span class="number">10</span>, delayMs = <span class="number">3000</span></span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= maxRetries; i++) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">await</span> pool.<span class="title function_">query</span>(<span class="string">&#x27;SELECT 1&#x27;</span>);</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;database ready&#x27;</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">warn</span>(<span class="string">`db not ready (<span class="subst">$&#123;i&#125;</span>/<span class="subst">$&#123;maxRetries&#125;</span>): <span class="subst">$&#123;err.code&#125;</span>`</span>);</span><br><span class="line">      <span class="keyword">if</span> (i === maxRetries) <span class="keyword">throw</span> err;</span><br><span class="line">      <span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> <span class="built_in">setTimeout</span>(r, delayMs));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="5-5-开发模式：挂载源码实现热更新"><a href="#5-5-开发模式：挂载源码实现热更新" class="headerlink" title="5.5 开发模式：挂载源码实现热更新"></a>5.5 开发模式：挂载源码实现热更新</h3><p>生产镜像把代码构建进镜像，开发时则需要改代码立刻生效。用 override 文件区分，Compose 会自动合并 <code>compose.yaml</code> 和 <code>compose.override.yaml</code>：</p>
+<h3 id="5-5-开发模式：挂载源码实现热更新"><a href="#5-5-开发模式：挂载源码实现热更新" class="headerlink" title="5.5 开发模式：挂载源码实现热更新"></a>5.5 开发模式：挂载源码实现热更新</h3><p>生产镜像把代码构建进镜像，开发时则需要改代码立刻生效。共用的服务定义不必写两遍，可以把开发时的差异放进补充文件。</p>
+<h4 id="什么时候需要新增-Compose-文件"><a href="#什么时候需要新增-Compose-文件" class="headerlink" title="什么时候需要新增 Compose 文件"></a>什么时候需要新增 Compose 文件</h4><p>当同一套应用有几种运行方式，而且它们「大部分相同、少部分不同」时，拆文件才有价值。把 <code>compose.yaml</code> 想成通用配置，把补充文件想成某个场景的修改清单：沿用没有提到的配置，只补充或调整需要变化的部分。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>主文件保留什么</th>
+<th>补充文件里写什么</th>
+<th>文件名示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本地开发</td>
+<td>服务、基础镜像、依赖关系</td>
+<td>挂载源码、启动 dev server、开放调试端口</td>
+<td><code>compose.override.yaml</code></td>
+</tr>
+<tr>
+<td>生产部署</td>
+<td>共用服务配置</td>
+<td>正式镜像标签、资源限制、重启策略等环境差异</td>
+<td><code>compose.prod.yaml</code></td>
+</tr>
+<tr>
+<td>CI 测试</td>
+<td>应用与数据库等共用定义</td>
+<td>测试命令、测试变量、测试专用服务</td>
+<td><code>compose.test.yaml</code></td>
+</tr>
+<tr>
+<td>可选网络方案</td>
+<td>服务本身的构建与运行配置</td>
+<td>网络分区、接入已有网络</td>
+<td><code>compose.network.yaml</code></td>
+</tr>
+</tbody></table>
+<p>只有一种运行方式时，一份 <code>compose.yaml</code> 就够了；只改变密码、端口号等少量参数时，也可以继续用同一份 YAML，通过环境变量传入。文件拆得越多，启动时越需要明确选择哪些文件。<strong>是否拆分取决于有没有独立的场景差异，不取决于某个字段叫 <code>networks</code> 还是 <code>volumes</code>。</strong></p>
+<h4 id="为什么-override-自动加载，network-却需要指定"><a href="#为什么-override-自动加载，network-却需要指定" class="headerlink" title="为什么 override 自动加载，network 却需要指定"></a>为什么 override 自动加载，network 却需要指定</h4><p>因为 <strong><code>compose.override.yaml</code> 是 Compose 约定的默认补充文件名</strong>，而 <code>compose.network.yaml</code>、<code>compose.prod.yaml</code> 都只是我们自己起的名字。<code>network</code> 这个词不会让 Compose 自动识别或加载它。</p>
+<p>没有通过 <code>-f</code> 或 <code>COMPOSE_FILE</code> 显式指定文件时，Compose 按默认发现规则查找主配置，并合并同目录下存在的 <code>compose.override.yaml</code>。<strong>一旦显式指定文件，就按指定列表加载，不会再额外补上 override。</strong> 文件选择规则见 <a target="_blank" rel="noopener" href="https://docs.docker.com/compose/how-tos/multiple-compose-files/merge/">Compose 多文件合并说明</a>。</p>
+<table>
+<thead>
+<tr>
+<th>启动命令</th>
+<th>实际使用的文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>docker compose up -d</code></td>
+<td>默认找到的 <code>compose.yaml</code> + 同目录的 <code>compose.override.yaml</code>（如果存在，且没有设置 <code>COMPOSE_FILE</code>）</td>
+</tr>
+<tr>
+<td><code>docker compose -f compose.yaml up -d</code></td>
+<td>只有主文件，跳过 override</td>
+</tr>
+<tr>
+<td><code>docker compose -f compose.yaml -f compose.network.yaml up -d</code></td>
+<td>主文件 + 网络配置，跳过 override</td>
+</tr>
+<tr>
+<td><code>docker compose -f compose.yaml -f compose.override.yaml -f compose.network.yaml up -d</code></td>
+<td>按列出的顺序合并三份文件</td>
+</tr>
+</tbody></table>
+<p>所以 5.2 的两文件命令不会启动本节的 Vite 开发模式；如果既需要开发覆盖，又需要网络分区，就使用上表最后一条命令。日常本地开发希望一条 <code>docker compose up</code> 就能启动时，适合采用默认的 override 文件名；生产、测试等需要主动选择的场景，可以使用自定义文件名。</p>
+<h4 id="用开发覆盖文件接入热更新"><a href="#用开发覆盖文件接入热更新" class="headerlink" title="用开发覆盖文件接入热更新"></a>用开发覆盖文件接入热更新</h4><p>下面只写相对于 5.2 主配置的开发差异，服务名 <code>web</code>、<code>api</code> 对应原来的服务，不会因为分到两个文件就变成两套服务：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># compose.override.yaml —— 本地开发专用，自动生效</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">target:</span> <span class="string">dev</span>                 <span class="comment"># 换成开发阶段，跑 vite dev server</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">dev</span> <span class="string">--</span> <span class="string">--host</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5173:5173&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./frontend:/app</span>           <span class="comment"># 挂载源码</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/node_modules</span>         <span class="comment"># 匿名卷「保护」容器内的 node_modules</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">CHOKIDAR_USEPOLLING:</span> <span class="string">&quot;true&quot;</span> <span class="comment"># Windows/macOS 挂载时文件监听可能失效</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">dev</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./backend:/app</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/node_modules</span></span><br></pre></td></tr></table></figure>
 
 <p>对应的 Dockerfile 加一个 dev 阶段：</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">20</span>-alpine AS deps</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json pnpm-lock.yaml ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> corepack <span class="built_in">enable</span> &amp;&amp; pnpm install --frozen-lockfile</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> deps AS dev</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">5173</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;npm&quot;</span>, <span class="string">&quot;run&quot;</span>, <span class="string">&quot;dev&quot;</span>, <span class="string">&quot;--&quot;</span>, <span class="string">&quot;--host&quot;</span>, <span class="string">&quot;0.0.0.0&quot;</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> deps AS builder</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pnpm build</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> nginx:alpine AS runner</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /app/dist /usr/share/nginx/html</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> nginx.conf /etc/nginx/conf.d/default.conf</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br></pre></td></tr></table></figure>
 
 <p>两个容易踩的点：</p>
-<p><strong><code>- /app/node_modules</code> 这行是必须的。</strong> 挂载 <code>./frontend:/app</code> 会用宿主机目录整体覆盖容器内的 <code>/app</code>，包括镜像里已经装好的 <code>node_modules</code>。加一个匿名卷占住这个路径，容器内的依赖才不会被覆盖掉。</p>
+<p><strong>整目录挂载时，需要单独安排 <code>node_modules</code> 的存储。</strong> <code>./frontend:/app</code> 会遮住镜像原本的 <code>/app</code>，不是删除里面的文件。再把匿名卷挂到更具体的 <code>/app/node_modules</code>，这个子目录就改用卷中的内容；首次使用空卷时，Docker 默认会把镜像中该位置已有的依赖复制进去。这样源码来自电脑，依赖来自容器侧的卷，也避免混用 Windows &#x2F; macOS 与 Linux 的原生模块。</p>
+<p>卷不是自动更新的依赖缓存。改了 lock 文件并重建镜像后，旧卷仍可能保留旧依赖，需要重新安装依赖，或只更新该开发服务的匿名卷，例如 <code>docker compose up -d --build --renew-anon-volumes --no-deps web</code>。若只绑定挂载 <code>src</code> 等源码目录，就不一定需要单独的依赖卷；不要为更新依赖而执行会删除数据库卷的 <code>down -v</code>。</p>
 <p><strong>dev server 必须监听 <code>0.0.0.0</code>。</strong> Vite 默认只监听 <code>127.0.0.1</code>，在容器里这意味着只有容器自己能访问，宿主机浏览器会连不上。</p>
 <p>生产部署时用 <code>-f</code> 显式指定文件，跳过 override：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d                              <span class="comment"># 本地：自动合并 override</span></span><br><span class="line">docker compose -f compose.yaml up -d              <span class="comment"># 生产：只用主配置</span></span><br></pre></td></tr></table></figure>
 
+<h4 id="合并时，后面的文件不一定把前面的字段整个替换"><a href="#合并时，后面的文件不一定把前面的字段整个替换" class="headerlink" title="合并时，后面的文件不一定把前面的字段整个替换"></a>合并时，后面的文件不一定把前面的字段整个替换</h4><p>Compose 按 <code>-f</code> 的排列顺序处理文件，后面的文件可以新增、合并或覆盖已有配置，具体行为取决于字段。比如把补充文件里的 <code>web.command</code> 改成 <code>npm run dev</code>，只会改变这个服务的启动命令，不会丢掉主文件中定义的依赖、环境变量等其他内容。</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>常见合并行为</th>
+<th>对照本文的例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>image</code>、<code>command</code></td>
+<td>后面的值替换前面的值</td>
+<td>开发文件中的 <code>command</code> 覆盖默认启动命令</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td>按内部字段合并</td>
+<td><code>target: dev</code> 替换 <code>target: runner</code>，主文件的 <code>context: ./frontend</code> 仍保留</td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td>按变量名合并，同名变量取后面的值</td>
+<td>新增 <code>CHOKIDAR_USEPOLLING</code>，同时保留原来的 <code>BACKEND_HOST</code></td>
+</tr>
+<tr>
+<td><code>ports</code></td>
+<td>按端口条目的唯一标识合并，不同映射可同时保留</td>
+<td><code>8080:80</code> 与 <code>5173:5173</code> 都会留下</td>
+</tr>
+<tr>
+<td><code>volumes</code></td>
+<td>以容器内挂载目标路径为键合并</td>
+<td>同一个 <code>/app</code> 目标可被后面的来源替换，不同目标则保留</td>
+</tr>
+</tbody></table>
+<p>尤其注意本节的端口：主文件发布 <code>8080:80</code>，开发覆盖文件增加 <code>5173:5173</code>，<strong>最终会同时发布这两个映射，并不是自动把 8080 改成 5173</strong>。Vite 监听的是 5173，开发时应访问 <code>http://localhost:5173</code>；保留的 <code>8080:80</code> 不会让 Vite 自动监听 80。如果不想留下这个映射，可把各场景独有的端口分别放进各自的配置文件，而不是放进共用主文件。</p>
+<p>判断最终生效的配置时，使用与启动时相同的文件列表执行 <code>config</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认发现：查看主配置与 override 合并后的结果</span></span><br><span class="line">docker compose config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显式选择：查看三份文件合并后的结果</span></span><br><span class="line">docker compose -f compose.yaml -f compose.override.yaml -f compose.network.yaml config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只检查是否合法，不输出配置中的密码等内容</span></span><br><span class="line">docker compose -f compose.yaml -f compose.override.yaml -f compose.network.yaml config -q</span><br></pre></td></tr></table></figure>
+
+<p>同一套环境后续执行 <code>up</code>、<code>logs</code>、<code>down</code> 等操作时，也保持文件列表和顺序一致。还有一个路径规则：用多个 <code>-f</code> 合并时，默认以<strong>第一份 Compose 文件所在目录</strong>解析相对路径，不能因为补充文件放在另一个目录，就按它自己的位置填写 <code>build.context</code> 或绑定挂载路径。更详细的字段行为见 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/merge/">Compose 合并规范</a>。</p>
+<h3 id="5-6-compose-yaml-怎么读：先看缩进，再看字段"><a href="#5-6-compose-yaml-怎么读：先看缩进，再看字段" class="headerlink" title="5.6 compose.yaml 怎么读：先看缩进，再看字段"></a>5.6 compose.yaml 怎么读：先看缩进，再看字段</h3><p>YAML 的缩进表示归属，同名字段放在不同层级，回答的问题也不同。先看这个可以独立保存的最小例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">volume-demo</span>                <span class="comment"># 这一组资源的项目名</span></span><br><span class="line"><span class="attr">services:</span>                        <span class="comment"># 房间清单</span></span><br><span class="line">  <span class="attr">web:</span>                           <span class="comment"># 自己起的服务名</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:alpine</span>           <span class="comment"># 用哪份镜像创建容器</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;127.0.0.1:8088:80&quot;</span>      <span class="comment"># 本机 8088 → 容器 80</span></span><br><span class="line">    <span class="attr">volumes:</span>                     <span class="comment"># 这个服务使用哪些存储，挂到哪里</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">site-data:/usr/share/nginx/html</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">app-net</span>]           <span class="comment"># 这个服务接入哪条网络</span></span><br><span class="line"><span class="attr">volumes:</span>                         <span class="comment"># 整个项目声明哪些命名卷</span></span><br><span class="line">  <span class="attr">site-data:</span> &#123;&#125;                   <span class="comment"># 空配置表示使用默认设置</span></span><br><span class="line"><span class="attr">networks:</span>                        <span class="comment"># 整个项目声明哪些网络</span></span><br><span class="line">  <span class="attr">app-net:</span> &#123;&#125;                     <span class="comment"># 本地 Docker Engine 通常使用 bridge</span></span><br></pre></td></tr></table></figure>
+
+<p>顶层 <code>volumes.site-data</code> 是「登记一个储物柜」，服务下的挂载是「把这个柜子接到 web 的某个目录」。只登记不会自动挂进去。<code>networks</code> 也一样：顶层定义网络，服务里指定加入哪一个；如果完全不写网络配置，Compose 会给服务连接默认网络。<code>site-data</code>、<code>app-net</code> 都是自定义名字，需要上下对应。</p>
+<p>下面覆盖前端开发与单机部署常见字段，<strong>不是 Compose 所有平台字段的穷举</strong>。规范持续增加功能，较新的字段还受本机 Compose 版本限制；完整索引见 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/">Compose 文件参考</a>。</p>
+<p><strong>第一层：整个项目的字段</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>回答的问题</th>
+<th>写法或含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>name</code></td>
+<td>这组应用叫什么？</td>
+<td><code>name: myapp</code>，作为默认资源名前缀；命令行 <code>-p</code> 可以覆盖它</td>
+</tr>
+<tr>
+<td><code>services</code></td>
+<td>要运行哪些服务？</td>
+<td>下一级是自定义服务名，再往下写服务配置</td>
+</tr>
+<tr>
+<td><code>volumes</code></td>
+<td>声明哪些命名卷？</td>
+<td>如 <code>mysql-data: {}</code>，服务仍需显式挂载</td>
+</tr>
+<tr>
+<td><code>networks</code></td>
+<td>声明哪些网络？</td>
+<td>如 <code>app-net: {}</code>，服务仍需显式加入；省略时可用默认网络</td>
+</tr>
+<tr>
+<td><code>configs</code></td>
+<td>哪些普通配置要作为文件交给服务？</td>
+<td>如 <code>app-config: {file: ./app.conf}</code>，服务通过自己的 <code>configs</code> 引用</td>
+</tr>
+<tr>
+<td><code>secrets</code></td>
+<td>哪些敏感内容要作为文件交给指定服务？</td>
+<td>如 <code>db-password: {file: ./secrets/db-password.txt}</code>，服务通过自己的 <code>secrets</code> 引用</td>
+</tr>
+<tr>
+<td><code>include</code></td>
+<td>是否引入其他 Compose 应用配置？</td>
+<td>如 <code>include: [./infra/compose.yaml]</code>，需要 Compose 2.20.0+</td>
+</tr>
+<tr>
+<td><code>x-*</code></td>
+<td>是否存放供 YAML 锚点复用的自定义配置？</td>
+<td>如 <code>x-common</code>；Compose 不直接把它当作服务执行</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>是否用版本号选择语法？</td>
+<td>旧写法；当前 Compose 按规范解析，这个字段已废弃，省略即可</td>
+</tr>
+</tbody></table>
+<p><code>configs</code> &#x2F; <code>secrets</code> 是「给指定房间送文件」，声明后仍要由服务引用。普通本地 Compose 的文件型 secret 不等于自动加密的密码保险箱；源文件需要自行保管，应用也需要支持读取挂载的文件。参考 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/configs/">Configs</a>、<a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/secrets/">Secrets</a> 与 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/include/">Include</a>。</p>
+<p><strong>第二层：<code>services.&lt;服务名&gt;</code> 下的常用字段</strong></p>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>字段</th>
+<th>含义与例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>镜像来源</td>
+<td><code>image</code></td>
+<td>使用的镜像，如 <code>redis:7-alpine</code></td>
+</tr>
+<tr>
+<td>镜像来源</td>
+<td><code>build</code></td>
+<td>从源码构建，如 <code>build: ./frontend</code>，也可展开成对象</td>
+</tr>
+<tr>
+<td>镜像来源</td>
+<td><code>pull_policy</code></td>
+<td>控制镜像获取策略，如 <code>always</code>、<code>missing</code>、<code>never</code>、<code>build</code>；同时写 <code>image</code> 和 <code>build</code> 时尤其要留意</td>
+</tr>
+<tr>
+<td>启动方式</td>
+<td><code>command</code></td>
+<td>覆盖镜像的默认 <code>CMD</code>，如 <code>[&quot;npm&quot;, &quot;run&quot;, &quot;dev&quot;]</code></td>
+</tr>
+<tr>
+<td>启动方式</td>
+<td><code>entrypoint</code></td>
+<td>覆盖镜像入口程序；可能跳过镜像原有初始化逻辑</td>
+</tr>
+<tr>
+<td>启动方式</td>
+<td><code>working_dir</code>、<code>user</code></td>
+<td>设置工作目录、运行用户，如 <code>/app</code>、<code>&quot;1000:1000&quot;</code></td>
+</tr>
+<tr>
+<td>应用配置</td>
+<td><code>environment</code></td>
+<td>传给容器进程的变量，如 <code>NODE_ENV: development</code>；布尔含义的值建议写成字符串 <code>&quot;true&quot;</code></td>
+</tr>
+<tr>
+<td>应用配置</td>
+<td><code>env_file</code></td>
+<td>从文件加载容器环境变量，如 <code>./backend.env</code>；同名变量由 <code>environment</code> 覆盖</td>
+</tr>
+<tr>
+<td>请求入口</td>
+<td><code>ports</code></td>
+<td>发布端口到宿主机，如 <code>&quot;127.0.0.1:8080:80&quot;</code></td>
+</tr>
+<tr>
+<td>请求入口</td>
+<td><code>expose</code></td>
+<td>声明容器端口，如 <code>[&quot;3000&quot;]</code>；不发布到宿主机，也不是内部网络的访问白名单</td>
+</tr>
+<tr>
+<td>网络连接</td>
+<td><code>networks</code></td>
+<td>要加入的网络列表，如 <code>[app-net]</code>；同一网络才可按服务名直接互访</td>
+</tr>
+<tr>
+<td>网络连接</td>
+<td><code>extra_hosts</code></td>
+<td>添加主机名到 IP 的映射；访问 Linux 宿主机的例子见 6.1</td>
+</tr>
+<tr>
+<td>文件存储</td>
+<td><code>volumes</code>、<code>tmpfs</code></td>
+<td>挂载持久存储或临时内存目录，见 6.2</td>
+</tr>
+<tr>
+<td>配置文件</td>
+<td><code>configs</code>、<code>secrets</code></td>
+<td>引用顶层声明的配置或 secret；通过 <code>source</code> 选资源、<code>target</code> 指定容器内位置</td>
+</tr>
+<tr>
+<td>启动协调</td>
+<td><code>depends_on</code></td>
+<td>定义依赖及等待条件，不负责创建网络连接</td>
+</tr>
+<tr>
+<td>健康状态</td>
+<td><code>healthcheck</code></td>
+<td>定期在容器内执行探测命令，判定应用是否可用</td>
+</tr>
+<tr>
+<td>生命周期</td>
+<td><code>restart</code></td>
+<td>退出后的重启策略：<code>&quot;no&quot;</code>、<code>on-failure</code>、<code>always</code>、<code>unless-stopped</code></td>
+</tr>
+<tr>
+<td>生命周期</td>
+<td><code>init</code>、<code>stop_grace_period</code></td>
+<td><code>init: true</code> 加入负责信号转发和回收子进程的小型 init；<code>stop_grace_period: 30s</code> 给程序退出时间</td>
+</tr>
+<tr>
+<td>本地资源</td>
+<td><code>cpus</code>、<code>mem_limit</code></td>
+<td>如 <code>cpus: 1.0</code>、<code>mem_limit: 512m</code>，限制 CPU 和内存使用</td>
+</tr>
+<tr>
+<td>部署策略</td>
+<td><code>deploy</code></td>
+<td>资源、副本、调度等部署配置；具体支持取决于执行平台，不能把所有字段都当成单机 Compose 的能力</td>
+</tr>
+<tr>
+<td>日志管理</td>
+<td><code>logging</code></td>
+<td>用 <code>driver</code> 选日志驱动，用 <code>options</code> 配置轮转等参数，见 7.5</td>
+</tr>
+<tr>
+<td>可选服务</td>
+<td><code>profiles</code></td>
+<td>如 <code>[debug]</code>，通过 <code>docker compose --profile debug up -d</code> 启用该组；显式指定服务也能启动它</td>
+</tr>
+<tr>
+<td>平台与标识</td>
+<td><code>platform</code>、<code>container_name</code>、<code>labels</code></td>
+<td>分别指定平台（如 <code>linux/amd64</code>）、固定容器名、元数据；固定容器名会阻止该服务扩容</td>
+</tr>
+<tr>
+<td>权限控制</td>
+<td><code>read_only</code>、<code>cap_drop</code>、<code>security_opt</code></td>
+<td>根文件系统只读、移除 Linux 能力、设置安全选项，见 7.4；挂载目录是否可写要另行配置</td>
+</tr>
+<tr>
+<td>开发辅助</td>
+<td><code>develop</code></td>
+<td>配置 Watch 同步或重建等开发行为，基础功能需要 Compose 2.22.0+</td>
+</tr>
+</tbody></table>
+<p>这些字段的位置与可选值可在官方 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/services/">Services 参考</a> 中逐项查询。<code>command</code> 若需要 <code>&amp;&amp;</code>、管道或 shell 变量展开，要显式使用 <code>sh -c</code>；<code>restart</code> 也不会因为健康状态变成 <code>unhealthy</code> 就自动重启仍在运行的进程。</p>
+<p><strong>第三层：常用对象再展开一层</strong></p>
+<table>
+<thead>
+<tr>
+<th>所在位置</th>
+<th>子字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>build</code></td>
+<td><code>context</code></td>
+<td>构建可读取的目录，如 <code>./frontend</code></td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td><code>dockerfile</code></td>
+<td>Dockerfile 路径，相对于构建上下文解析，默认 <code>Dockerfile</code></td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td><code>target</code></td>
+<td>构建到哪个多阶段目标，如 <code>dev</code>、<code>runner</code>，必须与 Dockerfile 中的阶段名对应</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td><code>args</code></td>
+<td>传给 Dockerfile <code>ARG</code> 的构建期参数，不等于运行时环境变量，也不适合放密钥</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td><code>cache_from</code>、<code>cache_to</code></td>
+<td>构建缓存来源和输出位置；Compose 中用下划线，与 CLI 参数写法不同</td>
+</tr>
+<tr>
+<td><code>depends_on.&lt;服务名&gt;</code></td>
+<td><code>condition</code></td>
+<td><code>service_started</code> 等启动；<code>service_healthy</code> 等健康；<code>service_completed_successfully</code> 等一次性任务成功结束</td>
+</tr>
+<tr>
+<td><code>healthcheck</code></td>
+<td><code>test</code></td>
+<td><code>CMD</code> 直接执行程序；<code>CMD-SHELL</code> 通过 shell 执行；镜像内必须有对应工具</td>
+</tr>
+<tr>
+<td><code>healthcheck</code></td>
+<td><code>interval</code>、<code>timeout</code></td>
+<td>探测间隔、每次探测允许的最长时间</td>
+</tr>
+<tr>
+<td><code>healthcheck</code></td>
+<td><code>retries</code>、<code>start_period</code></td>
+<td>连续失败阈值、启动宽限期；宽限期内失败不计数，若已成功则提前进入正常检查</td>
+</tr>
+<tr>
+<td><code>ports[]</code> 长写法</td>
+<td><code>target</code>、<code>published</code>、<code>host_ip</code>、<code>protocol</code></td>
+<td>容器端口、宿主机端口、宿主机绑定地址、协议（通常 TCP）</td>
+</tr>
+<tr>
+<td><code>volumes[]</code> 长写法</td>
+<td><code>type</code>、<code>source</code>、<code>target</code>、<code>read_only</code></td>
+<td>挂载类型、来源、容器内路径、是否只读；完整例子见 6.2</td>
+</tr>
+</tbody></table>
+<p>构建字段还有独立的 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/build/">Build 参考</a>。端口的长短写法等价，例如 <code>&quot;127.0.0.1:8080:80&quot;</code> 可以展开成：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">target:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">published:</span> <span class="string">&quot;8080&quot;</span></span><br><span class="line">    <span class="attr">host_ip:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">tcp</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>最后分清 <code>.env</code>、<code>environment</code> 和 <code>env_file</code></strong></p>
+<p>把 <code>.env</code> 想成 Compose 填配置表时参考的「便签」，<code>environment</code> &#x2F; <code>env_file</code> 才是交给容器进程的「参数包」。在本文这种从项目目录运行的方式下，Compose 读取 <code>.env</code> 来替换 <code>${变量}</code>，同名 shell 环境变量优先；<code>.env</code> 里的所有内容不会自动进入每个容器。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./backend</span></span><br><span class="line">    <span class="attr">env_file:</span> <span class="string">./backend.env</span>           <span class="comment"># 文件中的变量交给 api 进程</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">NODE_ENV:</span> <span class="string">development</span>          <span class="comment"># 覆盖 backend.env 中的同名变量</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">mysql</span></span><br><span class="line">      <span class="attr">DB_PASSWORD:</span> <span class="string">$&#123;MYSQL_ROOT_PASSWORD:?请先在</span> <span class="string">.env</span> <span class="string">中设置数据库密码&#125;</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;127.0.0.1:$&#123;API_PORT:-3000&#125;:3000&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>${API_PORT:-3000}</code> 表示未设置或为空就用 <code>3000</code>；<code>${变量:?提示}</code> 表示缺值就立即报错。需要把 <code>$</code> 留给容器里的 shell 时用 <code>$$</code>，例如 <code>command: [&quot;sh&quot;, &quot;-c&quot;, &quot;echo $$NODE_ENV&quot;]</code>。规则见 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/interpolation/">变量插值参考</a>。这些运行时变量不会重新改写已经构建好的 Vite bundle，仍需遵循 4.7 节的处理方式。</p>
+<p>修改后先运行 <code>docker compose config -q</code> 检查配置是否合法；需要查看展开后的结果时用 <code>docker compose config</code>，注意输出可能含有密码。<code>docker compose restart</code> 只重启现有容器，不会应用新环境变量或挂载配置；配置有变化时用 <code>docker compose up -d</code> 让 Compose 重建需要更新的容器。</p>
 <hr>
-<h2 id="六、网络与数据卷"><a href="#六、网络与数据卷" class="headerlink" title="六、网络与数据卷"></a>六、网络与数据卷</h2><p>这两块是容器化里最容易出错的地方，也是「本地能跑、容器里连不上」类问题的根源。</p>
-<h3 id="6-1-网络模式与服务发现"><a href="#6-1-网络模式与服务发现" class="headerlink" title="6.1 网络模式与服务发现"></a>6.1 网络模式与服务发现</h3><table>
+<h2 id="六、网络与数据卷"><a href="#六、网络与数据卷" class="headerlink" title="六、网络与数据卷"></a>六、网络与数据卷</h2><p>先澄清一个名词：<strong>Volume 就是「数据卷」，不是两种东西。</strong> 网络回答「我去哪里找另一个服务」，数据卷回答「这个服务写下来的文件放在哪里」。它们分别连接服务和存储，不会互相替代。</p>
+<h3 id="6-1-网络：先确定是谁在敲哪扇门"><a href="#6-1-网络：先确定是谁在敲哪扇门" class="headerlink" title="6.1 网络：先确定是谁在敲哪扇门"></a>6.1 网络：先确定是谁在敲哪扇门</h3><p>继续用工作室的类比：<code>web</code>、<code>api</code>、<code>mysql</code> 各在一个房间。服务名是门牌，端口是房间里的服务窗口，网络是连通房间的走廊。<code>mysql:3306</code> 的意思就是「沿这条走廊，去 mysql 房间的 3306 窗口」。</p>
+<p><code>localhost</code> 则是「我所在的房间」。这句话由谁说，指向就不同：浏览器说的是运行浏览器的电脑，API 容器里的 Node 进程说的是 API 容器自己。<strong>URL 写在前端项目里，不代表请求从前端容器发出。</strong> Vue &#x2F; React 页面下载后，里面的 <code>fetch</code> 通常在用户浏览器里执行；Nginx 代理、SSR 服务端代码才在相应容器里执行。</p>
+<p>假设本地 Compose 的 API 配了 <code>ports: [&quot;127.0.0.1:3001:3000&quot;]</code>，把宿主机入口改为 3001，容器内部仍监听 3000：</p>
+<table>
+<thead>
+<tr>
+<th>请求由谁发出</th>
+<th>想访问谁</th>
+<th>使用的地址</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本机浏览器 &#x2F; Postman</td>
+<td>API 容器</td>
+<td><code>http://localhost:3001</code></td>
+<td>从宿主机发布的入口进去</td>
+</tr>
+<tr>
+<td>本机 Vite 的代理进程</td>
+<td>API 容器</td>
+<td><code>http://localhost:3001</code></td>
+<td>Vite 在宿主机上运行</td>
+</tr>
+<tr>
+<td>web 容器里的 Nginx</td>
+<td>同网络的 API</td>
+<td><code>http://api:3000</code></td>
+<td>内部通信用门牌和容器端口</td>
+</tr>
+<tr>
+<td>API 容器里的健康检查</td>
+<td>API 自己</td>
+<td><code>http://localhost:3000/healthz</code></td>
+<td>检查就在 API 房间里执行</td>
+</tr>
+<tr>
+<td>API 容器</td>
+<td>MySQL 容器</td>
+<td>主机 <code>mysql</code>，端口 <code>3306</code></td>
+<td>走数据库协议，不是 HTTP</td>
+</tr>
+<tr>
+<td>Docker Desktop 的容器</td>
+<td>宿主机的开发服务</td>
+<td><code>http://host.docker.internal:端口</code></td>
+<td>用指向宿主机的特殊名字</td>
+</tr>
+</tbody></table>
+<p>如果页面直接写 <code>fetch(&#39;http://api:3000/users&#39;)</code>，浏览器通常不认识 <code>api</code> 这个 Docker 内部门牌。更顺手的写法是 <code>fetch(&#39;/api/users&#39;)</code>：本地由 Vite 代理，部署后由 Nginx 代理。浏览器只记网站地址，代理服务器负责找到内部 API。线上用户浏览器的 <code>localhost</code> 更是用户自己的电脑，不能拿来指代部署服务器。</p>
+<pre class="mermaid">
+flowchart LR
+  B["本机浏览器<br/>localhost:8080/api/users"] -->|"宿主机 8080 → web 80"| W
+  subgraph NET["myapp_default：内部走廊"]
+    W["web 房间<br/>Nginx :80"] -->|"http://api:3000/users"| A["api 房间<br/>Node :3000"]
+    A -->|"mysql:3306 · SQL"| M["mysql 房间<br/>MySQL :3306"]
+    A -.->|"localhost 只会找自己"| A
+  end
+</pre>
+
+<p><strong><code>ports</code> 是大楼入口的转接规则，不是房间之间的通行证。</strong> <code>&quot;3001:3000&quot;</code> 左边是宿主机入口，右边是容器窗口。改左边只影响外部访问地址，Nginx 仍然找 <code>api:3000</code>。两个容器都监听 3000 没关系，它们有各自的网络空间；两个容器抢宿主机同一个地址的 3001 端口才会冲突。</p>
+<p>同一 Compose 网络内的 API 访问 MySQL，不需要 MySQL 配置 <code>ports</code>，也不需要先写 <code>expose</code>。但 MySQL 必须启动且监听可被其他容器访问的地址，账号权限也要允许连接。类似地，容器中的 Vite &#x2F; Node 若只监听 <code>127.0.0.1</code>，就相当于只接待房间内的人；通常要监听 <code>0.0.0.0</code> 才能接收转发进来的请求。<code>0.0.0.0</code> 是监听设置，不是浏览器该填写的访问地址。</p>
+<p>端口发布时还可以指定宿主机地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-p 8080:80                 <span class="comment"># 默认发布到宿主机所有接口，外部可达性还受防火墙影响</span></span><br><span class="line">-p 127.0.0.1:8080:80       <span class="comment"># 只绑本机，配合 Nginx 反代更安全</span></span><br><span class="line">-p 8080:80/udp             <span class="comment"># 指定协议</span></span><br></pre></td></tr></table></figure>
+
+<p>数据库和 Redis 如果只给容器内部使用，可以不发布端口；本机数据库客户端需要连接时再绑定 <code>127.0.0.1</code>。Compose 默认会创建 <code>&lt;项目名&gt;_default</code> 网络，通过内置 DNS 把服务名解析成容器地址；重建后 IP 可能变化，所以应用应使用服务名，并能在连接断开后重新连接。详见 <a target="_blank" rel="noopener" href="https://docs.docker.com/compose/how-tos/networking/">Compose 网络说明</a>。</p>
+<p><strong>想让房间分区，就显式指定网络。</strong> 例如在 5.2 节完整配置上给各服务增加下面的网络字段：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置片段：合并到 5.2 的对应服务中，其余 image / build 等字段保留</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">front-net</span>]</span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">front-net</span>, <span class="string">data-net</span>]</span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">data-net</span>]</span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">networks:</span> [<span class="string">data-net</span>]</span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">front-net:</span> &#123;&#125;</span><br><span class="line">  <span class="attr">data-net:</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>API 同时接入两条走廊，因此能连接 web 和数据库；web 与 mysql 不在同一网络，无法通过内部服务名直接连接。API 并不会自动变成网络路由器，仍是它的业务代码接收 HTTP，再主动查询数据库。若要让数据库只走内部网络，还应移除原来的数据库 <code>ports</code>，避免留下宿主机入口。</p>
+<table>
+<thead>
+<tr>
+<th>顶层 <code>networks.&lt;网络名&gt;</code> 字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>driver</code></td>
+<td>网络驱动，单机常见为 <code>bridge</code></td>
+</tr>
+<tr>
+<td><code>internal</code></td>
+<td><code>true</code> 创建对外隔离的网络；只连接此网络的服务通常无法访问外网，多网络服务另当别论</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>指定 Docker 中的实际网络名，不自动加项目名前缀</td>
+</tr>
+<tr>
+<td><code>external</code></td>
+<td><code>true</code> 表示使用已存在的网络，Compose 不负责创建和删除</td>
+</tr>
+<tr>
+<td><code>ipam</code></td>
+<td>自定义子网、网关等 IP 分配参数，普通前端项目通常不用手动设置</td>
+</tr>
+<tr>
+<td><code>driver_opts</code>、<code>labels</code></td>
+<td>驱动参数、用于管理识别的元数据</td>
+</tr>
+</tbody></table>
+<p>更多网络选项见 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/networks/">Networks 参考</a>。只需要本地联调时，默认网络通常就够了。</p>
+<p>原生 Linux Engine 的容器需要访问宿主机时，可以给对应服务增加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">extra_hosts:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&quot;host.docker.internal:host-gateway&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这只解决「怎么找到宿主机」，宿主机服务还需要监听容器能够到达的接口，防火墙也要允许；如果只监听宿主机 <code>127.0.0.1</code>，不能假设加上这个名字就能访问。</p>
+<p>最后再看网络模式，就不必死记名词了：</p>
+<table>
 <thead>
 <tr>
 <th>模式</th>
-<th>说明</th>
-<th>何时用</th>
+<th>对应的理解</th>
+<th>典型用途</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>bridge</code></td>
-<td>默认模式，容器在虚拟网桥上，靠端口映射对外</td>
-<td>绝大多数场景</td>
+<td>默认 <code>bridge</code></td>
+<td>Docker 自带的公共走廊，不提供容器名的自动解析</td>
+<td>简单的单容器 <code>docker run</code></td>
 </tr>
 <tr>
-<td>自定义 bridge</td>
-<td>用户创建的网桥，<strong>自带 DNS，可用容器名互访</strong></td>
-<td>Compose 默认就是这种</td>
+<td>自定义 <code>bridge</code></td>
+<td>自己的一条走廊，有服务名 &#x2F; 容器名解析</td>
+<td>Compose 默认采用的方式</td>
 </tr>
 <tr>
 <td><code>host</code></td>
-<td>直接用宿主机网络栈，不做隔离，性能最好</td>
-<td>对网络性能敏感、且只在 Linux 上</td>
+<td>与宿主机共用网络空间，不再通过 <code>ports</code> 转接</td>
+<td>明确需要共享宿主机网络的场景；支持范围依平台而异</td>
 </tr>
 <tr>
 <td><code>none</code></td>
-<td>无网络</td>
-<td>纯计算任务</td>
+<td>没有对外的网络通路，只保留回环接口</td>
+<td>不需要网络的任务</td>
 </tr>
 </tbody></table>
-<p>关键区别：<strong>默认 bridge 网络没有 DNS，自定义 bridge 有</strong>。这就是为什么 Compose 里能用服务名互访，而手写 <code>docker run</code> 时得先 <code>docker network create</code>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker network create app-net</span><br><span class="line">docker run -d --name mysql --network app-net mysql:8.4</span><br><span class="line">docker run -d --name api --network app-net my-api:1.0</span><br><span class="line"><span class="comment"># 此时 api 容器内 ping mysql 能通</span></span><br></pre></td></tr></table></figure>
+<p>手写 <code>docker run</code> 想按名字互访时，先 <code>docker network create app-net</code>，再给相关容器都加 <code>--network app-net</code>。默认 bridge 与自定义 bridge 的区别见 <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/network/drivers/bridge/">Bridge 驱动说明</a>。</p>
+<h3 id="6-2-数据卷：容器删了数据还在"><a href="#6-2-数据卷：容器删了数据还在" class="headerlink" title="6.2 数据卷：容器删了数据还在"></a>6.2 数据卷：容器删了数据还在</h3><p>把容器看作一间可以随时换掉的办公室：写在办公室墙上的字，会随办公室拆除而消失；放进独立储物柜里的档案，换一间办公室后仍能取用。容器可写层是前者，命名卷是后者。<strong>卷并不是云盘，它通常仍放在运行 Docker 的那台机器上，只是不随容器一起删除。</strong> Docker Desktop 中通常由它的 Linux 虚拟机管理。</p>
+<p>前端也有类似的直觉：刷新页面后，组件内存状态会丢，但另行保存到 <code>localStorage</code> 的值还能读取。不过这只是「状态单独保存」的类比：容器停止不会清空磁盘可写层，删除容器才会；卷也不是浏览器存储 API。</p>
+<p><strong>挂载，就是让容器中的某个路径，指向一份外部存储。</strong> 拆开这行配置看：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql-data : /var/lib/mysql</span><br><span class="line">     ↑             ↑</span><br><span class="line">存储的来源名称   MySQL 在容器里读写的目录</span><br></pre></td></tr></table></figure>
 
-<p>前端工程师最常踩的是 <code>localhost</code> 的含义变了。<strong>在容器里，<code>localhost</code> 指容器自己，不是宿主机，也不是别的容器</strong>：</p>
+<p>MySQL 仍然以为自己在写 <code>/var/lib/mysql</code>；Docker 已把这个路径接到 <code>mysql-data</code>，于是实际数据落在卷里。MySQL 不需要知道卷在宿主机哪个位置。卷也不会保存整个容器：挂到 <code>/var/lib/mysql</code>，就只负责这个路径下的内容。</p>
 <pre class="mermaid">
-flowchart TB
-  subgraph HOST["宿主机"]
-    HM[("宿主机上的 MySQL<br/>127.0.0.1:3306")]
-    subgraph NET["Docker 网络 app-net"]
-      API["api 容器"]
-      DB["mysql 容器"]
-    end
-  end
-  API -->|"❌ localhost:3306<br/>找的是容器自己"| API
-  API -->|"✅ mysql:3306<br/>服务名 DNS"| DB
-  API -->|"✅ host.docker.internal:3306<br/>访问宿主机"| HM
+flowchart LR
+  A["api 容器"] -->|"网络请求：mysql:3306"| M["mysql 容器<br/>处理 SQL"]
+  M -->|"文件读写"| P["容器内路径<br/>/var/lib/mysql"]
+  P ==>|"挂载：路径接到卷"| V[("独立数据卷<br/>myapp_mysql-data")]
+  NEW["重建后的 mysql 容器<br/>同一个数据目录"] -.->|"重新挂载同一个卷"| V
 </pre>
 
-<p>对照表：</p>
+<p><strong><code>volumes</code> 配置项可以描述多种挂载，不代表每一项都是命名卷。</strong> 可以按「文件由谁管理」来选：</p>
 <table>
 <thead>
 <tr>
-<th>要访问的目标</th>
-<th>正确写法</th>
+<th>方式</th>
+<th>形象理解</th>
+<th>Compose 写法</th>
+<th>适用场景</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>同一网络里的另一个容器</td>
-<td>服务名 &#x2F; 容器名，如 <code>mysql:3306</code></td>
+<td>不挂载</td>
+<td>文件留在房间里</td>
+<td>不配置对应目录的挂载</td>
+<td>可丢弃的文件；随容器删除而丢失</td>
 </tr>
 <tr>
-<td>宿主机上的服务（Docker Desktop）</td>
-<td><code>host.docker.internal</code></td>
-</tr>
-<tr>
-<td>宿主机上的服务（Linux）</td>
-<td>启动时加 <code>--add-host=host.docker.internal:host-gateway</code>，然后同上</td>
-</tr>
-<tr>
-<td>容器自己</td>
-<td><code>localhost</code> &#x2F; <code>127.0.0.1</code></td>
-</tr>
-</tbody></table>
-<p>端口映射也有两个细节值得注意：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-p 8080:80                 <span class="comment"># 绑到 0.0.0.0，公网可访问（云服务器要小心）</span></span><br><span class="line">-p 127.0.0.1:8080:80       <span class="comment"># 只绑本机，配合 Nginx 反代更安全</span></span><br><span class="line">-p 8080:80/udp             <span class="comment"># 指定协议</span></span><br></pre></td></tr></table></figure>
-
-<p>数据库、Redis 这类中间件的端口在生产环境<strong>一律绑 <code>127.0.0.1</code> 或干脆不映射</strong>——同一 Compose 网络内的服务本来就能互访，映射到公网只是白送一个攻击面。</p>
-<h3 id="6-2-数据卷：容器删了数据还在"><a href="#6-2-数据卷：容器删了数据还在" class="headerlink" title="6.2 数据卷：容器删了数据还在"></a>6.2 数据卷：容器删了数据还在</h3><p>容器的可写层随容器一起销毁，所以数据必须放在卷里。三种挂载方式：</p>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>写法</th>
-<th>特点</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>命名卷</strong></td>
+<td>命名卷</td>
+<td>Docker 管理的有名字的储物柜</td>
 <td><code>mysql-data:/var/lib/mysql</code></td>
-<td>Docker 管理，性能好，跨平台一致</td>
-<td>数据库文件、上传文件</td>
+<td>数据库文件、上传文件，重建时容易找回同一份存储</td>
 </tr>
 <tr>
-<td><strong>绑定挂载</strong></td>
-<td><code>./src:/app/src</code></td>
-<td>直连宿主机目录，改动实时可见</td>
-<td>本地开发挂源码、挂配置文件</td>
+<td>匿名卷</td>
+<td>Docker 管理的随机编号储物柜</td>
+<td><code>/app/node_modules</code></td>
+<td>隔离开发依赖；缺少稳定名称，不适合依赖它自动找回业务数据</td>
 </tr>
 <tr>
-<td><strong>tmpfs</strong></td>
-<td><code>type: tmpfs</code></td>
-<td>只在内存里，容器停止即消失</td>
-<td>临时文件、敏感数据</td>
+<td>绑定挂载 Bind mount</td>
+<td>把电脑上的某个目录直接接进房间</td>
+<td><code>./frontend:/app</code></td>
+<td>编辑器改源码，容器马上看到同一份文件</td>
+</tr>
+<tr>
+<td><code>tmpfs</code></td>
+<td>临时工作台，存在内存中</td>
+<td><code>tmpfs: [/tmp]</code></td>
+<td>不需持久化的临时文件，容器停止后丢失</td>
 </tr>
 </tbody></table>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">api:</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">upload-data:/app/uploads</span>              <span class="comment"># 命名卷</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./config/app.yaml:/app/config.yaml:ro</span> <span class="comment"># 绑定挂载，只读</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/node_modules</span>                     <span class="comment"># 匿名卷</span></span><br><span class="line">    <span class="attr">tmpfs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/tmp</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">upload-data:</span></span><br></pre></td></tr></table></figure>
+<p>看冒号左边就能初步区分：<code>mysql-data</code> 是卷名，<code>./frontend</code> 是宿主机路径；只写 <code>/app/node_modules</code> 是匿名卷。普通单文件 Compose 项目中的相对绑定路径，以 Compose 文件所在目录为基准。挂载不是定时复制或两份文件同步，而是让容器看到这份存储；默认可写，容器删文件也会影响挂载来源。<code>:ro</code> 只禁止这个容器通过该挂载写入，宿主机仍可修改文件。</p>
+<p>短写法看不清时，用长写法把关系展开：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置片段：放在 5.2 的 mysql 服务下，替换它原来的 volumes</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">volume</span></span><br><span class="line">    <span class="attr">source:</span> <span class="string">mysql-data</span>                    <span class="comment"># 引用顶层声明的命名卷</span></span><br><span class="line">    <span class="attr">target:</span> <span class="string">/var/lib/mysql</span>                <span class="comment"># MySQL 实际写数据的位置</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">bind</span></span><br><span class="line">    <span class="attr">source:</span> <span class="string">./docker/mysql/init</span>           <span class="comment"># 宿主机已存在的目录</span></span><br><span class="line">    <span class="attr">target:</span> <span class="string">/docker-entrypoint-initdb.d</span>   <span class="comment"># 容器里读取初始化脚本的位置</span></span><br><span class="line">    <span class="attr">read_only:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">bind:</span></span><br><span class="line">      <span class="attr">create_host_path:</span> <span class="literal">false</span>             <span class="comment"># 路径写错就报错，不自动建空目录</span></span><br></pre></td></tr></table></figure>
 
-<p>常用管理命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">docker volume <span class="built_in">ls</span></span><br><span class="line">docker volume inspect myapp_mysql-data      <span class="comment"># 查看真实存储路径</span></span><br><span class="line">docker volume <span class="built_in">rm</span> myapp_mysql-data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 备份：起个临时容器把卷打包到当前目录</span></span><br><span class="line">docker run --<span class="built_in">rm</span> \</span><br><span class="line">  -v myapp_mysql-data:/data:ro \</span><br><span class="line">  -v <span class="string">&quot;<span class="variable">$PWD</span>:/backup&quot;</span> \</span><br><span class="line">  alpine tar czf /backup/mysql-$(<span class="built_in">date</span> +%F).tar.gz -C /data .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复</span></span><br><span class="line">docker run --<span class="built_in">rm</span> \</span><br><span class="line">  -v myapp_mysql-data:/data \</span><br><span class="line">  -v <span class="string">&quot;<span class="variable">$PWD</span>:/backup&quot;</span> \</span><br><span class="line">  alpine sh -c <span class="string">&quot;cd /data &amp;&amp; tar xzf /backup/mysql-2026-09-26.tar.gz&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>长写法的 <code>type</code> 一共有哪些值？</strong> 按当前 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/services/#long-syntax-5">Compose 挂载长写法参考</a>，规范列出六种。语法允许声明，不代表所有操作系统和运行平台都能执行：</p>
+<table>
+<thead>
+<tr>
+<th><code>type</code></th>
+<th>来源 <code>source</code> &#x2F; 含义</th>
+<th>适用范围与注意点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>volume</code></td>
+<td>Docker 管理的卷；<code>source</code> 为卷名，省略时创建匿名卷</td>
+<td>数据库、上传文件常用；命名卷在顶层 <code>volumes</code> 声明</td>
+</tr>
+<tr>
+<td><code>bind</code></td>
+<td>宿主机上的文件或目录路径</td>
+<td>源码、配置文件常用；使用长写法可明确限制是否自动创建来源目录</td>
+</tr>
+<tr>
+<td><code>tmpfs</code></td>
+<td>临时内存文件系统，不填写 <code>source</code></td>
+<td>用于 Linux 容器的临时数据；可通过 <code>tmpfs.size</code>、<code>tmpfs.mode</code> 配置大小与权限</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>另一个镜像的引用，例如 <code>nginx:alpine</code></td>
+<td>把镜像内容作为只读文件来源挂进容器，可用 <code>image.subpath</code> 选择其中目录；需要支持此功能的 Compose 和 Engine</td>
+</tr>
+<tr>
+<td><code>npipe</code></td>
+<td>Windows 命名管道路径</td>
+<td>用于 Windows 容器与宿主机间的进程通信，不是存放普通文件的数据卷；Windows 上运行 Linux 容器不因此获得此类型支持</td>
+</tr>
+<tr>
+<td><code>cluster</code></td>
+<td>集群卷的名称或集群支持的选择方式</td>
+<td>面向 Swarm 集群卷及相应存储驱动等条件，不是普通单机 <code>docker compose up</code> 的通用挂载方式</td>
+</tr>
+</tbody></table>
+<p><code>image</code> 挂载需要 Docker Compose 2.35.0+、Docker Engine 28.0+；引擎能力见 <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/release-notes/28/#2800">Engine 28.0 发布说明</a>。<code>npipe</code> 的用途见 <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/storage/">存储概览</a>，集群卷需另外参考 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/cli/docker/volume/create/">卷创建命令的集群选项</a>。本文的前端与数据库例子主要使用 <code>volume</code>、<code>bind</code>，有临时内存目录需求时再选 <code>tmpfs</code>。</p>
+<p>例如下面三项是独立用途的长写法示例，放在某个 Linux 服务的 <code>volumes</code> 列表里；前两项不需要顶层卷名，第三项没有 <code>source</code>，所以是匿名卷：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">tmpfs</span></span><br><span class="line">    <span class="attr">target:</span> <span class="string">/app/tmp</span></span><br><span class="line">    <span class="attr">tmpfs:</span></span><br><span class="line">      <span class="attr">size:</span> <span class="number">67108864</span>                     <span class="comment"># 64 MiB 上限</span></span><br><span class="line">      <span class="attr">mode:</span> <span class="string">0o1777</span>                       <span class="comment"># Unix 权限，Compose 2.14.0+</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">image</span></span><br><span class="line">    <span class="attr">source:</span> <span class="string">nginx:alpine</span>                 <span class="comment"># 读取这个镜像内的文件，不启动它</span></span><br><span class="line">    <span class="attr">target:</span> <span class="string">/reference-site</span></span><br><span class="line">    <span class="attr">read_only:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">image:</span></span><br><span class="line">      <span class="attr">subpath:</span> <span class="string">usr/share/nginx/html</span>      <span class="comment"># 相对于来源镜像根目录</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">volume</span></span><br><span class="line">    <span class="attr">target:</span> <span class="string">/app/node_modules</span>            <span class="comment"># 不填 source → 匿名卷</span></span><br></pre></td></tr></table></figure>
 
-<p>有状态服务<strong>必须</strong>挂卷。少一行 <code>volumes</code>，一次 <code>docker compose down</code> 就能把整个数据库清空——这个错误在开发环境里每个人都会犯一次，在生产环境里只能犯零次。</p>
+<p>这里服务自身的 <code>image</code> &#x2F; <code>build</code> 决定「运行什么程序」，挂载中的 <code>type: image</code> 则决定「额外从哪个镜像读取文件」，二者作用不同。<code>driver: local</code> 也不是第七种 <code>type</code>：它是 <code>volume</code> 背后的存储驱动；命名卷和匿名卷都属于 <code>type: volume</code>，不存在 <code>type: anonymous</code>。</p>
+<p>回到上面的 MySQL 挂载例子，5.2 主配置中的顶层 <code>volumes: {mysql-data: ...}</code> 仍需保留。顶层卷的常用配置如下：</p>
+<table>
+<thead>
+<tr>
+<th>顶层 <code>volumes.&lt;卷名&gt;</code> 字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空配置 <code>{}</code></td>
+<td>使用默认卷驱动与默认命名，最常用</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>指定实际卷名，不再自动加项目名前缀</td>
+</tr>
+<tr>
+<td><code>external</code></td>
+<td><code>true</code> 表示使用事先创建的卷；不存在时报错，Compose 不负责创建或删除</td>
+</tr>
+<tr>
+<td><code>driver</code>、<code>driver_opts</code></td>
+<td>选择卷驱动及其参数；普通单机数据通常使用默认 <code>local</code></td>
+</tr>
+<tr>
+<td><code>labels</code></td>
+<td>为卷添加管理标签，不改变存储内容</td>
+</tr>
+</tbody></table>
+<p>例如 <code>name: myapp</code> 加上 <code>mysql-data: {}</code>，通常得到实际卷名 <code>myapp_mysql-data</code>。改项目名后默认会找另一个卷，数据库看起来就像「变空了」，旧卷可能还在。<code>external: true</code> 可以配 <code>name</code> 指定要找的现有卷，不能同时再配置 <code>driver</code> 等创建选项。定义与命名规则见 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/compose-file/volumes/">Compose Volumes 参考</a>。</p>
+<p><strong>删容器、删卷、重建，是三件不同的事。</strong> 对照下面的结果，就知道数据会不会留下：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>容器可写层</th>
+<th>命名卷</th>
+<th>绑定挂载的宿主机文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>docker compose stop</code> &#x2F; <code>start</code> &#x2F; <code>restart</code></td>
+<td>保留</td>
+<td>保留</td>
+<td>保留</td>
+</tr>
+<tr>
+<td><code>docker compose up -d</code> 确实触发容器重建</td>
+<td>旧层丢弃</td>
+<td>重新挂载原卷</td>
+<td>继续使用原路径</td>
+</tr>
+<tr>
+<td><code>docker compose down</code></td>
+<td>随容器删除</td>
+<td>保留，下次同项目 <code>up</code> 可继续用</td>
+<td>保留</td>
+</tr>
+<tr>
+<td><code>docker compose down -v</code></td>
+<td>随容器删除</td>
+<td>删除该项目声明的非 external 卷</td>
+<td>不会因此删除</td>
+</tr>
+</tbody></table>
+<p><code>down -v</code> 还会删除附着于容器的匿名卷；普通 <code>down</code> 虽保留匿名卷，但后续 <code>up</code> 不会自动按原来的随机编号重新挂载。<code>external</code> 卷不由 <code>down</code> 删除。具体范围见 <a target="_blank" rel="noopener" href="https://docs.docker.com/reference/cli/docker/compose/down/">Compose down 文档</a>。有些数据库镜像本身声明了匿名卷，所以「没写 volumes」不一定把文件直接删掉，但重建时仍可能接不到旧数据；<strong>需要保留的业务数据应显式安排存储，不能靠猜测镜像的默认行为。</strong></p>
+<p>还有两个特别容易让人误判的现象：</p>
+<p><strong>挂上目录后，镜像里的文件怎么没了？</strong> 绑定挂载会遮住目标路径原有内容，不会把两边目录合并。例如镜像已有 <code>/app/node_modules</code>，而宿主机的 <code>./frontend</code> 没有，挂载整个 <code>/app</code> 后就看不到原来的依赖了。命名卷的规则略有不同：首次挂载空卷时，默认会复制目标目录已有内容；非空旧卷则继续使用自己的内容，不会随新镜像自动更新。分别见 <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/storage/bind-mounts/">Bind mounts</a> 和 <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/storage/volumes/">Volumes</a>。</p>
+<p><strong>为什么改初始化 SQL &#x2F; 初始密码后重启没生效？</strong> 对本文使用的 MySQL 镜像，这些初始化设置用于空数据目录的首次初始化；旧卷已有数据库时，启动会使用已有数据。后续修改表结构应执行迁移，修改密码应使用数据库命令，不要把删卷当成日常更新手段。镜像行为见 <a target="_blank" rel="noopener" href="https://hub.docker.com/_/mysql">MySQL 镜像说明</a>。</p>
+<h3 id="6-3-做一个「删房间、留柜子」的小实验"><a href="#6-3-做一个「删房间、留柜子」的小实验" class="headerlink" title="6.3 做一个「删房间、留柜子」的小实验"></a>6.3 做一个「删房间、留柜子」的小实验</h3><p>不用先安装数据库，几行命令就能看到卷的生命周期。以下命令每行独立执行，PowerShell 和 Bash 都可使用；演示卷名只用于这个实验，已有同名卷时请换个名字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 建一个空卷</span></span><br><span class="line">docker volume create frontend-volume-demo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 临时容器写入文字；--rm 会在退出后删除这个容器</span></span><br><span class="line">docker run --<span class="built_in">rm</span> --mount <span class="built_in">type</span>=volume,<span class="built_in">source</span>=frontend-volume-demo,target=/data alpine sh -c <span class="string">&#x27;echo hello-volume &gt; /data/message.txt&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 新建另一个容器，把同一个卷挂到另一个目录，仍能读到文字</span></span><br><span class="line">docker run --<span class="built_in">rm</span> --mount <span class="built_in">type</span>=volume,<span class="built_in">source</span>=frontend-volume-demo,target=/saved,<span class="built_in">readonly</span> alpine <span class="built_in">cat</span> /saved/message.txt</span><br><span class="line"><span class="comment"># 预期输出：hello-volume</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 看看独立留下来的卷</span></span><br><span class="line">docker volume inspect frontend-volume-demo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 实验结束，只删除刚才创建的演示卷</span></span><br><span class="line">docker volume <span class="built_in">rm</span> frontend-volume-demo</span><br></pre></td></tr></table></figure>
+
+<p>第一个容器的 <code>/data/message.txt</code> 和第二个容器的 <code>/saved/message.txt</code>，读写的是卷里的同一个 <code>message.txt</code>。这说明<strong>路径是容器看到的入口，卷才是文件的存储来源</strong>；换容器、换入口路径，都不等于换数据。</p>
+<p>回到实际项目，可以用这几条命令核对「柜子接到了哪里」：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker volume <span class="built_in">ls</span></span><br><span class="line">docker volume inspect myapp_mysql-data</span><br><span class="line">docker compose ps -q mysql       <span class="comment"># 取得 MySQL 容器 ID</span></span><br><span class="line">docker inspect &lt;上一步的容器ID&gt;   <span class="comment"># 查看 Mounts 中的 Type、Name、Source、Destination</span></span><br></pre></td></tr></table></figure>
+
+<p>持久化也不等于备份：数据库误删一行、容器误删挂载目录里的文件，都会修改卷本身；宿主机磁盘故障也可能丢失卷。MySQL 应采用逻辑导出或数据库支持的一致性备份，不能把运行中不断变化的数据目录随手 <code>tar</code> 一份就视为可靠备份。普通上传文件可在暂停写入后归档，并把备份保存到另一处存储。</p>
 <p>绑定挂载在 macOS 和 Windows 上有性能问题（跨虚拟机文件系统），挂载大量小文件时 Vite 冷启动可能慢好几倍。这也是前端 dev server 更适合直接跑在宿主机上的原因之一。</p>
 <hr>
 <h2 id="七、企业开发中的实践"><a href="#七、企业开发中的实践" class="headerlink" title="七、企业开发中的实践"></a>七、企业开发中的实践</h2><p>前面是「能跑起来」，这一节是企业环境里的「能上生产」。</p>
@@ -911,18 +1628,19 @@ flowchart TB
 <td>检查代码 &#x2F; 环境变量</td>
 </tr>
 <tr>
-<td>服务名能否解析</td>
-<td><code>docker compose exec api ping mysql</code></td>
+<td>服务名能否解析（本文 Node 后端）</td>
+<td><code>docker compose exec api node -e &quot;require(&#39;dns&#39;).lookup(&#39;mysql&#39;, console.log)&quot;</code></td>
 </tr>
 <tr>
-<td>目标端口是否真的在监听</td>
-<td><code>docker compose exec api wget -qO- mysql:3306</code></td>
+<td>能否建立 TCP 连接（本文 Node 后端）</td>
+<td><code>docker compose exec api node -e &quot;const s=require(&#39;net&#39;).connect(3306,&#39;mysql&#39;,()=&gt;{console.log(&#39;TCP OK&#39;);s.end()});s.setTimeout(3000,()=&gt;{s.destroy();process.exit(1)});s.on(&#39;error&#39;,e=&gt;{console.error(e.message);process.exit(1)})&quot;</code></td>
 </tr>
 <tr>
 <td>数据库是否已就绪</td>
 <td><code>docker compose logs mysql</code>，配 healthcheck</td>
 </tr>
 </tbody></table>
+<p>MySQL 的 3306 端口不提供 HTTP，不能用 <code>wget http://mysql:3306</code> 判断数据库是否正常。TCP 连通只说明能到达服务，账号权限和 SQL 查询仍需数据库客户端或应用日志确认。</p>
 <h3 id="8-5-刷新页面-404"><a href="#8-5-刷新页面-404" class="headerlink" title="8.5 刷新页面 404"></a>8.5 刷新页面 404</h3><p>前端路由的经典问题，容器化之后依然存在——因为 Nginx 配置现在归你管了。回到 4.6 节，确认 <code>try_files $uri $uri/ /index.html;</code> 已配置。</p>
 <p>验证配置是否真的生效：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> web <span class="built_in">cat</span> /etc/nginx/conf.d/default.conf</span><br><span class="line">docker <span class="built_in">exec</span> web nginx -t          <span class="comment"># 语法检查</span></span><br></pre></td></tr></table></figure>
