@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSS Grid 动态跨行瀑布流演示</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f7fb; color: #1b2838; }
+    main { max-width: 1100px; margin: auto; padding: 34px 20px 64px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+    p { margin: 0 0 24px; color: #526174; line-height: 1.7; }
+    .note { display: inline-block; margin-bottom: 24px; padding: 9px 13px; border-radius: 9px; background: #e0ebff; color: #264b8a; }
+    .masonry { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); grid-auto-rows: 8px; gap: 16px; align-items: start; }
+    .tile { min-width: 0; }
+    .card { overflow: hidden; border-radius: 14px; background: white; box-shadow: 0 5px 24px #253b5914; }
+    .art { display: grid; place-items: center; height: var(--height); background: var(--color); color: white; font-size: 3rem; font-weight: 800; }
+    .body { padding: 14px 16px 17px; }
+    .body strong { display: block; margin-bottom: 6px; }
+    .body small { color: #64748b; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Grid 动态跨行瀑布流</h1>
+    <p>卡片按 DOM 顺序从左到右进入网格。拖动窗口宽度时，ResizeObserver 会重新测量卡片并更新跨行数。</p>
+    <div class="note">核心：grid-auto-rows: 8px + grid-row-end: span N</div>
+    <div class="masonry" id="masonry"></div>
+  </main>
+  <script>
+    const ROW = 8;
+    const GAP = 16;
+    const masonry = document.querySelector('#masonry');
+    const colors = ['#647ec9', '#c06c8c', '#4e9a91', '#d08b4e', '#7970b5'];
+    const heights = [130, 205, 155, 230, 175, 120, 245, 165, 195, 145, 215, 135, 180, 225, 150, 200, 125, 235];
+    const fragment = document.createDocumentFragment();
+    const cards = [];
+    heights.forEach((height, index) => {
+      const tile = document.createElement('article');
+      tile.className = 'tile';
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.setProperty('--height', `${height}px`);
+      card.style.setProperty('--color', colors[index % colors.length]);
+      const art = document.createElement('div');
+      art.className = 'art';
+      art.textContent = String(index + 1).padStart(2, '0');
+      const body = document.createElement('div');
+      body.className = 'body';
+      const title = document.createElement('strong');
+      title.textContent = `作品 ${index + 1}`;
+      const caption = document.createElement('small');
+      caption.textContent = index % 3 === 0 ? '这张卡片的说明稍长一些，窗口变窄时文字会换行，跨行数也应随之改变。' : '卡片内容会被测量。';
+      body.append(title, caption);
+      card.append(art, body);
+      tile.append(card);
+      fragment.append(tile);
+      cards.push({ tile, card });
+    });
+    masonry.append(fragment);
+
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const card = entry.target;
+        const tile = card.parentElement;
+        const height = entry.borderBoxSize?.[0]?.blockSize ?? card.getBoundingClientRect().height;
+        const span = Math.ceil((height + GAP) / (ROW + GAP));
+        tile.style.gridRowEnd = `span ${span}`;
+      }
+    });
+    cards.forEach(({ card }) => observer.observe(card));
+  </script>
+</body>
+</html>

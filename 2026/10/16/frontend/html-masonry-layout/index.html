@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="HTML 瀑布流布局实战：三种实现方案与大数据量优化"><meta name="keywords" content="HTML,CSS,JavaScript,瀑布流,性能优化"><meta name="author" content="2light"><meta name="copyright" content="2light"><title>HTML 瀑布流布局实战：三种实现方案与大数据量优化 | 2light Blog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"V1UE0WUPR6","apiKey":"5e389abe6aee51e81779d869389a8cda","indexName":"dev_blog","hits":{"per_page":10},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '8.1.1'
+} </script><meta name="generator" content="Hexo 8.1.1"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%85%88%E9%80%89%E5%B8%83%E5%B1%80%E6%96%B9%E6%A1%88"><span class="toc-number">1.</span> <span class="toc-text">一、先选布局方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-CSS-%E5%A4%9A%E5%88%97%EF%BC%9A%E5%87%A0%E8%A1%8C%E6%A0%B7%E5%BC%8F%E5%AE%8C%E6%88%90%E6%8E%92%E7%89%88"><span class="toc-number">1.1.</span> <span class="toc-text">1. CSS 多列：几行样式完成排版</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Grid-%E5%8A%A8%E6%80%81%E8%B7%A8%E8%A1%8C%EF%BC%9A%E4%BF%9D%E7%95%99%E8%A1%8C%E4%BC%98%E5%85%88-DOM-%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.2.</span> <span class="toc-text">2. Grid 动态跨行：保留行优先 DOM 顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-JS-%E6%9C%80%E7%9F%AD%E5%88%97%EF%BC%9A%E7%B2%BE%E7%A1%AE%E8%AE%A1%E7%AE%97%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">3. JS 最短列：精确计算位置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%EF%BC%8C%E4%BC%98%E5%8C%96%E7%9A%84%E6%98%AF%E4%B8%8D%E5%90%8C%E7%9A%84%E6%88%90%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">二、数据量大时，优化的是不同的成本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E9%AB%98%E5%BA%A6%E6%9C%AA%E7%9F%A5%E6%97%B6%EF%BC%8C%E8%99%9A%E6%8B%9F%E6%BB%9A%E5%8A%A8%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">图片高度未知时，虚拟滚动怎么办？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%90%BD%E5%9C%B0%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">3.</span> <span class="toc-text">三、落地检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">4.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars.githubusercontent.com/u/29703980?v=4"></div><div class="author-info__name text-center">2light</div><div class="author-info__description text-center"></div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/enhezzz">关注我</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">32</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">99</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">12</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">2light Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Posts</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title">HTML 瀑布流布局实战：三种实现方案与大数据量优化</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2026-10-16<span class="post-meta__separator">|</span><i class="fa fa-calendar-check-o" aria-hidden="true"></i> 更新于 2026-10-16</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">1.9k</span><span class="post-meta__separator">|</span><span>阅读时长: 6 分钟</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>瀑布流把高度不同的卡片排成多列，尽量减少列内空白。图片社区、商品列表和作品集常用这种形式。看起来相似的瀑布流，可能使用完全不同的布局算法；选择方案时，先确定<strong>内容的阅读顺序</strong>、<strong>卡片高度何时确定</strong>和<strong>列表最多有多少项</strong>。</p>
+<p>本文提供五个可直接打开的独立 HTML 演示。前三个展示布局，后两个展示大数据量优化；所有演示均不依赖框架或远程图片。</p>
+<span id="more"></span>
+
+<h2 id="一、先选布局方案"><a href="#一、先选布局方案" class="headerlink" title="一、先选布局方案"></a>一、先选布局方案</h2><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>核心做法</th>
+<th>适合场景</th>
+<th>主要限制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CSS 多列</td>
+<td><code>column-width</code> 分栏，卡片避免跨栏拆开</td>
+<td>展示型图片墙、文章卡片，追求实现简单</td>
+<td>视觉阅读顺序通常先向下、再向右；不保证各列底部齐平</td>
+</tr>
+<tr>
+<td>CSS Grid 动态跨行</td>
+<td>小行高网格，按卡片实测高度设置 <code>grid-row-end</code></td>
+<td>需要 DOM 顺序从左到右、希望尽量用 CSS 管理列宽</td>
+<td>需要测量和 <code>ResizeObserver</code>；行高有量化误差，不是真正的原生 masonry</td>
+</tr>
+<tr>
+<td>JS 最短列定位</td>
+<td>维护各列累计高度，逐项放到当前最短列</td>
+<td>精确控制列间空隙、插入动画或复杂卡片</td>
+<td>需要自己处理容器高度、响应式重排和动态内容高度</td>
+</tr>
+</tbody></table>
+<p>想快速上线静态作品墙，先试多列。若业务要求列表顺序从左到右，同时卡片高度不固定，可以考虑 Grid 动态跨行。需要按最短列精确放置，或要与虚拟滚动共用位置信息时，采用 JS 定位。CSS Grid 的普通自动排布会对齐同行轨道，<strong>单独写 <code>grid-template-columns: repeat(...)</code> 并不会得到真正的瀑布流</strong>。</p>
+<h3 id="1-CSS-多列：几行样式完成排版"><a href="#1-CSS-多列：几行样式完成排版" class="headerlink" title="1. CSS 多列：几行样式完成排版"></a>1. CSS 多列：几行样式完成排版</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.masonry</span> &#123;</span><br><span class="line">  <span class="attribute">columns</span>: <span class="number">220px</span>;</span><br><span class="line">  <span class="attribute">column-gap</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.masonry</span> &gt; <span class="selector-tag">article</span> &#123;</span><br><span class="line">  <span class="attribute">break-inside</span>: avoid;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>浏览器根据容器宽度决定列数，卡片在同一列自上而下流动，再进入下一列。它适合顺序要求不严格的照片墙；如果编号 1、2、3 必须横向相邻，就不要把多列当成行优先网格。<code>break-inside: avoid</code> 防止卡片被拆到两列。列高度由浏览器排版决定，不能把它理解为“每次放进最短列”。</p>
+<p><strong><a href="./columns.html">打开 CSS 多列演示</a></strong></p>
+<h3 id="2-Grid-动态跨行：保留行优先-DOM-顺序"><a href="#2-Grid-动态跨行：保留行优先-DOM-顺序" class="headerlink" title="2. Grid 动态跨行：保留行优先 DOM 顺序"></a>2. Grid 动态跨行：保留行优先 DOM 顺序</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.masonry</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="built_in">repeat</span>(auto-fill, <span class="built_in">minmax</span>(<span class="number">220px</span>, <span class="number">1</span>fr));</span><br><span class="line">  <span class="attribute">grid-auto-rows</span>: <span class="number">8px</span>;</span><br><span class="line">  <span class="attribute">gap</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>给卡片包一层网格项，测量内部内容的实际高度 <code>h</code>，再设置 <code>grid-row-end: span Math.ceil((h + gap) / (rowHeight + gap))</code>。当容器变窄、文字折行或者图片尺寸变化时，用 <code>ResizeObserver</code> 重新计算。公式中的 <code>gap</code> 必须与 CSS 一致，否则累计误差会让卡片重叠或留下明显空隙。</p>
+<p>这种方案保留源码和键盘焦点的顺序，但视觉上可能有网格空洞；<code>grid-auto-flow: dense</code> 虽能回填空洞，却可能让视觉顺序偏离 DOM 顺序，因此演示没有启用。</p>
+<p><strong><a href="./grid-spans.html">打开 Grid 动态跨行演示</a></strong></p>
+<h3 id="3-JS-最短列：精确计算位置"><a href="#3-JS-最短列：精确计算位置" class="headerlink" title="3. JS 最短列：精确计算位置"></a>3. JS 最短列：精确计算位置</h3><p>设每列当前底部为 <code>columnHeights</code>。对每张卡片，选高度最小的列，把卡片放到该列底部，再将卡片高度和间距计入这一列。所有卡片使用绝对定位，最后把容器高度设为最高列的高度。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> column = columnHeights.<span class="title function_">indexOf</span>(<span class="title class_">Math</span>.<span class="title function_">min</span>(...columnHeights));</span><br><span class="line">card.<span class="property">style</span>.<span class="property">left</span> = <span class="string">`<span class="subst">$&#123;column * (columnWidth + gap)&#125;</span>px`</span>;</span><br><span class="line">card.<span class="property">style</span>.<span class="property">top</span> = <span class="string">`<span class="subst">$&#123;columnHeights[column]&#125;</span>px`</span>;</span><br><span class="line">columnHeights[column] += cardHeight + gap;</span><br></pre></td></tr></table></figure>
+
+<p>演示把 DOM 写入、尺寸读取和位置写入分成几个阶段，避免在循环里反复“写样式 → 读高度”造成强制同步布局。真实图片页还应预留图片尺寸，并在图片载入、字体变化或容器宽度变化时重新布局。绝对定位改变的是<strong>视觉位置</strong>，不是 DOM&#x2F;读屏顺序；涉及有序内容时要特别检查键盘导航。</p>
+<p><strong><a href="./shortest-column.html">打开 JS 最短列演示</a></strong></p>
+<h2 id="二、数据量大时，优化的是不同的成本"><a href="#二、数据量大时，优化的是不同的成本" class="headerlink" title="二、数据量大时，优化的是不同的成本"></a>二、数据量大时，优化的是不同的成本</h2><p>瀑布流慢可能来自三处：一次拉取太多数据、同时解码太多图片、或者创建了太多 DOM。对应的手段不同：</p>
+<ol>
+<li><strong>分批请求或分页</strong>：服务端按游标返回下一批，首屏只渲染少量卡片。无限加载用 <code>IntersectionObserver</code> 观察列表底部的哨兵元素，提前一段距离请求下一页；同时要有“加载中、失败重试、没有更多”的状态，防止重复请求。</li>
+<li><strong>图片懒加载</strong>：给图片写明确的 <code>width</code>、<code>height</code> 或 <code>aspect-ratio</code>，预留空间；非首屏图片可设 <code>loading=&quot;lazy&quot;</code>。需要自定义加载时机、占位图或优先级时，观察图片并在接近视口时设置 <code>src</code>。首屏关键图片不要一律懒加载。</li>
+<li><strong>减少绘制工作</strong>：<code>content-visibility: auto</code> 配合合理的 <code>contain-intrinsic-size</code>，可跳过视口外内容的部分渲染工作；它仍保留 DOM，因此不能代替虚拟滚动。</li>
+<li><strong>虚拟滚动</strong>：只挂载当前视口及前后缓冲区附近的卡片，滚走后移除。即使总数据达到数千项，DOM 数量仍可以保持在几十项级别。它要额外维护每项的位置、高度、窗口范围和滚动锚点。</li>
+</ol>
+<p><strong><a href="./lazy-loading.html">打开分批加载与图片懒加载演示</a></strong>：离线演示用 SVG 数据地址模拟图片资源，真实项目应换为后端图片 URL，并配合缩略图、<code>srcset</code>、缓存与压缩格式。</p>
+<p><strong><a href="./virtual-scroll.html">打开 5000 项虚拟滚动演示</a></strong>：先根据已知卡片高度计算最短列位置，再按每列的可见区间创建卡片。页面会显示当前 DOM 节点数。示例使用可预测高度，方便把核心算法讲清楚。</p>
+<h3 id="图片高度未知时，虚拟滚动怎么办？"><a href="#图片高度未知时，虚拟滚动怎么办？" class="headerlink" title="图片高度未知时，虚拟滚动怎么办？"></a>图片高度未知时，虚拟滚动怎么办？</h3><p>优先让接口返回图片原始宽高，结合当前列宽预估展示高度，并在数据模型中保存文本区域的估算高度。图片加载后若实测高度不同，更新该项及受影响的后续位置，同时维护当前可见卡片作为滚动锚点，避免页面突然跳动。若卡片高度变化频繁，虚拟列表实现会明显复杂；先用分页、懒加载和合理的每页大小，确认 DOM 确实是瓶颈，再引入虚拟滚动。</p>
+<p>还有一个容易忽略的区别：<code>loading=&quot;lazy&quot;</code> 只推迟资源加载，<strong>不会减少已创建的卡片 DOM</strong>；虚拟滚动会减少 DOM，但如果数据预取和图片加载策略不当，仍可能一次下载大量资源。虚拟列表中未挂载的卡片也无法被浏览器页面内查找直接命中，键盘导航和读屏体验需要单独设计；有明确检索需求时，应提供搜索或分页入口。</p>
+<h2 id="三、落地检查清单"><a href="#三、落地检查清单" class="headerlink" title="三、落地检查清单"></a>三、落地检查清单</h2><ul>
+<li>先确认视觉顺序、键盘顺序和读屏顺序能否接受。</li>
+<li>图片提供尺寸或宽高比，避免瀑布流反复位移。</li>
+<li>记录列宽、间距和测量公式，窗口变化时统一重排。</li>
+<li>对新增数据批量写 DOM，避免每插入一项就读取布局。</li>
+<li>测量真实瓶颈：网络耗时、图片解码、脚本布局耗时、DOM 数量和滚动帧率。</li>
+<li>无限滚动保留可到达的“加载更多”或分页入口，处理空状态与失败重试。</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Multicol_layout/Handling_content_breaks">MDN：多列布局中的内容断开</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/break-inside">MDN：<code>break-inside</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading">MDN：懒加载</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API">MDN：Intersection Observer API</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/content-visibility">MDN：<code>content-visibility</code></a></li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">2light</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://enhezzz.github.io/2026/10/16/frontend/html-masonry-layout/">https://enhezzz.github.io/2026/10/16/frontend/html-masonry-layout/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://enhezzz.github.io">2light Blog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/HTML/">HTML</a><a class="post-meta__tags" href="/tags/CSS/">CSS</a><a class="post-meta__tags" href="/tags/JavaScript/">JavaScript</a><a class="post-meta__tags" href="/tags/%E7%80%91%E5%B8%83%E6%B5%81/">瀑布流</a><a class="post-meta__tags" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2026/10/16/frontend/%E5%89%8D%E7%AB%AFSSR%E6%96%B9%E6%A1%88%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%8E%9F%E7%94%9F%E5%AE%9E%E7%8E%B0%E4%B8%8ENuxt%E3%80%81Next.js%E5%AE%9E%E8%B7%B5/"><span>前端 SSR 方案完全指南：Vue、React 原生实现与 Nuxt、Next.js 实践</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: 'Ov23liC275BZ4L9UWZzz',
+  clientSecret: '3470fa0c9d53aab29d465cdff6423f401e8d4fdd',
+  repo: 'enhezzz.github.io',
+  owner: 'enhezzz',
+  admin: 'enhezzz',
+  id: md5(decodeURI(location.pathname)),
+  language: 'zh-CN'
+})
+gitalk.render('gitalk-container')</script></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2019 - 2026 By 2light</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">Good luck to you.</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script src="/js/search/algolia.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

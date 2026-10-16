@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5000 项瀑布流虚拟滚动演示</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f7fb; color: #1b2838; }
+    main { max-width: 1100px; margin: auto; padding: 34px 20px 50px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+    p { margin: 0 0 18px; color: #526174; line-height: 1.7; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+    .stats span { padding: 8px 11px; border-radius: 8px; background: #e0ebff; color: #264b8a; font-size: .9rem; }
+    .viewport { height: min(68vh, 690px); min-height: 360px; overflow: auto; border: 1px solid #cad7e8; border-radius: 14px; background: #e8eef7; }
+    .canvas { position: relative; width: 100%; }
+    .card { position: absolute; overflow: hidden; border-radius: 12px; background: white; box-shadow: 0 4px 16px #253b5918; }
+    .art { display: grid; place-items: center; height: calc(100% - 76px); background: var(--color); color: white; font-size: 2.5rem; font-weight: 800; }
+    .body { height: 76px; padding: 12px 14px; }
+    .body strong { display: block; margin-bottom: 5px; }
+    .body small { color: #64748b; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>5000 项瀑布流虚拟滚动</h1>
+    <p>滚动下方容器。数据模型中保留 5000 项位置，只为视口和前后缓冲区创建卡片 DOM。改变窗口宽度会重新计算列数。</p>
+    <div class="stats" aria-live="polite">
+      <span>总数据：5000</span>
+      <span id="mounted">当前卡片 DOM：0</span>
+      <span id="columns">列数：0</span>
+    </div>
+    <div class="viewport" id="viewport" aria-label="虚拟滚动瀑布流">
+      <div class="canvas" id="canvas"></div>
+    </div>
+  </main>
+  <script>
+    const TOTAL = 5000;
+    const GAP = 14;
+    const MIN_WIDTH = 210;
+    const OVERSCAN = 450;
+    const colors = ['#647ec9', '#c06c8c', '#4e9a91', '#d08b4e', '#7970b5'];
+    const viewport = document.querySelector('#viewport');
+    const canvas = document.querySelector('#canvas');
+    const mountedLabel = document.querySelector('#mounted');
+    const columnLabel = document.querySelector('#columns');
+    const data = Array.from({ length: TOTAL }, (_, index) => ({
+      index,
+      height: 190 + (index * 73) % 170
+    }));
+    const mounted = new Map();
+    let columns = [];
+    let positions = [];
+    let cardWidth = 0;
+    let lastWidth = 0;
+    let frame = 0;
+
+    // 每列的卡片纵向不重叠，因此 bottom 单调递增，可以二分查找可见起点。
+    function firstVisible(list, start) {
+      let low = 0;
+      let high = list.length;
+      while (low < high) {
+        const middle = (low + high) >> 1;
+        if (list[middle].bottom < start) low = middle + 1;
+        else high = middle;
+      }
+      return low;
+    }
+
+    function visibleItems(start, end) {
+      const found = [];
+      for (const list of columns) {
+        for (let i = firstVisible(list, start); i < list.length && list[i].top <= end; i++) {
+          found.push(list[i]);
+        }
+      }
+      return found;
+    }
+
+    function createCard(item) {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.setProperty('--color', colors[item.index % colors.length]);
+      const art = document.createElement('div');
+      art.className = 'art';
+      art.textContent = String(item.index + 1).padStart(4, '0');
+      const body = document.createElement('div');
+      body.className = 'body';
+      const title = document.createElement('strong');
+      title.textContent = `作品 ${item.index + 1}`;
+      const caption = document.createElement('small');
+      caption.textContent = '仅在可见区附近挂载';
+      body.append(title, caption);
+      card.append(art, body);
+      return card;
+    }
+
+    function render() {
+      frame = 0;
+      const start = Math.max(0, viewport.scrollTop - OVERSCAN);
+      const end = viewport.scrollTop + viewport.clientHeight + OVERSCAN;
+      const visible = visibleItems(start, end);
+      const wanted = new Set(visible.map(item => item.index));
+      for (const [index, node] of mounted) {
+        if (!wanted.has(index)) {
+          node.remove();
+          mounted.delete(index);
+        }
+      }
+      const fragment = document.createDocumentFragment();
+      for (const item of visible) {
+        if (mounted.has(item.index)) continue;
+        const card = createCard(item);
+        card.style.left = `${item.left}px`;
+        card.style.top = `${item.top}px`;
+        card.style.width = `${cardWidth}px`;
+        card.style.height = `${item.height}px`;
+        mounted.set(item.index, card);
+        fragment.append(card);
+      }
+      canvas.append(fragment);
+      mountedLabel.textContent = `当前卡片 DOM：${mounted.size}`;
+    }
+
+    function scheduleRender() {
+      if (!frame) frame = requestAnimationFrame(render);
+    }
+
+    function recalculate() {
+      const width = viewport.clientWidth;
+      if (width === lastWidth) return;
+      lastWidth = width;
+      const anchor = positions.length ? visibleItems(viewport.scrollTop, viewport.scrollTop + 1)[0] : null;
+      const anchorIndex = anchor?.index ?? 0;
+      const anchorOffset = anchor ? viewport.scrollTop - anchor.top : 0;
+      const count = Math.max(1, Math.floor((width + GAP) / (MIN_WIDTH + GAP)));
+      cardWidth = (width - (count - 1) * GAP) / count;
+      columns = Array.from({ length: count }, () => []);
+      positions = Array(TOTAL);
+      const heights = Array(count).fill(0);
+      for (const item of data) {
+        const column = heights.indexOf(Math.min(...heights));
+        const top = heights[column];
+        const placed = { index: item.index, top, bottom: top + item.height, left: column * (cardWidth + GAP), height: item.height };
+        columns[column].push(placed);
+        positions[item.index] = placed;
+        heights[column] += item.height + GAP;
+      }
+      canvas.style.height = `${Math.max(...heights) - GAP}px`;
+      columnLabel.textContent = `列数：${count}`;
+      for (const node of mounted.values()) node.remove();
+      mounted.clear();
+      viewport.scrollTop = Math.max(0, positions[anchorIndex].top + anchorOffset);
+      scheduleRender();
+    }
+
+    viewport.addEventListener('scroll', scheduleRender, { passive: true });
+    new ResizeObserver(recalculate).observe(viewport);
+    recalculate();
+  </script>
+</body>
+</html>

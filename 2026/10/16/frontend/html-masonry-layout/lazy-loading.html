@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>瀑布流分批加载与图片懒加载演示</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f7fb; color: #1b2838; }
+    main { max-width: 1100px; margin: auto; padding: 34px 20px 64px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+    p { margin: 0 0 18px; color: #526174; line-height: 1.7; }
+    .stats { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 0; background: #f4f7fbee; backdrop-filter: blur(8px); }
+    .stats span { padding: 8px 11px; border-radius: 8px; background: #e0ebff; color: #264b8a; font-size: .9rem; }
+    .masonry { columns: 220px; column-gap: 16px; margin-top: 18px; }
+    .card { display: inline-block; width: 100%; margin: 0 0 16px; break-inside: avoid; overflow: hidden; border-radius: 14px; background: white; box-shadow: 0 5px 24px #253b5914; }
+    .card img { display: block; width: 100%; height: auto; aspect-ratio: var(--ratio); object-fit: cover; background: #dce5f1; }
+    .body { padding: 14px 16px 17px; }
+    .body strong { display: block; margin-bottom: 6px; }
+    .body small { color: #64748b; }
+    #sentinel { margin: 24px auto; padding: 18px; text-align: center; color: #526174; }
+    #more { display: block; margin: 0 auto; border: 0; border-radius: 9px; padding: 11px 18px; background: #315fae; color: white; font: inherit; cursor: pointer; }
+    #more:disabled { background: #a8b5c9; cursor: default; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>分批加载与图片懒加载</h1>
+    <p>总共模拟 200 条数据，每次追加 20 条。滚动到列表底部附近会加载下一批；图片进入视口附近时才设置 src。演示使用离线 SVG，实际项目请替换成缩略图 URL。</p>
+    <div class="stats" aria-live="polite">
+      <span id="rendered">已渲染：0 / 200</span>
+      <span id="loaded">已加载图片：0</span>
+    </div>
+    <div class="masonry" id="masonry"></div>
+    <div id="sentinel">继续向下滚动加载更多</div>
+    <button id="more" type="button">加载更多</button>
+  </main>
+  <script>
+    const TOTAL = 200;
+    const BATCH = 20;
+    const masonry = document.querySelector('#masonry');
+    const sentinel = document.querySelector('#sentinel');
+    const more = document.querySelector('#more');
+    const rendered = document.querySelector('#rendered');
+    const loaded = document.querySelector('#loaded');
+    const colors = ['#647ec9', '#c06c8c', '#4e9a91', '#d08b4e', '#7970b5'];
+    let count = 0;
+    let imageCount = 0;
+
+    function svgData(index, height) {
+      const color = colors[index % colors.length];
+      const number = String(index + 1).padStart(3, '0');
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="${height}" viewBox="0 0 400 ${height}"><rect width="400" height="${height}" fill="${color}"/><text x="200" y="${height / 2}" text-anchor="middle" dominant-baseline="middle" fill="white" font-family="Arial" font-size="64" font-weight="bold">${number}</text></svg>`;
+      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    }
+
+    const imageObserver = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const img = entry.target;
+        img.src = img.dataset.src;
+        delete img.dataset.src;
+        imageObserver.unobserve(img);
+      }
+    }, { rootMargin: '300px' });
+
+    function addBatch() {
+      if (count >= TOTAL) return;
+      const end = Math.min(count + BATCH, TOTAL);
+      const fragment = document.createDocumentFragment();
+      const images = [];
+      for (let index = count; index < end; index++) {
+        const height = 220 + (index * 79) % 180;
+        const card = document.createElement('article');
+        card.className = 'card';
+        const img = document.createElement('img');
+        img.width = 400;
+        img.height = height;
+        img.loading = 'lazy';
+        img.alt = `示意作品 ${index + 1}`;
+        img.dataset.src = svgData(index, height);
+        img.style.setProperty('--ratio', `400 / ${height}`);
+        img.addEventListener('load', () => {
+          imageCount++;
+          loaded.textContent = `已加载图片：${imageCount}`;
+        }, { once: true });
+        const body = document.createElement('div');
+        body.className = 'body';
+        const title = document.createElement('strong');
+        title.textContent = `作品 ${index + 1}`;
+        const caption = document.createElement('small');
+        caption.textContent = '图片预留了宽高，加载时不会撑开卡片。';
+        body.append(title, caption);
+        card.append(img, body);
+        fragment.append(card);
+        images.push(img);
+      }
+      masonry.append(fragment);
+      images.forEach(img => imageObserver.observe(img));
+      count = end;
+      rendered.textContent = `已渲染：${count} / ${TOTAL}`;
+      if (count === TOTAL) {
+        sentinel.textContent = '已经到底了';
+        more.disabled = true;
+        more.textContent = '没有更多内容';
+        pageObserver.disconnect();
+      }
+    }
+
+    const pageObserver = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) addBatch();
+    }, { rootMargin: '500px' });
+    more.addEventListener('click', addBatch);
+    addBatch();
+    pageObserver.observe(sentinel);
+  </script>
+</body>
+</html>

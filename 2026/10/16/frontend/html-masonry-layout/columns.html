@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSS 多列瀑布流演示</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f7fb; color: #1b2838; }
+    main { max-width: 1100px; margin: auto; padding: 34px 20px 64px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+    p { margin: 0 0 24px; color: #526174; line-height: 1.7; }
+    .note { display: inline-block; margin-bottom: 24px; padding: 9px 13px; border-radius: 9px; background: #e0ebff; color: #264b8a; }
+    .masonry { columns: 220px; column-gap: 16px; }
+    .card { display: inline-block; width: 100%; margin: 0 0 16px; break-inside: avoid; overflow: hidden; border-radius: 14px; background: white; box-shadow: 0 5px 24px #253b5914; }
+    .art { display: grid; place-items: center; height: var(--height); background: var(--color); color: #fff; font-size: 3rem; font-weight: 800; }
+    .body { padding: 14px 16px 17px; }
+    .body strong { display: block; margin-bottom: 6px; }
+    .body small { color: #64748b; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>CSS 多列瀑布流</h1>
+    <p>改变窗口宽度观察列数。编号按照一列从上到下排列，然后流入右侧下一列。</p>
+    <div class="note">核心：columns: 220px + break-inside: avoid</div>
+    <div class="masonry" id="masonry"></div>
+  </main>
+  <script>
+    const masonry = document.querySelector('#masonry');
+    const colors = ['#647ec9', '#c06c8c', '#4e9a91', '#d08b4e', '#7970b5'];
+    const heights = [130, 205, 155, 230, 175, 120, 245, 165, 195, 145, 215, 135, 180, 225, 150, 200, 125, 235];
+    const fragment = document.createDocumentFragment();
+    heights.forEach((height, index) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.setProperty('--height', `${height}px`);
+      card.style.setProperty('--color', colors[index % colors.length]);
+      const art = document.createElement('div');
+      art.className = 'art';
+      art.textContent = String(index + 1).padStart(2, '0');
+      const body = document.createElement('div');
+      body.className = 'body';
+      const title = document.createElement('strong');
+      title.textContent = `作品 ${index + 1}`;
+      const caption = document.createElement('small');
+      caption.textContent = '卡片高度不同，但无需 JavaScript 测量。';
+      body.append(title, caption);
+      card.append(art, body);
+      fragment.append(card);
+    });
+    masonry.append(fragment);
+  </script>
+</body>
+</html>
