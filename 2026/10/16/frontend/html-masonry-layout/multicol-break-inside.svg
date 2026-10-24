@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">break-inside 设置前后的卡片断开对照</title>
+  <desc id="desc">左侧允许断开时卡片三的上半段在第一列底部，下半段在第二列顶部；右侧设置 avoid 后，卡片三完整地移到第二列。</desc>
+  <rect width="960" height="420" rx="20" fill="#f4f7fb"/>
+  <text x="38" y="47" font-size="25" font-weight="700" fill="#1b2838" font-family="Arial, Microsoft YaHei, sans-serif">break-inside 管的是“能否在卡片内部断开”</text>
+  <text x="38" y="78" font-size="17" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">下面给两边的分栏区域设置了相同的可用高度，只对比卡片 3 如何处理。</text>
+
+  <text x="38" y="121" font-size="19" font-weight="700" fill="#a04b63" font-family="Arial, Microsoft YaHei, sans-serif">允许断开</text>
+  <rect x="38" y="137" width="194" height="240" rx="8" fill="#e4ebf5" stroke="#a7bad1"/>
+  <rect x="248" y="137" width="194" height="240" rx="8" fill="#e4ebf5" stroke="#a7bad1"/>
+  <rect x="51" y="150" width="168" height="74" rx="7" fill="#577dc2"/>
+  <rect x="51" y="237" width="168" height="76" rx="7" fill="#4e9a91"/>
+  <rect x="51" y="326" width="168" height="38" rx="7" fill="#b8669c"/>
+  <rect x="261" y="150" width="168" height="75" rx="7" fill="#b8669c"/>
+  <g fill="white" font-size="17" font-weight="700" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif">
+    <text x="135" y="195">卡片 1</text><text x="135" y="283">卡片 2</text>
+    <text x="135" y="352">卡片 3 上半</text><text x="345" y="195">卡片 3 下半</text>
+  </g>
+  <path d="M220 345 C248 335 247 213 260 197" fill="none" stroke="#a04b63" stroke-width="3" stroke-dasharray="5 5"/>
+  <text x="248" y="399" font-size="16" text-anchor="middle" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">同一张卡片跨越列边界</text>
+
+  <text x="516" y="121" font-size="19" font-weight="700" fill="#264b8a" font-family="Arial, Microsoft YaHei, sans-serif">break-inside: avoid</text>
+  <rect x="516" y="137" width="194" height="240" rx="8" fill="#e4ebf5" stroke="#a7bad1"/>
+  <rect x="726" y="137" width="194" height="240" rx="8" fill="#e4ebf5" stroke="#a7bad1"/>
+  <rect x="529" y="150" width="168" height="74" rx="7" fill="#577dc2"/>
+  <rect x="529" y="237" width="168" height="76" rx="7" fill="#4e9a91"/>
+  <rect x="739" y="150" width="168" height="113" rx="7" fill="#b8669c"/>
+  <g fill="white" font-size="18" font-weight="700" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif">
+    <text x="613" y="195">卡片 1</text><text x="613" y="283">卡片 2</text><text x="823" y="212">完整卡片 3</text>
+  </g>
+  <text x="718" y="399" font-size="16" text-anchor="middle" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">第一列留下空白，卡片整体进入下一列</text>
+</svg>

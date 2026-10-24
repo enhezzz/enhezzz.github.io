@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="435" viewBox="0 0 960 435" role="img" aria-labelledby="title desc">
+  <title id="title">普通三列 Grid 按行摆放卡片</title>
+  <desc id="desc">第一行从左到右放卡片一、二、三，第二行放四、五、六。第一行由最高的卡片一决定高度，因此卡片二和三下方会留下空白。</desc>
+  <rect width="960" height="435" rx="20" fill="#f4f7fb"/>
+  <text x="38" y="47" font-size="25" font-weight="700" fill="#1b2838" font-family="Arial, Microsoft YaHei, sans-serif">先看最普通的 Grid：三列、按行摆放</text>
+  <text x="38" y="78" font-size="17" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">display: grid;  grid-template-columns: repeat(3, 1fr);  gap: 16px;</text>
+
+  <rect x="38" y="115" width="686" height="267" rx="10" fill="#e4ebf5" stroke="#a7bad1"/>
+  <rect x="55" y="130" width="206" height="180" rx="9" fill="#577dc2"/>
+  <rect x="277" y="130" width="206" height="75" rx="9" fill="#b8669c"/>
+  <rect x="499" y="130" width="206" height="112" rx="9" fill="#4e9a91"/>
+  <rect x="55" y="326" width="206" height="42" rx="9" fill="#6d88c2"/>
+  <rect x="277" y="326" width="206" height="42" rx="9" fill="#c782a9"/>
+  <rect x="499" y="326" width="206" height="42" rx="9" fill="#6cafaa"/>
+  <g fill="white" font-size="24" font-weight="700" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif">
+    <text x="158" y="228">1</text><text x="380" y="176">2</text><text x="602" y="195">3</text>
+    <text x="158" y="355">4</text><text x="380" y="355">5</text><text x="602" y="355">6</text>
+  </g>
+  <path d="M277 317H705" stroke="#a04b63" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="752" y="164" font-size="17" font-weight="700" fill="#264b8a" font-family="Arial, Microsoft YaHei, sans-serif">第 1 行</text>
+  <text x="752" y="354" font-size="17" font-weight="700" fill="#264b8a" font-family="Arial, Microsoft YaHei, sans-serif">第 2 行</text>
+  <text x="752" y="215" font-size="16" fill="#a04b63" font-family="Arial, Microsoft YaHei, sans-serif">短卡片下方留白</text>
+  <text x="752" y="242" font-size="16" fill="#a04b63" font-family="Arial, Microsoft YaHei, sans-serif">下一行仍要等 1 结束</text>
+  <text x="38" y="414" font-size="16" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">图中高度是示意；关键是 4、5、6 从第二行开始，而不是各自贴到上方最短卡片下。</text>
+</svg>

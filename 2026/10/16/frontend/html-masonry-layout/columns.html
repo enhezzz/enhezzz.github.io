@@ -12,6 +12,8 @@
     h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 4vw, 2.5rem); }
     p { margin: 0 0 24px; color: #526174; line-height: 1.7; }
     .note { display: inline-block; margin-bottom: 24px; padding: 9px 13px; border-radius: 9px; background: #e0ebff; color: #264b8a; }
+    .stats { display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 20px; }
+    .stats span { padding: 8px 11px; border-radius: 8px; background: #fff; color: #264b8a; box-shadow: 0 2px 9px #253b5912; }
     .masonry { columns: 220px; column-gap: 16px; }
     .card { display: inline-block; width: 100%; margin: 0 0 16px; break-inside: avoid; overflow: hidden; border-radius: 14px; background: white; box-shadow: 0 5px 24px #253b5914; }
     .art { display: grid; place-items: center; height: var(--height); background: var(--color); color: #fff; font-size: 3rem; font-weight: 800; }
@@ -25,6 +27,12 @@
     <h1>CSS 多列瀑布流</h1>
     <p>改变窗口宽度观察列数。编号按照一列从上到下排列，然后流入右侧下一列。</p>
     <div class="note">核心：columns: 220px + break-inside: avoid</div>
+    <div class="stats" aria-live="polite">
+      <span id="container-width">容器内容宽：—</span>
+      <span id="column-count">实际列数：—</span>
+      <span id="actual-width">卡片实际宽：—</span>
+      <span>期望列宽：220px；列间距：16px</span>
+    </div>
     <div class="masonry" id="masonry"></div>
   </main>
   <script>
@@ -51,6 +59,19 @@
       fragment.append(card);
     });
     masonry.append(fragment);
+    let frame = 0;
+    function updateStats() {
+      frame = 0;
+      const cards = [...masonry.children];
+      const lefts = new Set(cards.map(card => Math.round(card.getBoundingClientRect().left)));
+      document.querySelector('#container-width').textContent = `容器内容宽：${Math.round(masonry.clientWidth)}px`;
+      document.querySelector('#column-count').textContent = `实际列数：${lefts.size}`;
+      document.querySelector('#actual-width').textContent = `卡片实际宽：${cards[0].getBoundingClientRect().width.toFixed(1)}px`;
+    }
+    new ResizeObserver(() => {
+      if (!frame) frame = requestAnimationFrame(updateStats);
+    }).observe(masonry);
+    updateStats();
   </script>
 </body>
 </html>

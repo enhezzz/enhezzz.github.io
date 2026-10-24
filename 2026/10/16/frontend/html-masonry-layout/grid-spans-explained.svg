@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" role="img" aria-labelledby="title desc">
+  <title id="title">Grid 动态跨行的行轨道与跨度</title>
+  <desc id="desc">五条 8 像素行轨道和四个 16 像素间距共占 104 像素，足以放入 90 像素高的卡片，剩余 14 像素。</desc>
+  <rect width="1000" height="520" rx="20" fill="#f4f7fb"/>
+  <text x="42" y="45" font-size="25" font-weight="700" fill="#1b2838" font-family="Arial, Microsoft YaHei, sans-serif">Grid 的“跨 5 行”是跨 5 条小刻度，不是跨 5 张卡片</text>
+  <text x="42" y="78" font-size="17" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">左边看网格中卡片位置；右边把 5 条 8px 行轨道与 4 个 16px 间距拆开。</text>
+
+  <text x="45" y="119" font-size="18" font-weight="700" fill="#264b8a" font-family="Arial, Microsoft YaHei, sans-serif">三列网格：按行优先放置</text>
+  <rect x="45" y="135" width="475" height="316" rx="8" fill="#e4ebf5" stroke="#8fa9ce"/>
+  <g stroke="#b5c6dd" stroke-width="1">
+    <path d="M45 159H520 M45 183H520 M45 207H520 M45 231H520 M45 255H520 M45 279H520 M45 303H520 M45 327H520 M45 351H520 M45 375H520 M45 399H520 M45 423H520"/>
+  </g>
+  <rect x="58" y="149" width="140" height="156" rx="9" fill="#577dc2"/>
+  <rect x="212" y="149" width="140" height="219" rx="9" fill="#b8669c"/>
+  <rect x="366" y="149" width="140" height="123" rx="9" fill="#4e9a91"/>
+  <g fill="white" font-size="22" font-weight="700" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif">
+    <text x="128" y="218">卡片 1</text><text x="282" y="250">卡片 2</text><text x="436" y="205">卡片 3</text>
+  </g>
+  <text x="45" y="484" font-size="16" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">示意排布：高度不同，因此各项占用的网格行数不同。</text>
+
+  <text x="568" y="119" font-size="18" font-weight="700" fill="#8d4b7b" font-family="Arial, Microsoft YaHei, sans-serif">一个高度 90px 的卡片</text>
+  <rect x="568" y="141" width="142" height="208" rx="8" fill="#f3e3ef" stroke="#c59cba"/>
+  <g fill="#b8669c">
+    <rect x="568" y="141" width="142" height="16"/>
+    <rect x="568" y="189" width="142" height="16"/>
+    <rect x="568" y="237" width="142" height="16"/>
+    <rect x="568" y="285" width="142" height="16"/>
+    <rect x="568" y="333" width="142" height="16"/>
+  </g>
+  <rect x="578" y="141" width="122" height="180" rx="6" fill="#577dc2" fill-opacity=".72" stroke="#264b8a" stroke-width="2"/>
+  <text x="639" y="236" font-size="19" font-weight="700" text-anchor="middle" fill="white" font-family="Arial, Microsoft YaHei, sans-serif">卡片 90px</text>
+  <text x="728" y="155" font-size="16" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">紫色横条：每条 8px</text>
+  <text x="728" y="194" font-size="16" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">条与条之间：16px</text>
+  <text x="728" y="244" font-size="16" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">这里为了看清楚按 2 倍画</text>
+  <text x="728" y="284" font-size="16" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">剩余：104 - 90 = 14px</text>
+  <text x="568" y="393" font-size="19" font-weight="700" fill="#1b2838" font-family="Arial, Microsoft YaHei, sans-serif">5 × 8 + 4 × 16 = 104px ≥ 90px</text>
+  <text x="568" y="425" font-size="17" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">所以 grid-row-end: span 5</text>
+</svg>

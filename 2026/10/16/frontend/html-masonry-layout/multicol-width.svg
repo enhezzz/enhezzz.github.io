@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="445" viewBox="0 0 1000 445" role="img" aria-labelledby="title desc">
+  <title id="title">CSS 多列布局的列数与实际列宽</title>
+  <desc id="desc">期望列宽 220 像素，列间距 16 像素。1000 像素容器分成四列，每列 238 像素；700 像素容器分成三列，每列约 222.7 像素。</desc>
+  <rect width="1000" height="445" rx="20" fill="#f4f7fb"/>
+  <text x="50" y="42" font-size="25" font-weight="700" fill="#1b2838" font-family="Arial, Microsoft YaHei, sans-serif">columns: 220px; column-gap: 16px</text>
+  <text x="50" y="75" font-size="17" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">220px 是期望列宽。浏览器先确定列数，再把多余空间平均分配。</text>
+
+  <text x="50" y="116" font-size="18" font-weight="700" fill="#264b8a" font-family="Arial, Microsoft YaHei, sans-serif">容器内容宽 1000px → 4 列，每列 238px</text>
+  <rect x="50" y="130" width="900" height="130" rx="8" fill="#dce8f7" stroke="#8fa9ce"/>
+  <rect x="50" y="143" width="214.2" height="104" rx="6" fill="#577dc2"/>
+  <rect x="278.6" y="143" width="214.2" height="104" rx="6" fill="#577dc2"/>
+  <rect x="507.2" y="143" width="214.2" height="104" rx="6" fill="#577dc2"/>
+  <rect x="735.8" y="143" width="214.2" height="104" rx="6" fill="#577dc2"/>
+  <g fill="white" font-size="20" font-weight="700" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif">
+    <text x="157.1" y="202">238px</text><text x="385.7" y="202">238px</text>
+    <text x="614.3" y="202">238px</text><text x="842.9" y="202">238px</text>
+  </g>
+  <text x="272" y="237" font-size="12" text-anchor="middle" fill="#1b2838" font-family="Arial, Microsoft YaHei, sans-serif">16</text>
+  <text x="500" y="237" font-size="12" text-anchor="middle" fill="#1b2838" font-family="Arial, Microsoft YaHei, sans-serif">16</text>
+  <text x="729" y="237" font-size="12" text-anchor="middle" fill="#1b2838" font-family="Arial, Microsoft YaHei, sans-serif">16</text>
+
+  <text x="50" y="308" font-size="18" font-weight="700" fill="#8d4b7b" font-family="Arial, Microsoft YaHei, sans-serif">容器内容宽 700px → 3 列，每列约 222.7px</text>
+  <rect x="50" y="322" width="630" height="93" rx="8" fill="#f3e3ef" stroke="#c59cba"/>
+  <rect x="50" y="334" width="200.4" height="69" rx="6" fill="#b8669c"/>
+  <rect x="264.8" y="334" width="200.4" height="69" rx="6" fill="#b8669c"/>
+  <rect x="479.6" y="334" width="200.4" height="69" rx="6" fill="#b8669c"/>
+  <g fill="white" font-size="19" font-weight="700" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif">
+    <text x="150.2" y="377">≈222.7px</text><text x="365" y="377">≈222.7px</text><text x="579.8" y="377">≈222.7px</text>
+  </g>
+  <text x="710" y="356" font-size="16" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">图形按 0.9 倍绘制</text>
+  <text x="710" y="383" font-size="16" fill="#526174" font-family="Arial, Microsoft YaHei, sans-serif">数值为实际 CSS 像素</text>
+</svg>
